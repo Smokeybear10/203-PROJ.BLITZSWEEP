@@ -1,0 +1,19 @@
+# Build artifacts
+target/
+*.class
+blitzsweepclass/
+
+# IDE
+.idea/
+.run/
+*.iml
+
+# OS
+.DS_Store
+
+# Java save files
+files/*.txt
+
+# gstack
+.gstack/
+.claude/

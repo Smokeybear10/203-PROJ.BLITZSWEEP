@@ -1,102 +1,82 @@
-# Blitz Sweep
+# SWEEPER | Minesweeper with teeth
 
-A fast-paced Minesweeper-style game with progressive difficulty levels, time limits, and scoring!
+Arcade-pressure minesweeper. Five depths, countdown timers, artifacts, procedural audio. Dark terminal aesthetic inspired by Inscryption.
 
-## About the Game
+## Quick Start
 
-Blitz Sweep is an exciting twist on the classic Minesweeper game. Your goal is to clear all safe cells across 5 progressively challenging levels. Each level features:
-- **Larger boards** - Starting at 8x8 and growing to 16x16
-- **More mines** - From 10 mines in Level 1 to 50 mines in Level 5
-- **Tighter time limits** - From 2 minutes down to 70 seconds
-- **Increasing difficulty** - Test your skills as you advance!
+Open `index.html` in any browser. No install, no server, no dependencies.
 
-## How to Play
+Or host it anywhere that serves static files (GitHub Pages, Netlify, etc).
 
-### Basic Controls
-- **Left-click** on a cell to reveal it
-- **Right-click** on a cell to place or remove a flag (mark suspected mines)
-- Numbers show how many mines are adjacent to that cell
-- Clear all safe cells to complete the level
+## What It Does
 
-### Game Rules
-- **First click is always safe** - The game ensures your first click reveals a safe area
-- **Complete 5 levels to win** - Progress through increasingly difficult levels
-- **Time limits** - Each level has a countdown timer
-- **Game over conditions**:
-  - Clicking on a mine resets you to Level 1
-  - Running out of time resets you to Level 1
-- **Level progression** - Successfully complete a level to advance to the next one
+You descend through 5 depths where the grid grows, mines multiply, and time shrinks. Hit a skull or run out of time and you're back to Depth 1.
 
-### Scoring System
-- **10 points** for each cell you reveal
-- **100 × level** bonus points for completing a level (e.g., 500 points for completing Level 5)
-- **5 points** per second remaining on the timer when you complete a level
+| Depth | Grid | Mines | Time |
+|-------|------|-------|------|
+| 1 | 8x8 | 10 | 3:00 |
+| 2 | 10x10 | 15 | 2:50 |
+| 3 | 12x12 | 25 | 2:40 |
+| 4 | 14x14 | 35 | 2:30 |
+| 5 | 16x16 | 50 | 2:20 |
 
-### Game Features
-- **Save/Load** - Save your progress and resume later
-- **Visual feedback** - Enjoy particle effects and animations
-- **Real-time status** - Track your level, score, time, and mine/flag counts
+Half of your remaining time carries into the next depth.
 
-## How to Start the Game
+### Artifacts
 
-### Prerequisites
-- Java 17 or higher
-- Maven (for building and running)
+Between depths, choose an artifact:
 
-### Running the Game
+- **The Eye** -- reveals one safe tile
+- **Hourglass** -- reclaims 20 seconds
+- **The Ward** -- absorbs one mine hit
+- **The Compass** -- auto-stakes 3 buried mines
+- **The Oracle** -- reveals a 3x3 safe region
+- **The Frost** -- freezes the countdown for 10 seconds
 
-#### Option 1: Using Maven (Recommended)
-```bash
-mvn exec:java
+Artifacts carry between levels. Click their badge during gameplay to activate.
+
+### Controls
+
+- **Left-click** -- reveal a tile
+- **Right-click** (or long-press on mobile) -- place a stake (flag)
+- **Artifact badges** -- click to activate during gameplay
+
+### Scoring
+
+- 10 pts per revealed tile
+- 100 x depth bonus for clearing a level
+- 5 pts per second remaining
+- Combo multiplier for rapid reveals
+
+## Tech Stack
+
+| Layer | Tools |
+|-------|-------|
+| Game | Single-file HTML/CSS/JS |
+| Fonts | Space Grotesk, JetBrains Mono (Google Fonts) |
+| Audio | Web Audio API (procedural, no files) |
+| Save | localStorage |
+| Visual | CRT scanlines, particle dust, drifting orbs, SVG icons |
+
+## Project Structure
+
+```
+index.html          # the entire game (HTML + CSS + JS)
+DESIGN.md           # full design system (colors, fonts, spacing, motion)
+src/                # original Java 17 / Swing desktop version
+  main/java/        #   game model, board, cell, save/load
+  test/java/        #   tests
+pom.xml             # Maven config (Java version only)
 ```
 
-#### Option 2: Using Make
-```bash
-make run
-```
+## Design
 
-#### Option 3: Compile and Run Manually
-```bash
-# Compile the project
-mvn compile
+See `DESIGN.md` for the full design system. Inscryption-inspired dark terminal aesthetic with CRT scanlines, runic level indicators, diegetic UI, and atmospheric procedural sound.
 
-# Run the game
-mvn exec:java
-```
+## Java Version
 
-The game window will open automatically. Click "New Game" to start playing, or use the "Instructions" button in-game for a quick reference!
+The original desktop version lives in `src/` (Java 17, Swing). Run with `mvn exec:java` if Maven is installed.
 
-### Building from Source
-```bash
-# Compile the project
-mvn compile
+---
 
-# Run tests
-mvn test
-
-# Package as JAR
-mvn package
-```
-
-## Tips for Success
-1. **Start with the edges** - Often easier to deduce mine locations
-2. **Use flags strategically** - Mark mines you're certain about
-3. **Watch the timer** - Plan your moves efficiently
-4. **Look for patterns** - Numbers reveal mine locations through logic
-5. **Save your progress** - Use the save feature to take breaks between levels
-
-## Running for Evaluation
-
-To run this game, execute the main method in the `Game` class. The game can be started using:
-
-```bash
-mvn exec:java
-```
-
-or
-
-```bash
-make run
-```
-
-Good luck, and enjoy Blitz Sweep!
+Built by Thomas Ou
