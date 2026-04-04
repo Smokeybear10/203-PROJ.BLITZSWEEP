@@ -14,24 +14,31 @@ You descend through 5 depths where the grid grows, mines multiply, and time shri
 
 | Depth | Grid | Mines | Time |
 |-------|------|-------|------|
-| 1 | 8x8 | 10 | 3:00 |
-| 2 | 10x10 | 15 | 2:50 |
-| 3 | 12x12 | 25 | 2:40 |
-| 4 | 14x14 | 35 | 2:30 |
-| 5 | 16x16 | 50 | 2:20 |
+| 1 | 8x8 | 10 | 2:30 |
+| 2 | 10x10 | 15 | 2:20 |
+| 3 | 12x12 | 25 | 2:10 |
+| 4 | 14x14 | 35 | 2:00 |
+| 5 | 16x16 | 50 | 1:50 |
 
 Half of your remaining time carries into the next depth.
 
-### Artifacts
+### Shop
 
-Between depths, choose an artifact:
+Earn shards by revealing tiles (1 per tile) and clearing depths (bonus). Between depths, spend shards in the shop:
 
 - **The Eye** -- reveals one safe tile
 - **Hourglass** -- reclaims 20 seconds
 - **The Ward** -- absorbs one mine hit
 - **The Compass** -- auto-stakes 3 buried mines
 - **The Oracle** -- reveals a 3x3 safe region
-- **The Frost** -- freezes the countdown for 10 seconds
+- **Rewind** -- restart current depth with a fresh board, keep your remaining time
+- **The Crown** -- claims 500 points
+
+Cursed artifacts appear rarely (~30% chance). Cheap, but at a cost:
+
+- **The Leech** -- reveals 5 safe tiles but devours 25 seconds
+- **Blood Tithe** -- auto-stakes 5 mines but your next hit ignores the Ward
+- **The Bargain** -- +45 seconds but sacrifices half your score
 
 Artifacts carry between levels. Click their badge during gameplay to activate.
 
@@ -41,12 +48,14 @@ Artifacts carry between levels. Click their badge during gameplay to activate.
 - **Right-click** (or long-press on mobile) -- place a stake (flag)
 - **Artifact badges** -- click to activate during gameplay
 
-### Scoring
+### Shards
 
-- 10 pts per revealed tile
-- 100 x depth bonus for clearing a level
-- 5 pts per second remaining
-- Combo multiplier for rapid reveals
+Shards are the only currency. Earn them, spend them in the shop.
+
+- 1 shard per revealed tile
+- Combo bonus for rapid reveals (2+ in a row)
+- Depth bonus on clear (10 x depth)
+- Time bonus on clear (1 per 5 seconds remaining)
 
 ## Tech Stack
 
