@@ -1,77 +1,92 @@
-# Design System — SWEEPER
+# Design System — SWEEPER.EXE
 
 ## Product Context
-- **What this is:** Arcade-pressure minesweeper with 5 escalating levels, countdown timers, and scoring
-- **Who it's for:** People who want minesweeper with stakes, not a calm Sunday puzzle
-- **Space/industry:** Browser puzzle games. Competitors: freeminesweeper.org, minesweeper.online, minesweeper-pro.com
+- **What this is:** Arcade-pressure minesweeper disguised as recovered shareware from 1997
+- **Who it's for:** People who want minesweeper with stakes and a creepy atmosphere
+- **Space/industry:** Browser puzzle games meets analog horror ARG
 - **Project type:** Web app (single-page game)
 
 ## Aesthetic Direction
-- **Direction:** Arcade Pressure
-- **Decoration level:** Intentional — subtle glow effects on interactions, screen-edge vignette, minimal but purposeful
-- **Mood:** Dark, electric, urgent. The feeling of an arcade cabinet at 11pm where the timer is counting down and you're in the zone. Fun-tense, not war-room-tense. Not calm puzzle gray. Not military cold.
-- **Reference sites:** Every competitor is gray/white Windows 95 nostalgia. SWEEPER is the opposite.
+- **Direction:** Found Footage / Analog Horror
+- **Core concept:** You found an old hard drive. There's one program on it: SWEEPER.EXE. The trial expired 25 years ago. The tape is still recording. Something is wrong with session 00047.
+- **Decoration level:** Layered — CRT scanlines, VHS artifacts, tracking distortion, film grain. Each layer contributes to the feeling that you're watching a recording of someone using this computer in 1998.
+- **Mood:** Uncanny, eerie, something-is-wrong. A 90s computer that shouldn't still be running. Not jump-scare horror — slow-burn wrongness. The kind of video you'd find on a cursed VHS tape.
+- **Reference:** Windows 95/98 desktop, VHS camcorder recordings, analog horror YouTube (Local 58, Backrooms, Mandela Catalogue), cursed shareware
+
+## Visual Layers (inside to outside)
+1. **Desktop** — Windows 98 teal desktop with icons, Win98 chrome windows
+2. **CRT glass** — Scanlines, vignette, tracking line, chromatic aberration
+3. **VHS recording** — REC indicator, timestamp, tape counter, screen tearing, horizontal hold artifacts
+4. **Monitor bezel** — Dark plastic CRT bezel with brand stamp and LED
+5. **Film grain** — Subtle noise overlay on everything
 
 ## Typography
-- **Display/Hero:** Space Grotesk (700) — geometric, tense, punchy for "SWEEPER" and headings
-- **Body:** DM Sans (400/500) — clean, readable for menus, rules, instructions
-- **UI/Labels:** DM Sans (500/600)
-- **Data/Tables:** JetBrains Mono (700, tabular-nums) — LED-counter feel for timer, score, mine count
-- **Code:** JetBrains Mono
-- **Loading:** Google Fonts CDN
-- **Scale:** 11px (labels) / 13px (body small) / 15px (body) / 18px (h4) / 24px (h3) / 36px (h2) / 48px (h1)
+- **Win98 UI:** 'Tahoma', 'Geneva', 'MS Sans Serif', sans-serif — authentic Windows 98
+- **Data/Terminals:** 'JetBrains Mono', monospace — BIOS text, code, system info
+- **VHS overlays:** 'VT323', monospace — pixel-perfect camcorder timestamp font
+- **Display/Hero:** 'Space Grotesk' (700) — SWEEPER branding in boot splash
+- **Loading:** Google Fonts CDN (JetBrains Mono, Space Grotesk, VT323)
 
 ## Color
-- **Approach:** Expressive dark palette
-- **Background:** #0A0A0F (near-black)
-- **Surface (unrevealed cells):** #1A1A2E (dark indigo)
-- **Surface (revealed cells):** #0F0F1A (deeper dark)
-- **Accent:** #E8FF00 (acid yellow — timer, active states, score, level indicator)
-- **Danger:** #FF2D55 (hot pink-red — mines, low time warning, game over)
-- **Text:** #E2E2F0 (cool white)
-- **Text muted:** #6B6B80
-- **Cell border:** rgba(255,255,255,0.06) — hairline separators, not raised 3D borders
-- **Cell hover:** rgba(232,255,0,0.08)
-- **Number colors (neon-saturated):** 1=#4DA6FF, 2=#00E676, 3=#FF2D55, 4=#7C4DFF, 5=#FF6D00, 6=#00E5FF, 7=#E8FF00, 8=#B0B0C0
-- **Semantic:** success #00E676, warning #E8FF00, error #FF2D55
-- **Dark mode:** This IS dark mode. No light mode planned.
+- **Approach:** Authentic Win98 palette + found footage degradation
+- **Room (behind CRT):** #000 pure black
+- **CRT desktop:** #0C4846 (teal — classic Win98 Active Desktop)
+- **Win98 face:** #BCBCBC (standard Win98 gray)
+- **Win98 highlight:** #EFEFEF / #D4D4D4
+- **Win98 shadow:** #404040 / #6E6E6E
+- **Titlebar gradient:** #0A1163 → #1070B8 (Win98 active)
+- **Danger/blood:** #7A1414 / #B02020 (error dialogs, warnings, analog horror red)
+- **Selection:** #08106A (Win98 highlight blue)
+- **VHS overlays:** White at 30-70% opacity, red for REC
+- **Number colors (muted for CRT):** 1=#4878A8, 2=#488848, 3=#A83838, 4=#684488, 5=#A86828, 6=#287878, 7=#888840, 8=#686860
+- **Dark mode:** Everything is dark. The CRT is the only light source.
 
 ## Spacing
-- **Base unit:** 4px
-- **Density:** Comfortable — cells need breathing room for touch targets
-- **Scale:** 2xs(2) xs(4) sm(8) md(12) lg(16) xl(24) 2xl(32) 3xl(48)
+- **Base unit:** Win98 standard pixel sizes (2px borders, 3px padding on titlebars)
+- **Density:** Tight — Win98 was pixel-efficient
+- **CRT bezel padding:** 30px (gives the monitor depth)
 
 ## Layout
-- **Approach:** Game-centered, single viewport
-- **Grid:** The board IS the page. Status bar wraps tightly above, controls below. No scrolling during gameplay.
-- **Max content width:** 520px (game container)
-- **Border radius:** sm:2px (cells), md:4px (buttons), lg:8px (containers), full:9999px (badges)
+- **Approach:** CRT monitor centered on black void
+- **CRT screen content:** Win98 desktop with floating windows
+- **Taskbar:** Fixed at bottom of CRT screen — Start button, app buttons, system tray with clock
+- **Desktop icons:** Draggable, Win98-authentic (32x32 icon + label)
+- **Windows:** Draggable, stackable, closable — full Win98 window chrome
 
-## Motion
-- **Approach:** Intentional
-- **Cell reveal:** Quick flash animation (background pulses from accent-tint to revealed, 300ms ease-out)
-- **Flag place:** Scale pop (0.8 -> 1.1 -> 1.0, 200ms ease-out)
-- **Timer danger:** At <15 seconds, timer bar and time value pulse (0.8s ease-in-out infinite). Container gains red glow.
-- **Level transition:** Brief sweep animation between stages
-- **Easing:** enter(ease-out) exit(ease-in) move(ease-in-out)
-- **Duration:** micro(100ms) short(200ms) medium(300ms) long(500ms)
+## Motion / Effects
+- **CRT scanlines:** Repeating 3px horizontal lines at 22% opacity
+- **CRT vignette:** Radial gradient darkening edges, plus subtle curved glass highlight
+- **Tracking line:** Single bright line sweeping top to bottom (7s loop)
+- **Chromatic aberration:** Red/cyan fringing at screen edges
+- **VHS tear:** Intermittent horizontal displacement (4.5s cycle, appears ~4% of time)
+- **Horizontal hold:** Occasional frame shift band (18s cycle)
+- **Glitch bar:** White flash band (11s cycle)
+- **Film grain:** Animated noise texture at 60% overlay blend
+- **Screen flicker:** Subtle opacity dips (8s cycle)
+- **Boot sequence:** BIOS POST text → Win98 splash with loading bar
+- **Window jitter:** Error modals have subtle position jitter
 
 ## Key Design Decisions
 
-### Safe (category baseline)
-- Grid-based cell layout — this IS minesweeper, users expect the grid
-- Color-coded numbers (1=blue, 2=green, 3=red) — universal muscle memory
-- Right-click/long-press to flag — standard interaction pattern
+### Safe (what users expect)
+- Grid-based minesweeper cells
+- Color-coded numbers
+- Right-click to flag
 
-### Risks (where SWEEPER gets its own face)
-- Full dark arcade aesthetic — every competitor is gray/white/light
-- Timer as a depleting bar, not just a number — plus background pulses red at <15s
-- Level progression shown as arcade "stages" with visual pip indicator
-- Neon glow effects on cell interactions (reward feedback)
+### Risks (what makes SWEEPER.EXE its own thing)
+- Entire game wrapped in a CRT monitor running Win98
+- Found footage overlays make you feel like you're watching a tape
+- Session counter that started at 47 (of 3 allowed) — something already happened
+- Trial expired years ago but somehow still runs
+- Boot sequence with BIOS POST and "TRIAL EXPIRED" warning
+- VHS timestamp frozen in January 1998
+- System messages that feel slightly wrong
 
 ## Decisions Log
 | Date | Decision | Rationale |
 |------|----------|-----------|
-| 2026-04-04 | Initial design system created | Created by /design-consultation based on competitive research (5 sites) + Claude subagent input. Every competitor is Windows 95 gray. SWEEPER plays like an arcade game (countdown timer, escalating difficulty), so the design reflects urgency, not calm. |
-| 2026-04-04 | Acid yellow #E8FF00 as accent | Subagent proposed this over electric cyan. Yellow reads as urgency/warning, not coolness. Better fit for countdown pressure. |
-| 2026-04-04 | No light mode | Dark-first is the aesthetic thesis. Adding a light mode would dilute the arcade identity. |
+| 2026-04-04 | Initial design system created | Arcade pressure theme based on competitive research |
+| 2026-04-05 | Consolidated to found footage / analog horror | Too many variant themes. One strong identity: a cursed VHS recording of a 90s shareware program. Win98 desktop + CRT bezel + VHS overlays as the singular aesthetic. |
+| 2026-04-05 | Added Win98 taskbar | More authentic 90s computer feel — Start button, system tray, clock frozen in 1998 |
+| 2026-04-05 | Added VHS found footage overlays | REC indicator, timestamp, tape counter, screen tearing — sells the "you're watching a recording" concept |
+| 2026-04-05 | Removed base arcade theme | Stripped the dark neon arcade CSS/HTML. EXE mode is now the only mode. |

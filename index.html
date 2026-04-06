@@ -3,40 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SWEEPER — Dark Atmospheric Minesweeper</title>
-<meta name="description" content="Five depths of escalating minesweeper. Countdown timers. Artifacts. CRT terminal aesthetic. No mercy.">
-<meta name="theme-color" content="#08080C">
-<meta property="og:title" content="SWEEPER">
-<meta property="og:description" content="Dark atmospheric minesweeper. Five depths. Countdown timers. Artifacts. No mercy.">
+<title>SWEEPER.EXE — Found on a hard drive. Do not run.</title>
+<meta name="description" content="Recovered from an unregistered copy of SWEEPER.EXE. Trial expired. Session 00047 of 00003 allowed. Tape is still running.">
+<meta name="theme-color" content="#000000">
+<meta property="og:title" content="SWEEPER.EXE">
+<meta property="og:description" content="Recovered from an unregistered copy of SWEEPER.EXE. Trial expired. Session 00047. Tape is still running.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SWEEPER">
-<meta name="twitter:description" content="Dark atmospheric minesweeper. Five depths. Countdown timers. Artifacts. No mercy.">
+<meta name="twitter:title" content="SWEEPER.EXE">
+<meta name="twitter:description" content="Recovered from an unregistered copy of SWEEPER.EXE. Trial expired. Session 00047. Tape is still running.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💀</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&family=VT323&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #08080C;
-  --surface: #141420;
-  --surface-revealed: #0C0C14;
-  --accent: #D4E800;
-  --danger: #E8243C;
-  --text: #C8C8D4;
-  --text-muted: #555568;
-  --text-dim: #3A3A4A;
-  --cell-border: rgba(255,255,255,0.04);
-  --glow-accent: rgba(212,232,0,0.15);
-  --glow-danger: rgba(232,36,60,0.15);
-  --num-1: #4888CC;
-  --num-2: #2BA84A;
-  --num-3: #CC3344;
-  --num-4: #7744AA;
-  --num-5: #CC6622;
-  --num-6: #22AAAA;
-  --num-7: #AAAA44;
-  --num-8: #777788;
+  --bg: #0A0808;
+  --surface: #1A1814;
+  --surface-revealed: #0E0C0A;
+  --accent: #C8A848;
+  --danger: #B82020;
+  --text: #B8B0A4;
+  --text-muted: #5A5248;
+  --text-dim: #3A3430;
+  --cell-border: rgba(200,168,72,0.06);
+  --glow-accent: rgba(200,168,72,0.15);
+  --glow-danger: rgba(184,32,32,0.15);
+  --num-1: #4878A8;
+  --num-2: #488848;
+  --num-3: #A83838;
+  --num-4: #684488;
+  --num-5: #A86828;
+  --num-6: #287878;
+  --num-7: #888840;
+  --num-8: #686860;
   --font-display: 'Space Grotesk', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
@@ -56,83 +56,7 @@ body{
   position:relative;
 }
 
-/* ======== BACKGROUND LAYERS ======== */
-/* Infinite grid fading into darkness — the grid is everywhere */
-.bg-grid{
-  position:fixed;inset:0;z-index:0;pointer-events:none;
-  background-image:
-    linear-gradient(rgba(212,232,0,0.012) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(212,232,0,0.012) 1px,transparent 1px);
-  background-size:40px 40px;
-  mask-image:radial-gradient(ellipse at center,rgba(0,0,0,0.4) 10%,transparent 55%);
-  -webkit-mask-image:radial-gradient(ellipse at center,rgba(0,0,0,0.4) 10%,transparent 55%);
-}
-/* Slow drifting ambient glows */
-.bg-glow{
-  position:fixed;inset:0;z-index:0;pointer-events:none;
-  overflow:hidden;
-}
-.bg-glow .orb{
-  position:absolute;
-  border-radius:50%;
-  filter:blur(80px);
-  opacity:0;
-  animation:orb-drift linear infinite;
-}
-.bg-glow .orb-1{
-  width:400px;height:400px;
-  background:radial-gradient(circle,rgba(212,232,0,0.04),transparent 70%);
-  top:-10%;left:20%;
-  animation-duration:25s;animation-delay:0s;
-}
-.bg-glow .orb-2{
-  width:300px;height:300px;
-  background:radial-gradient(circle,rgba(232,36,60,0.025),transparent 70%);
-  bottom:10%;right:10%;
-  animation-duration:30s;animation-delay:5s;
-}
-.bg-glow .orb-3{
-  width:250px;height:250px;
-  background:radial-gradient(circle,rgba(72,136,204,0.02),transparent 70%);
-  top:40%;left:-5%;
-  animation-duration:22s;animation-delay:10s;
-}
-@keyframes orb-drift{
-  0%{opacity:0;transform:translate(0,0) scale(0.8);}
-  15%{opacity:1;}
-  50%{transform:translate(80px,40px) scale(1.2);}
-  85%{opacity:1;}
-  100%{opacity:0;transform:translate(-40px,80px) scale(0.9);}
-}
-/* Floating dust particles — canvas behind everything */
-#dust-canvas{
-  position:fixed;inset:0;z-index:0;pointer-events:none;
-}
-
-/* ======== CRT OVERLAY ======== */
-body::before{
-  content:'';
-  position:fixed;
-  inset:0;
-  background:repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0,0,0,0.08) 2px,
-    rgba(0,0,0,0.08) 4px
-  );
-  pointer-events:none;
-  z-index:1000;
-}
-body::after{
-  content:'';
-  position:fixed;
-  inset:0;
-  background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,0.6) 100%);
-  pointer-events:none;
-  z-index:999;
-}
-/* Subtle screen flicker */
+/* ======== CRT OVERLAY (found footage) ======== */
 @keyframes flicker{
   0%,100%{opacity:1;}
   92%{opacity:1;}
@@ -143,36 +67,8 @@ body::after{
 }
 #screen{animation:flicker 8s infinite;}
 
-/* Noise grain */
-.noise{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  z-index:998;
-  opacity:0.03;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* ======== TITLE ======== */
-.title{
-  font-family:var(--font-display);
-  font-size:28px;
-  font-weight:700;
-  letter-spacing:6px;
-  color:var(--accent);
-  text-shadow:0 0 30px var(--glow-accent),0 0 60px rgba(212,232,0,0.06);
-  margin-bottom:4px;
-  text-align:center;
-  text-transform:uppercase;
-}
-.subtitle-flavor{
-  font-size:10px;
-  color:var(--text-dim);
-  letter-spacing:3px;
-  text-transform:uppercase;
-  margin-bottom:14px;
-  text-align:center;
-}
+/* Title/subtitle hidden — EXE chrome is the only UI */
+.title,.subtitle-flavor,.credit{display:none!important;}
 
 /* ======== SHAKE ======== */
 #game-wrapper{transition:transform 0.05s;}
@@ -193,9 +89,12 @@ body::after{
 /* ======== GAME CONTAINER ======== */
 .game-container{
   background:var(--surface);
-  border-radius:2px;
+  border-radius:0px;
   overflow:hidden;
-  border:1px solid rgba(255,255,255,0.04);
+  border-top:2px solid rgba(0,0,0,0.5);
+  border-left:2px solid rgba(0,0,0,0.4);
+  border-bottom:2px solid rgba(200,168,72,0.06);
+  border-right:2px solid rgba(200,168,72,0.04);
   box-shadow:0 0 60px rgba(0,0,0,0.8),inset 0 0 80px rgba(0,0,0,0.3);
   max-width:95vw;
   position:relative;
@@ -205,7 +104,7 @@ body::after{
   content:'';
   position:absolute;
   inset:0;
-  background:radial-gradient(ellipse at 50% 30%,rgba(212,232,0,0.02),transparent 60%);
+  background:radial-gradient(ellipse at 50% 30%,rgba(200,168,72,0.015),transparent 60%);
   pointer-events:none;
   z-index:1;
 }
@@ -215,7 +114,7 @@ body::after{
 }
 @keyframes danger-pulse{
   0%,100%{box-shadow:0 0 60px rgba(0,0,0,0.8),0 0 60px var(--glow-danger),inset 0 0 80px rgba(0,0,0,0.3);}
-  50%{box-shadow:0 0 60px rgba(0,0,0,0.8),0 0 140px rgba(232,36,60,0.2),inset 0 0 80px rgba(232,36,60,0.04);}
+  50%{box-shadow:0 0 60px rgba(0,0,0,0.8),0 0 140px rgba(184,32,32,0.2),inset 0 0 80px rgba(184,32,32,0.04);}
 }
 
 /* ======== STATUS BAR ======== */
@@ -223,106 +122,165 @@ body::after{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:10px 14px;
-  background:rgba(0,0,0,0.4);
-  border-bottom:1px solid var(--cell-border);
+  padding:6px 10px;
+  background:#0E0C0A;
+  border-top:1px solid rgba(0,0,0,0.6);
+  border-bottom:1px solid rgba(200,168,72,0.04);
+  box-shadow:inset 0 1px 3px rgba(0,0,0,0.5);
 }
-.status-item{display:flex;flex-direction:column;align-items:center;gap:1px;}
-.status-label{font-size:8px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;}
-.status-value{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums;}
-.status-value.accent{color:var(--accent);text-shadow:0 0 12px var(--glow-accent);}
-.status-value.danger-text{color:var(--danger);text-shadow:0 0 12px var(--glow-danger);animation:pulse-text 0.8s ease-in-out infinite;}
+.status-item{
+  display:flex;flex-direction:column;align-items:center;gap:0px;
+  padding:3px 8px;
+  background:rgba(0,0,0,0.3);
+  border-top:1px solid rgba(0,0,0,0.5);
+  border-left:1px solid rgba(0,0,0,0.4);
+  border-bottom:1px solid rgba(200,168,72,0.04);
+  border-right:1px solid rgba(200,168,72,0.03);
+}
+.status-label{font-size:7px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;font-family:var(--font-mono);}
+.status-value{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;font-family:var(--font-mono);}
+.status-value.accent{color:var(--accent);text-shadow:0 0 8px var(--glow-accent);}
+.status-value.danger-text{color:var(--danger);text-shadow:0 0 8px var(--glow-danger);animation:pulse-text 0.8s ease-in-out infinite;}
 @keyframes pulse-text{0%,100%{opacity:1;}50%{opacity:0.4;}}
 
 /* ======== LEVEL RUNES ======== */
-.level-bar{display:flex;gap:8px;padding:8px 14px;background:rgba(0,0,0,0.2);justify-content:center;}
+.level-bar{
+  display:flex;gap:4px;padding:5px 14px;justify-content:center;
+  background:#0A0808;
+  border-top:1px solid rgba(0,0,0,0.5);
+  border-bottom:1px solid rgba(200,168,72,0.03);
+  box-shadow:inset 0 1px 2px rgba(0,0,0,0.4);
+}
 .level-rune{
-  width:16px;height:16px;
+  width:18px;height:18px;
   display:flex;align-items:center;justify-content:center;
-  font-size:12px;
+  font-size:13px;
   color:var(--text-dim);
   transition:all 0.3s;
   position:relative;
+  border:1px solid rgba(200,168,72,0.04);
+  background:rgba(0,0,0,0.3);
 }
-.level-rune.active{color:var(--accent);text-shadow:0 0 8px var(--glow-accent);transform:scale(1.2);}
+.level-rune.active{color:var(--accent);text-shadow:0 0 8px var(--glow-accent);transform:scale(1.15);border-color:rgba(200,168,72,0.15);background:rgba(200,168,72,0.04);}
 .level-rune.completed{color:var(--accent);opacity:0.35;}
 
 /* ======== TIMER BAR ======== */
-.timer-bar-wrap{height:2px;background:rgba(255,255,255,0.02);}
+.timer-bar-wrap{
+  height:6px;background:#0A0808;
+  border-top:1px solid rgba(0,0,0,0.5);
+  border-left:1px solid rgba(0,0,0,0.4);
+  border-bottom:1px solid rgba(200,168,72,0.03);
+  border-right:1px solid rgba(200,168,72,0.02);
+  margin:0 3px;
+}
 .timer-bar{
   height:100%;
-  background:var(--accent);
-  box-shadow:0 0 8px var(--glow-accent);
+  background:linear-gradient(180deg,#D4B850,var(--accent),#A08030);
+  box-shadow:0 0 6px var(--glow-accent);
   transition:width 0.3s linear,background 0.3s;
 }
 .timer-bar.low{
-  background:var(--danger);
-  box-shadow:0 0 12px var(--glow-danger);
+  background:linear-gradient(180deg,#D02828,var(--danger),#881818);
+  box-shadow:0 0 10px var(--glow-danger);
   animation:pulse-bar 0.8s ease-in-out infinite;
 }
 @keyframes pulse-bar{0%,100%{opacity:1;}50%{opacity:0.4;}}
 
 /* ======== POWER-UP BAR ======== */
-.powerup-bar{display:flex;gap:6px;padding:4px 14px;background:rgba(0,0,0,0.15);min-height:22px;align-items:center;}
+.powerup-bar{display:flex;gap:3px;padding:3px 10px;background:#0E0C0A;min-height:22px;align-items:center;box-shadow:inset 0 1px 2px rgba(0,0,0,0.3);}
 .powerup-badge{
-  font-size:9px;letter-spacing:1.5px;text-transform:uppercase;
-  padding:2px 8px;border-radius:2px;cursor:pointer;
-  transition:all 0.15s;display:flex;align-items:center;gap:4px;
+  font-size:8px;letter-spacing:1px;text-transform:uppercase;
+  padding:2px 6px;border-radius:0;cursor:pointer;
+  transition:all 0.15s;display:flex;align-items:center;gap:3px;
+  border-top:1px solid rgba(200,168,72,0.06);
+  border-left:1px solid rgba(200,168,72,0.04);
+  border-bottom:1px solid rgba(0,0,0,0.4);
+  border-right:1px solid rgba(0,0,0,0.3);
+  background:rgba(0,0,0,0.2);
 }
-.powerup-badge .glyph{font-size:11px;}
-.powerup-badge.scan{background:rgba(72,136,204,0.1);color:var(--num-1);border:1px solid rgba(72,136,204,0.2);}
-.powerup-badge.timewarp{background:rgba(212,232,0,0.06);color:var(--accent);border:1px solid rgba(212,232,0,0.15);}
-.powerup-badge.shield{background:rgba(43,168,74,0.08);color:var(--num-2);border:1px solid rgba(43,168,74,0.15);}
-.powerup-badge.compass{background:rgba(124,77,255,0.08);color:var(--num-4);border:1px solid rgba(124,77,255,0.15);}
-.powerup-badge.oracle{background:rgba(0,229,255,0.08);color:var(--num-6);border:1px solid rgba(0,229,255,0.15);}
-.powerup-badge.rewind{background:rgba(180,140,255,0.08);color:#B48CFF;border:1px solid rgba(180,140,255,0.15);}
-.powerup-badge.lantern{background:rgba(200,168,120,0.1);color:#C8A878;border:1px solid rgba(200,168,120,0.2);}
-.powerup-badge.cursed{background:rgba(232,36,60,0.1);color:var(--danger);border:1px solid rgba(232,36,60,0.25);}
+.powerup-badge .glyph{font-size:10px;}
+.powerup-badge.scan{color:var(--num-1);}
+.powerup-badge.timewarp{color:var(--accent);}
+.powerup-badge.shield{color:var(--num-2);}
+.powerup-badge.compass{color:var(--num-4);}
+.powerup-badge.oracle{color:var(--num-6);}
+.powerup-badge.rewind{color:#A880CC;}
+.powerup-badge.lantern{color:#B89868;}
+.powerup-badge.cursed{color:var(--danger);border-top-color:rgba(184,32,32,0.1);border-left-color:rgba(184,32,32,0.08);}
 .powerup-badge:hover{transform:scale(1.05);filter:brightness(1.3);}
 .powerup-badge.used{opacity:0.2;cursor:default;text-decoration:line-through;}
 
 /* ======== GRID ======== */
-.grid{display:grid;padding:4px;gap:1px;position:relative;z-index:2;}
+.grid{display:grid;padding:3px;gap:0px;position:relative;z-index:2;background:rgba(0,0,0,0.4);justify-content:center;}
 .cell{
   aspect-ratio:1;
   display:flex;align-items:center;justify-content:center;
   font-family:var(--font-mono);font-weight:700;
-  border-radius:1px;cursor:pointer;
+  border-radius:0px;cursor:pointer;
   transition:background 0.08s,transform 0.06s,box-shadow 0.1s;
   position:relative;font-variant-numeric:tabular-nums;
 }
 .cell.unrevealed{
-  background:linear-gradient(145deg,rgba(24,24,38,0.9),rgba(18,18,28,0.9));
-  border:1px solid var(--cell-border);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,0.03),inset 0 -1px 0 rgba(0,0,0,0.2);
+  background:linear-gradient(145deg,#222018,#181610);
+  border-top:2px solid rgba(200,168,72,0.08);
+  border-left:2px solid rgba(200,168,72,0.06);
+  border-bottom:2px solid rgba(0,0,0,0.4);
+  border-right:2px solid rgba(0,0,0,0.35);
+  box-shadow:inset 0 1px 0 rgba(200,168,72,0.04);
 }
 .cell.unrevealed:hover{
-  background:linear-gradient(145deg,rgba(34,34,50,0.9),rgba(24,24,38,0.9));
-  border-color:rgba(212,232,0,0.1);
-  box-shadow:0 0 8px var(--glow-accent),inset 0 1px 0 rgba(255,255,255,0.04);
-  transform:scale(1.04);
+  background:linear-gradient(145deg,#2A2820,#201E18);
+  border-top-color:rgba(200,168,72,0.14);
+  border-left-color:rgba(200,168,72,0.12);
+  box-shadow:0 0 10px var(--glow-accent),inset 0 1px 0 rgba(200,168,72,0.06);
+  transform:scale(1.03);
 }
 .cell.revealed{
   background:var(--surface-revealed);
-  border:1px solid rgba(255,255,255,0.015);
+  border:1px solid rgba(0,0,0,0.3);
+  box-shadow:inset 1px 1px 2px rgba(0,0,0,0.4);
 }
 .cell.just-revealed{animation:cell-flash 0.35s ease-out;}
 @keyframes cell-flash{
-  0%{background:rgba(212,232,0,0.15);box-shadow:0 0 12px var(--glow-accent);}
-  100%{background:var(--surface-revealed);box-shadow:none;}
+  0%{background:rgba(200,168,72,0.12);box-shadow:inset 1px 1px 2px rgba(0,0,0,0.4),0 0 12px var(--glow-accent);}
+  100%{background:var(--surface-revealed);box-shadow:inset 1px 1px 2px rgba(0,0,0,0.4);}
+}
+.cell.chord-reveal{animation:chord-ripple 0.4s ease-out;}
+@keyframes chord-ripple{
+  0%{background:rgba(43,168,74,0.25);box-shadow:0 0 14px rgba(43,168,74,0.4);transform:scale(1.08);}
+  50%{background:rgba(43,168,74,0.1);transform:scale(1.02);}
+  100%{background:var(--surface-revealed);transform:scale(1);}
+}
+.cell.chord-fail{animation:chord-fail-flash 0.5s ease-out;}
+@keyframes chord-fail-flash{
+  0%,20%,40%{background:rgba(184,32,32,0.3);box-shadow:0 0 10px rgba(184,32,32,0.5);}
+  10%,30%{background:rgba(184,32,32,0.05);}
+  100%{background:var(--surface-revealed);}
+}
+.chord-disabled-overlay{
+  position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:50;
+  animation:chord-disabled-pulse 0.6s ease-out;
+}
+@keyframes chord-disabled-pulse{
+  0%{background:rgba(184,32,32,0.15);}
+  100%{background:transparent;}
 }
 .cell.flagged{
-  background:linear-gradient(145deg,rgba(24,24,38,0.9),rgba(18,18,28,0.9));
-  border:1px solid rgba(232,36,60,0.15);
+  background:linear-gradient(145deg,#222018,#181610);
+  border-top:2px solid rgba(184,32,32,0.12);
+  border-left:2px solid rgba(184,32,32,0.08);
+  border-bottom:2px solid rgba(0,0,0,0.4);
+  border-right:2px solid rgba(0,0,0,0.35);
 }
 .cell.mine-hit{
-  background:rgba(232,36,60,0.2);
-  border:1px solid rgba(232,36,60,0.3);
+  background:rgba(184,32,32,0.2);
+  border:2px solid rgba(184,32,32,0.35);
   box-shadow:0 0 16px var(--glow-danger);
 }
 .cell.mine-reveal{
-  background:rgba(232,36,60,0.08);
-  border:1px solid rgba(232,36,60,0.1);
+  background:rgba(184,32,32,0.08);
+  border:1px solid rgba(184,32,32,0.12);
+  box-shadow:inset 1px 1px 2px rgba(0,0,0,0.3);
 }
 
 /* Cell SVG icons */
@@ -340,19 +298,33 @@ body::after{
 
 /* ======== CONTROLS ======== */
 .controls{
-  display:flex;justify-content:center;gap:6px;
-  padding:10px 14px;background:rgba(0,0,0,0.3);
-  border-top:1px solid var(--cell-border);
+  display:flex;justify-content:center;gap:4px;
+  padding:6px 10px;background:#121010;
+  border-top:1px solid rgba(200,168,72,0.03);
 }
 .btn{
-  font-family:var(--font-mono);font-size:10px;font-weight:500;
-  padding:6px 14px;border:none;border-radius:2px;
+  font-family:var(--font-mono);font-size:9px;font-weight:700;
+  padding:5px 12px;border-radius:0;
   cursor:pointer;transition:all 0.12s;letter-spacing:1.5px;text-transform:uppercase;
 }
-.btn-primary{background:var(--accent);color:var(--bg);box-shadow:0 0 12px var(--glow-accent);}
-.btn-primary:hover{background:#E0F020;box-shadow:0 0 24px rgba(212,232,0,0.3);}
-.btn-secondary{background:rgba(255,255,255,0.03);color:var(--text-muted);border:1px solid rgba(255,255,255,0.06);}
-.btn-secondary:hover{background:rgba(255,255,255,0.06);color:var(--text);}
+.btn-primary{
+  background:linear-gradient(180deg,#D4B850,var(--accent));color:var(--bg);
+  border-top:2px solid #E0C860;border-left:2px solid #D8C058;
+  border-bottom:2px solid #806020;border-right:2px solid #907030;
+  box-shadow:0 0 10px var(--glow-accent);
+}
+.btn-primary:hover{background:linear-gradient(180deg,#E0C860,#D4B850);box-shadow:0 0 20px rgba(200,168,72,0.3);}
+.btn-primary:active{
+  border-top:2px solid #806020;border-left:2px solid #907030;
+  border-bottom:2px solid #E0C860;border-right:2px solid #D8C058;
+  background:linear-gradient(180deg,var(--accent),#B89838);
+}
+.btn-secondary{
+  background:linear-gradient(180deg,#1E1C18,#141210);color:var(--text-muted);
+  border-top:2px solid rgba(200,168,72,0.08);border-left:2px solid rgba(200,168,72,0.06);
+  border-bottom:2px solid rgba(0,0,0,0.5);border-right:2px solid rgba(0,0,0,0.4);
+}
+.btn-secondary:hover{background:linear-gradient(180deg,#242220,#1A1816);color:var(--text);}
 
 /* ======== COMBO ======== */
 .combo{
@@ -378,125 +350,149 @@ body::after{
 }
 @keyframes fade-in{from{opacity:0;}to{opacity:1;}}
 .modal{
-  background:linear-gradient(180deg,#101018,#0A0A10);
-  border-radius:2px;padding:32px 28px;text-align:center;
-  border:1px solid rgba(255,255,255,0.04);
+  background:#121010;
+  border-radius:0;padding:28px 24px;text-align:center;
+  border-top:2px solid rgba(200,168,72,0.08);
+  border-left:2px solid rgba(200,168,72,0.06);
+  border-bottom:2px solid rgba(0,0,0,0.6);
+  border-right:2px solid rgba(0,0,0,0.5);
   min-width:300px;max-width:90vw;
-  box-shadow:0 0 80px rgba(0,0,0,0.8),inset 0 0 60px rgba(0,0,0,0.3);
+  box-shadow:0 0 80px rgba(0,0,0,0.8),inset 0 0 40px rgba(0,0,0,0.3);
   animation:modal-in 0.3s ease-out;
   position:relative;
 }
 .modal::before{
   content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 50% 20%,rgba(212,232,0,0.015),transparent 60%);
+  background:radial-gradient(ellipse at 50% 20%,rgba(200,168,72,0.012),transparent 60%);
   pointer-events:none;
 }
 @keyframes modal-in{
   from{transform:scale(0.95) translateY(8px);opacity:0;}
   to{transform:scale(1) translateY(0);opacity:1;}
 }
-.modal h2{font-family:var(--font-display);font-size:22px;font-weight:700;margin-bottom:6px;letter-spacing:2px;}
-.modal .flavor{font-size:11px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;}
-.modal .big-number{font-size:36px;font-weight:700;margin-bottom:2px;letter-spacing:2px;}
-.modal .big-label{font-size:9px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;}
+.modal h2{font-family:var(--font-mono);font-size:18px;font-weight:700;margin-bottom:6px;letter-spacing:3px;text-transform:uppercase;}
+.modal .flavor{font-size:10px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;font-family:var(--font-mono);}
+.modal .big-number{font-size:32px;font-weight:700;margin-bottom:2px;letter-spacing:3px;font-family:var(--font-mono);}
+.modal .big-label{font-size:8px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;font-family:var(--font-mono);}
 .modal .btn{margin:4px;}
 .modal.game-over h2{color:var(--danger);text-shadow:0 0 20px var(--glow-danger);}
 .modal.game-over .big-number{color:var(--danger);}
 .modal.level-complete h2{color:var(--accent);text-shadow:0 0 20px var(--glow-accent);}
 .modal.level-complete .big-number{color:var(--accent);}
+/* Game-over stat rows */
+.go-body{padding:14px 0;margin:0 0 12px;}
+.go-stat{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:5px 0;font-family:var(--font-mono);font-size:11px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  border-bottom:1px solid rgba(200,168,72,0.06);
+}
+.go-stat:last-child{border-bottom:none;}
+.go-k{color:var(--text-muted);}
+.go-v{color:var(--text);font-weight:700;}
+.go-dead{color:var(--danger);text-shadow:0 0 8px var(--glow-danger);}
+.go-actions{padding:0;text-align:center;}
 
 /* ======== POWER-UP CHOOSER ======== */
-.artifact-text{font-size:11px;color:var(--text-dim);letter-spacing:1px;margin-bottom:14px;}
+.artifact-text{font-size:10px;color:var(--text-dim);letter-spacing:2px;margin-bottom:12px;font-family:var(--font-mono);text-transform:uppercase;}
 .powerup-chooser{display:flex;gap:10px;margin:12px 0;justify-content:center;flex-wrap:wrap;}
 .powerup-option{
-  background:linear-gradient(180deg,rgba(20,20,32,0.9),rgba(12,12,20,0.9));
-  border:1px solid rgba(255,255,255,0.04);
-  border-radius:2px;padding:16px 14px;cursor:pointer;
-  transition:all 0.2s;width:120px;text-align:center;
-  box-shadow:inset 0 0 30px rgba(0,0,0,0.2);
+  background:#141210;
+  border-top:2px solid rgba(200,168,72,0.06);
+  border-left:2px solid rgba(200,168,72,0.04);
+  border-bottom:2px solid rgba(0,0,0,0.5);
+  border-right:2px solid rgba(0,0,0,0.4);
+  border-radius:0;padding:14px 12px;cursor:pointer;
+  transition:all 0.2s;width:110px;text-align:center;
   position:relative;
 }
 .powerup-option:hover{
-  border-color:var(--accent);
-  box-shadow:0 0 20px var(--glow-accent),inset 0 0 30px rgba(212,232,0,0.02);
-  transform:translateY(-3px);
+  border-top-color:rgba(200,168,72,0.15);
+  border-left-color:rgba(200,168,72,0.12);
+  box-shadow:0 0 16px var(--glow-accent);
+  transform:translateY(-2px);
 }
 .powerup-option .p-glyph{font-size:24px;margin-bottom:8px;display:block;}
 .powerup-option .p-glyph.scan-g{color:var(--num-1);text-shadow:0 0 8px rgba(72,136,204,0.3);}
-.powerup-option .p-glyph.time-g{color:var(--accent);text-shadow:0 0 8px var(--glow-accent);}
+.powerup-option .p-glyph.time-g{color:var(--accent);text-shadow:0 0 8px rgba(200,168,72,0.3);}
 .powerup-option .p-glyph.shield-g{color:var(--num-2);text-shadow:0 0 8px rgba(43,168,74,0.3);}
 .powerup-option .p-glyph.compass-g{color:var(--num-4);text-shadow:0 0 8px rgba(124,77,255,0.3);}
 .powerup-option .p-glyph.oracle-g{color:var(--num-6);text-shadow:0 0 8px rgba(0,229,255,0.3);}
 .powerup-option .p-glyph.rewind-g{color:#B48CFF;text-shadow:0 0 8px rgba(180,140,255,0.3);}
 .powerup-option .p-glyph.lantern-g{color:#C8A878;text-shadow:0 0 8px rgba(200,168,120,0.3);}
-.shop-header{font-size:11px;color:var(--text-dim);letter-spacing:2px;margin-bottom:4px;}
-.shop-shards{font-family:var(--font-mono);font-size:16px;color:var(--accent);margin-bottom:12px;}
+.shop-header{font-size:10px;color:var(--text-dim);letter-spacing:3px;margin-bottom:4px;font-family:var(--font-mono);text-transform:uppercase;}
+.shop-shards{font-family:var(--font-mono);font-size:14px;color:var(--accent);margin-bottom:10px;}
 .shop-grid{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:8px 0;}
-.shop-item{display:flex;flex-direction:column;align-items:center;padding:8px 10px;border:1px solid rgba(255,255,255,0.06);border-radius:4px;cursor:pointer;transition:all 0.15s;width:70px;background:rgba(255,255,255,0.02);}
-.shop-item:hover{border-color:rgba(232,255,0,0.2);background:rgba(232,255,0,0.04);}
+.shop-item{
+  display:flex;flex-direction:column;align-items:center;padding:6px 6px;
+  border-top:1px solid rgba(200,168,72,0.06);border-left:1px solid rgba(200,168,72,0.04);
+  border-bottom:1px solid rgba(0,0,0,0.4);border-right:1px solid rgba(0,0,0,0.3);
+  border-radius:0;cursor:pointer;transition:all 0.15s;width:auto;min-width:72px;background:#141210;
+}
+.shop-item:hover{border-color:rgba(200,168,72,0.2);background:rgba(200,168,72,0.04);}
 .shop-item.cant-afford{opacity:0.3;cursor:default;}
 .shop-item.bought{opacity:0.15;cursor:default;text-decoration:line-through;}
 .shop-item .s-glyph{font-size:18px;margin-bottom:4px;}
-.shop-item .s-name{font-size:8px;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;text-align:center;}
+.shop-item .s-name{font-size:8px;letter-spacing:0.5px;text-transform:none;margin-bottom:2px;text-align:center;font-family:var(--font-mono);white-space:nowrap;}
 .shop-item .s-price{font-family:var(--font-mono);font-size:10px;color:var(--accent);}
-.shop-item.cursed{border-color:rgba(232,36,60,0.2);}
-.shop-item.cursed:hover{border-color:rgba(232,36,60,0.4);background:rgba(232,36,60,0.06);}
+.shop-item.cursed{border-color:rgba(184,32,32,0.2);}
+.shop-item.cursed:hover{border-color:rgba(184,32,32,0.4);background:rgba(184,32,32,0.06);}
 .shop-item.cursed .s-name{color:var(--danger);}
 .shop-item.cursed .s-price{color:var(--danger);}
 .shop-descend{margin-top:14px;}
-.powerup-option.cursed{border-color:rgba(232,36,60,0.3);background:rgba(232,36,60,0.04);}
-.powerup-option.cursed:hover{border-color:rgba(232,36,60,0.5);background:rgba(232,36,60,0.08);}
+.powerup-option.cursed{border-color:rgba(184,32,32,0.3);background:rgba(184,32,32,0.04);}
+.powerup-option.cursed:hover{border-color:rgba(184,32,32,0.5);background:rgba(184,32,32,0.08);}
 .powerup-option.cursed .p-name{color:var(--danger);}
-.powerup-option .p-glyph.cursed-g{color:var(--danger);text-shadow:0 0 8px rgba(232,36,60,0.4);}
-.powerup-option .p-name{font-family:var(--font-display);font-size:12px;font-weight:600;margin-bottom:4px;letter-spacing:1px;}
-.powerup-option .p-desc{font-size:9px;color:var(--text-dim);line-height:1.4;letter-spacing:0.5px;}
+.powerup-option .p-glyph.cursed-g{color:var(--danger);text-shadow:0 0 8px rgba(184,32,32,0.4);}
+.powerup-option .p-name{font-family:var(--font-mono);font-size:10px;font-weight:700;margin-bottom:4px;letter-spacing:1.5px;text-transform:uppercase;}
+.powerup-option .p-desc{font-size:8px;color:var(--text-dim);line-height:1.4;letter-spacing:0.5px;font-family:var(--font-mono);}
 
 /* ======== START SCREEN ======== */
-.start-screen{text-align:center;padding:40px 24px;}
-.start-screen .flavor{font-size:11px;color:var(--text-dim);margin-bottom:24px;max-width:280px;line-height:1.6;letter-spacing:1px;}
-.start-screen .btn{font-size:12px;padding:10px 28px;letter-spacing:3px;}
-.hard-mode-toggle{display:flex;align-items:center;justify-content:center;gap:10px;margin:0 auto 20px;padding:10px 16px;max-width:260px;border:1px solid rgba(255,255,255,0.06);border-radius:2px;background:rgba(0,0,0,0.25);cursor:pointer;transition:all 0.15s;}
-.hard-mode-toggle:hover:not(.locked){border-color:rgba(232,36,60,0.3);background:rgba(232,36,60,0.04);}
+.start-screen{text-align:center;padding:32px 20px;}
+.start-screen .flavor{font-size:10px;color:var(--text-dim);margin-bottom:20px;max-width:280px;line-height:1.6;letter-spacing:1px;font-family:var(--font-mono);}
+.start-screen .btn{font-size:10px;padding:8px 24px;letter-spacing:3px;}
+.hard-mode-toggle{display:flex;align-items:center;justify-content:center;gap:10px;margin:0 auto 18px;padding:8px 14px;max-width:260px;border-top:1px solid rgba(200,168,72,0.04);border-left:1px solid rgba(200,168,72,0.03);border-bottom:1px solid rgba(0,0,0,0.4);border-right:1px solid rgba(0,0,0,0.3);border-radius:0;background:#0E0C0A;cursor:pointer;transition:all 0.15s;}
+.hard-mode-toggle:hover:not(.locked){border-color:rgba(184,32,32,0.3);background:rgba(184,32,32,0.04);}
 .hard-mode-toggle.locked{opacity:0.4;cursor:not-allowed;}
-.hard-mode-toggle.active{border-color:rgba(232,36,60,0.5);background:rgba(232,36,60,0.08);box-shadow:0 0 20px rgba(232,36,60,0.1);}
+.hard-mode-toggle.active{border-color:rgba(184,32,32,0.5);background:rgba(184,32,32,0.08);box-shadow:0 0 20px rgba(184,32,32,0.1);}
 .hard-mode-toggle .checkbox{width:12px;height:12px;border:1px solid var(--text-muted);border-radius:1px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .hard-mode-toggle.active .checkbox{border-color:var(--danger);background:var(--danger);box-shadow:0 0 8px var(--glow-danger);}
 .hard-mode-toggle.active .checkbox::after{content:'\2713';font-size:10px;color:var(--bg);font-weight:900;line-height:1;}
-.hard-mode-toggle .hm-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text);font-weight:500;}
+.hard-mode-toggle .hm-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text);font-weight:700;font-family:var(--font-mono);}
 .hard-mode-toggle.active .hm-label{color:var(--danger);text-shadow:0 0 8px var(--glow-danger);}
 .hard-mode-toggle.locked .hm-label{color:var(--text-dim);}
-.hard-mode-toggle .hm-sub{font-size:8px;letter-spacing:1.5px;color:var(--text-dim);display:block;margin-top:2px;}
+.hard-mode-toggle .hm-sub{font-size:7px;letter-spacing:1.5px;color:var(--text-dim);display:block;margin-top:2px;font-family:var(--font-mono);}
 
 /* ======== CLASS PICKER ======== */
 .class-picker{display:flex;gap:8px;margin:0 auto 18px;max-width:320px;justify-content:center;flex-wrap:wrap;}
-.class-tile{flex:1;min-width:140px;max-width:160px;padding:12px 10px;border:1px solid rgba(255,255,255,0.06);border-radius:2px;background:rgba(0,0,0,0.25);cursor:pointer;transition:all 0.15s;text-align:center;}
-.class-tile:hover:not(.locked){border-color:rgba(212,232,0,0.3);background:rgba(212,232,0,0.04);transform:translateY(-2px);}
-.class-tile.active{border-color:var(--accent);background:rgba(212,232,0,0.08);box-shadow:0 0 20px rgba(212,232,0,0.15);}
+.class-tile{flex:1;min-width:140px;max-width:160px;padding:10px 8px;border-top:1px solid rgba(200,168,72,0.04);border-left:1px solid rgba(200,168,72,0.03);border-bottom:1px solid rgba(0,0,0,0.4);border-right:1px solid rgba(0,0,0,0.3);border-radius:0;background:#0E0C0A;cursor:pointer;transition:all 0.15s;text-align:center;}
+.class-tile:hover:not(.locked){border-color:rgba(200,168,72,0.3);background:rgba(200,168,72,0.04);transform:translateY(-2px);}
+.class-tile.active{border-color:var(--accent);background:rgba(200,168,72,0.08);box-shadow:0 0 20px rgba(200,168,72,0.15);}
 .class-tile.locked{opacity:0.4;cursor:not-allowed;}
 .class-tile .ct-icon{font-size:22px;color:var(--accent);margin-bottom:4px;text-shadow:0 0 8px var(--glow-accent);display:block;}
 .class-tile.active .ct-icon{text-shadow:0 0 12px var(--glow-accent);}
 .class-tile.locked .ct-icon{color:var(--text-dim);text-shadow:none;}
-.class-tile .ct-name{font-family:var(--font-display);font-size:12px;font-weight:600;letter-spacing:1.5px;color:var(--text);margin-bottom:4px;text-transform:uppercase;}
+.class-tile .ct-name{font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:2px;color:var(--text);margin-bottom:4px;text-transform:uppercase;}
 .class-tile.active .ct-name{color:var(--accent);}
 .class-tile.locked .ct-name{color:var(--text-dim);}
-.class-tile .ct-desc{font-size:8px;letter-spacing:0.5px;color:var(--text-dim);line-height:1.4;}
-.class-tile .ct-unlock{font-size:8px;letter-spacing:1px;color:var(--text-dim);text-transform:uppercase;margin-top:4px;font-style:italic;}
-.class-picker-label{font-size:9px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.class-tile .ct-desc{font-size:7px;letter-spacing:0.5px;color:var(--text-dim);line-height:1.4;font-family:var(--font-mono);}
+.class-tile .ct-unlock{font-size:7px;letter-spacing:1px;color:var(--text-dim);text-transform:uppercase;margin-top:4px;font-family:var(--font-mono);}
+.class-picker-label{font-size:8px;color:var(--text-dim);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;font-family:var(--font-mono);}
 
 /* ======== CLASS BADGE (in-game) ======== */
-.class-badge{display:inline-flex;align-items:center;gap:4px;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:2px;background:rgba(212,232,0,0.06);color:var(--accent);border:1px solid rgba(212,232,0,0.2);font-weight:500;}
+.class-badge{display:inline-flex;align-items:center;gap:4px;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:2px;background:rgba(200,168,72,0.06);color:var(--accent);border:1px solid rgba(200,168,72,0.2);font-weight:500;}
 .class-badge .cb-icon{font-size:10px;}
 
 /* ======== MODIFIER BADGES ======== */
 .modifier-bar{display:flex;gap:6px;padding:4px 14px 6px;background:rgba(0,0,0,0.15);justify-content:center;min-height:20px;align-items:center;flex-wrap:wrap;}
-.modifier-badge{display:inline-flex;align-items:center;gap:4px;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:2px;background:rgba(232,36,60,0.08);color:var(--danger);border:1px solid rgba(232,36,60,0.2);font-weight:500;}
+.modifier-badge{display:inline-flex;align-items:center;gap:4px;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:2px;background:rgba(184,32,32,0.08);color:var(--danger);border:1px solid rgba(184,32,32,0.2);font-weight:500;}
 .modifier-badge .mg{font-size:10px;}
 .modifier-preview{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:10px 0 14px;}
-.modifier-preview .mp-item{display:flex;flex-direction:column;align-items:center;padding:8px 12px;border:1px solid rgba(232,36,60,0.25);border-radius:2px;background:rgba(232,36,60,0.05);max-width:130px;}
+.modifier-preview .mp-item{display:flex;flex-direction:column;align-items:center;padding:8px 12px;border:1px solid rgba(184,32,32,0.25);border-radius:2px;background:rgba(184,32,32,0.05);max-width:130px;}
 .modifier-preview .mp-icon{font-size:16px;color:var(--danger);margin-bottom:4px;text-shadow:0 0 6px var(--glow-danger);}
-.modifier-preview .mp-name{font-family:var(--font-display);font-size:11px;font-weight:600;color:var(--danger);letter-spacing:1px;margin-bottom:2px;}
-.modifier-preview .mp-desc{font-size:8px;color:var(--text-dim);line-height:1.3;letter-spacing:0.5px;text-align:center;}
-.modifier-preview-label{font-size:9px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;margin-top:10px;}
+.modifier-preview .mp-name{font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--danger);letter-spacing:1.5px;margin-bottom:2px;text-transform:uppercase;}
+.modifier-preview .mp-desc{font-size:7px;color:var(--text-dim);line-height:1.3;letter-spacing:0.5px;text-align:center;font-family:var(--font-mono);}
+.modifier-preview-label{font-size:8px;color:var(--text-dim);letter-spacing:3px;text-transform:uppercase;margin-top:10px;font-family:var(--font-mono);}
 
 /* ======== MODIFIER EFFECTS ======== */
 .cell.fogged{background:rgba(0,0,0,0.85)!important;border-color:rgba(255,255,255,0.02)!important;cursor:not-allowed;box-shadow:none!important;}
@@ -509,8 +505,8 @@ body::after{
 }
 .surge-flash{animation:surge-flash 0.8s ease-out;}
 @keyframes surge-flash{
-  0%{box-shadow:0 0 0 rgba(232,36,60,0);}
-  30%{box-shadow:0 0 140px rgba(232,36,60,0.4),inset 0 0 80px rgba(232,36,60,0.1);}
+  0%{box-shadow:0 0 0 rgba(184,32,32,0);}
+  30%{box-shadow:0 0 140px rgba(184,32,32,0.4),inset 0 0 80px rgba(184,32,32,0.1);}
   100%{box-shadow:0 0 60px rgba(0,0,0,0.8),inset 0 0 80px rgba(0,0,0,0.3);}
 }
 
@@ -518,15 +514,15 @@ body::after{
 .codex-screen{padding:28px 22px 22px;max-width:520px;margin:0 auto;max-height:82vh;overflow-y:auto;}
 .codex-screen::-webkit-scrollbar{width:6px;}
 .codex-screen::-webkit-scrollbar-track{background:rgba(0,0,0,0.25);}
-.codex-screen::-webkit-scrollbar-thumb{background:rgba(212,232,0,0.15);border-radius:2px;}
-.codex-screen::-webkit-scrollbar-thumb:hover{background:rgba(212,232,0,0.3);}
+.codex-screen::-webkit-scrollbar-thumb{background:rgba(200,168,72,0.15);border-radius:2px;}
+.codex-screen::-webkit-scrollbar-thumb:hover{background:rgba(200,168,72,0.3);}
 .codex-header{text-align:center;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,0.06);}
-.codex-header h2{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:6px;margin:0 0 6px;color:var(--text);text-transform:uppercase;}
-.codex-header .codex-flavor{font-size:10px;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;}
+.codex-header h2{font-family:var(--font-mono);font-size:18px;font-weight:700;letter-spacing:8px;margin:0 0 6px;color:var(--text);text-transform:uppercase;}
+.codex-header .codex-flavor{font-size:9px;color:var(--text-dim);letter-spacing:3px;text-transform:uppercase;font-family:var(--font-mono);}
 .cdx-section{margin-bottom:20px;}
-.cdx-h{font-family:var(--font-display);font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;padding-bottom:4px;border-bottom:1px solid rgba(212,232,0,0.15);text-shadow:0 0 8px var(--glow-accent);}
-.cdx-h.danger{color:var(--danger);border-bottom-color:rgba(232,36,60,0.15);text-shadow:0 0 8px var(--glow-danger);}
-.cdx-body{font-size:11px;color:var(--text);line-height:1.6;letter-spacing:0.3px;}
+.cdx-h{font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;padding-bottom:4px;border-bottom:1px solid rgba(200,168,72,0.15);text-shadow:0 0 8px var(--glow-accent);}
+.cdx-h.danger{color:var(--danger);border-bottom-color:rgba(184,32,32,0.15);text-shadow:0 0 8px var(--glow-danger);}
+.cdx-body{font-size:10px;color:var(--text);line-height:1.6;letter-spacing:0.3px;font-family:var(--font-mono);}
 .cdx-sub{font-size:9px;color:var(--text-dim);line-height:1.5;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;}
 .cdx-kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:10px;line-height:1.5;}
 .cdx-kv span:nth-child(odd){color:var(--accent);font-family:var(--font-mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;}
@@ -540,13 +536,13 @@ body::after{
 .cdx-list li::marker{color:var(--accent);}
 .cdx-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .cdx-relic{padding:10px 12px;border:1px solid rgba(255,255,255,0.06);border-radius:2px;background:rgba(0,0,0,0.25);transition:all 0.15s;}
-.cdx-relic:hover{border-color:rgba(212,232,0,0.3);background:rgba(212,232,0,0.03);}
-.cdx-relic.cursed{border-color:rgba(232,36,60,0.15);}
-.cdx-relic.cursed:hover{border-color:rgba(232,36,60,0.35);background:rgba(232,36,60,0.04);}
+.cdx-relic:hover{border-color:rgba(200,168,72,0.3);background:rgba(200,168,72,0.03);}
+.cdx-relic.cursed{border-color:rgba(184,32,32,0.15);}
+.cdx-relic.cursed:hover{border-color:rgba(184,32,32,0.35);background:rgba(184,32,32,0.04);}
 .cr-head{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
 .cr-g{font-size:18px;color:var(--accent);text-shadow:0 0 6px var(--glow-accent);flex-shrink:0;width:20px;text-align:center;line-height:1;}
 .cdx-relic.cursed .cr-g{color:var(--danger);text-shadow:0 0 6px var(--glow-danger);}
-.cr-n{font-family:var(--font-display);font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text);flex:1;}
+.cr-n{font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text);flex:1;}
 .cdx-relic.cursed .cr-n{color:var(--danger);}
 .cr-p{font-family:var(--font-mono);font-size:9px;color:var(--accent);letter-spacing:0.5px;}
 .cdx-relic.cursed .cr-p{color:var(--danger);}
@@ -558,19 +554,643 @@ body::after{
 .codex-link:hover{color:var(--accent);text-shadow:0 0 8px var(--glow-accent);}
 @media (max-width:480px){.cdx-grid{grid-template-columns:1fr;}}
 
-/* ======== MUTE ======== */
-.mute-btn{
-  position:fixed;top:10px;right:10px;
-  background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.04);
-  color:var(--text-dim);font-size:14px;width:32px;height:32px;
-  border-radius:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;
-  z-index:1100;transition:all 0.15s;font-family:var(--font-mono);
+/* ======== SWEEPER.EXE MODE (haunted shareware start screen) ======== */
+/* Found footage CRT room — this is the only mode */
+body.exe-mode{background:#000!important;padding:22px 18px;overflow-y:auto;justify-content:center;align-items:center;min-height:100vh;}
+body.exe-mode::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 50%,rgba(30,70,70,0.08),transparent 65%);
 }
-.mute-btn:hover{background:rgba(255,255,255,0.06);color:var(--text);}
+body.exe-mode::after{
+  content:'';position:fixed;inset:0;z-index:999;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode:overlay;opacity:0.6;
+  animation:exe-grain 0.4s steps(2) infinite;
+}
+@keyframes exe-grain{0%{transform:translate(0,0);}50%{transform:translate(-1px,1px);}100%{transform:translate(0,0);}}
+/* BEZEL — game-container becomes the dark plastic monitor case */
+body.exe-mode .game-container{
+  background:linear-gradient(180deg,#131313 0%,#0A0A0A 70%,#050505 100%);
+  border:none;padding:30px 30px 54px;width:min(720px,98vw);
+  border-radius:12px;overflow:visible;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.04),
+    inset 0 -3px 6px rgba(0,0,0,0.8),
+    0 0 0 2px #000,
+    0 24px 80px rgba(0,0,0,0.9);
+  animation:none;position:relative;z-index:1;
+}
+@media (max-width:560px){body.exe-mode .game-container{padding:20px 18px 46px;border-radius:10px;}}
+/* BEZEL brand stamp (bottom-center) — the monitor model */
+body.exe-mode .game-container::before{
+  content:'BLITZ NECROTRON \00B7 MK-VII \00B7 17\2033  \00B7  1997';display:block;
+  position:absolute;inset:auto auto 16px 50%;transform:translateX(-50%);
+  width:auto;height:auto;
+  font-family:'Tahoma','Geneva','MS Sans Serif',sans-serif;
+  font-size:8px;font-weight:700;letter-spacing:4px;
+  color:#2A2A2A;text-transform:uppercase;white-space:nowrap;
+  pointer-events:none;z-index:2;background:none;
+}
+/* BEZEL power LED (bottom-right) */
+body.exe-mode .game-container::after{
+  content:'';display:block;
+  position:absolute;bottom:20px;right:26px;
+  width:6px;height:6px;border-radius:50%;
+  background:#4A2020;box-shadow:0 0 4px rgba(180,40,40,0.6);
+  animation:exe-led 2.4s ease-in-out infinite;
+  pointer-events:none;z-index:2;inset:auto 26px 20px auto;
+}
+@keyframes exe-led{0%,100%{opacity:0.3;}50%{opacity:0.9;box-shadow:0 0 8px rgba(180,40,40,0.85);}}
+body.exe-mode .game-container.danger{animation:none;}
+/* SCREEN — exe-wrap becomes the teal CRT glass */
+body.exe-mode .exe-wrap{
+  background:#0C4846;padding:18px 18px 46px;min-height:600px;
+  border-radius:16px/10px;overflow:hidden;
+  box-shadow:
+    inset 0 0 0 2px #000,
+    inset 0 0 36px rgba(0,0,0,0.6),
+    inset 0 0 120px rgba(0,0,0,0.35),
+    0 0 0 3px #1A1A1A;
+}
+@media (max-width:560px){body.exe-mode .exe-wrap{padding:12px 12px 40px;min-height:auto;}}
+body.exe-mode .exe-wrap::before{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:100;
+  background:repeating-linear-gradient(0deg,transparent 0 2px,rgba(0,0,0,0.22) 2px 3px);
+}
+body.exe-mode .exe-wrap::after{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:101;border-radius:16px/10px;
+  background:
+    radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(0,0,0,0.55) 100%),
+    linear-gradient(180deg,rgba(255,255,255,0.025) 0%,transparent 25%);
+}
+/* CRT tracking line sweeping across the screen */
+body.exe-mode .exe-wrap .exe-track{
+  position:absolute;left:0;right:0;height:2px;z-index:102;pointer-events:none;
+  background:rgba(255,255,255,0.08);box-shadow:0 0 12px rgba(255,255,255,0.1);
+  animation:exe-track 7s linear infinite;
+}
+@keyframes exe-track{0%{top:-4%;}100%{top:104%;}}
+/* Chromatic aberration along screen edges */
+body.exe-mode .exe-wrap .exe-chroma{
+  position:absolute;inset:0;pointer-events:none;z-index:103;
+  mix-blend-mode:screen;opacity:0.25;
+  background:linear-gradient(90deg,rgba(255,0,0,0.04) 0%,transparent 20%,transparent 80%,rgba(0,180,255,0.04) 100%);
+}
+/* Occasional glitch bar */
+body.exe-mode .exe-wrap .exe-glitchbar{
+  position:absolute;left:0;width:100%;height:14px;z-index:104;pointer-events:none;
+  background:rgba(255,255,255,0.06);mix-blend-mode:difference;
+  animation:exe-glitchbar 11s steps(1) infinite;
+}
+@keyframes exe-glitchbar{
+  0%,98%,100%{top:-20px;opacity:0;}
+  98.3%{top:30%;opacity:1;}
+  98.6%{top:-20px;opacity:0;}
+  99%{top:65%;opacity:1;}
+  99.3%{top:-20px;opacity:0;}
+}
+/* Desktop icons behind the Win98 window — draggable */
+body.exe-mode .exe-wrap .exe-desk-icon{
+  position:absolute;width:64px;text-align:center;z-index:1;
+  font-family:'Tahoma','Geneva','MS Sans Serif',sans-serif;font-size:10px;
+  color:#EFEFEF;text-shadow:1px 1px 0 #000;cursor:grab;line-height:1.2;
+  padding:4px;user-select:none;-webkit-user-select:none;touch-action:none;
+  word-break:break-word;
+}
+body.exe-mode .exe-wrap .exe-desk-icon:active{cursor:grabbing;background:rgba(8,16,106,0.6);}
+body.exe-mode .exe-wrap .exe-desk-icon:hover{background:rgba(8,16,106,0.35);outline:1px dotted rgba(255,255,255,0.5);}
+body.exe-mode .exe-wrap .exe-desk-icon .exe-ic-d{
+  width:32px;height:32px;margin:0 auto 4px;
+  background:#808080;border:1px solid #000;
+  box-shadow:inset 1px 1px 0 #D4D4D4,inset -1px -1px 0 #404040;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;color:#000;line-height:1;
+}
+body.exe-mode .exe-wrap .exe-desk-icon.exe-di1{top:12px;left:14px;}
+body.exe-mode .exe-wrap .exe-desk-icon.exe-di2{top:108px;left:8px;}
+body.exe-mode .exe-wrap .exe-desk-icon.exe-di3{top:24px;right:18px;}
+body.exe-mode .exe-wrap .exe-desk-icon.exe-di4{top:140px;right:10px;}
+body.exe-mode .exe-wrap .exe-desk-icon.exe-di5{top:200px;left:22px;}
+@media (max-width:640px){
+  body.exe-mode .exe-wrap .exe-desk-icon:not(#exe-desk-sweeper){display:none;}
+  body.exe-mode.exe-closed .exe-wrap #exe-desk-sweeper{top:50%;left:50%;right:auto;transform:translate(-50%,-50%);}
+}
+/* Win98 windows sit inside the desktop — draggable via titlebar, stackable */
+body.exe-mode .exe-wrap .exe-win{
+  width:min(580px,calc(100% - 12px));
+  max-height:calc(100% - 52px);overflow-y:auto;
+  position:absolute;z-index:2;transition:none;
+}
+body.exe-mode .exe-wrap .exe-win[data-win-id="sweeper"]{top:10px;left:48%;transform:translateX(-50%);}
+body.exe-mode .exe-wrap .exe-win[data-win-id="lore"]{top:36px;left:28px;}
+body.exe-mode .exe-wrap .exe-win[data-win-id="mycomp"]{top:22px;left:14px;}
+body.exe-mode .exe-wrap .exe-win[data-win-id="recycle"]{top:44px;left:46px;}
+body.exe-mode .exe-wrap .exe-win[data-win-id^="note-"]{top:56px;left:38px;}
+body.exe-mode .exe-wrap .exe-win[data-win-id="sysalert"]{top:72px;right:14px;left:auto;}
+body.exe-mode .exe-wrap .exe-win .exe-titlebar{cursor:move;touch-action:none;}
+body.exe-mode .exe-wrap .exe-win .exe-titlebar .exe-tbtn{cursor:pointer;}
+/* Inactive window titlebars dim slightly for focus feedback */
+body.exe-mode .exe-wrap .exe-win.exe-inactive .exe-titlebar{background:linear-gradient(90deg,#5A5A7E 0%,#8A8AA8 100%)!important;}
+/* Closed state — no windows, just desktop + icons visible */
+body.exe-mode.exe-closed .exe-wrap{min-height:600px;padding-bottom:46px;}
+/* LORE.HLP window uses a different titlebar color to differentiate from SWEEPER.EXE */
+body.exe-mode .exe-titlebar-help{background:linear-gradient(90deg,#2A1A6A 0%,#5030A0 100%)!important;}
+/* Boot sequence overlay — fake BIOS POST + Win98 splash, lives INSIDE the CRT screen */
+body.exe-mode .exe-wrap .exe-boot{
+  position:absolute;inset:0;z-index:50;background:#000;
+  font-family:'Consolas','Courier New',monospace;color:#C8C8C8;
+  font-size:12px;line-height:1.55;padding:14px 16px;
+  overflow:hidden;
+}
+body.exe-mode .exe-wrap .exe-boot.gone{opacity:0;transition:opacity 0.35s ease-out;pointer-events:none;}
+.exe-boot-line{white-space:pre;opacity:0;animation:exe-boot-in 0.02s linear forwards;}
+@keyframes exe-boot-in{to{opacity:1;}}
+.exe-boot-ok{color:#5DD35D;}
+.exe-boot-warn{color:#D4A800;}
+.exe-boot-err{color:#D44848;}
+.exe-boot-brand{color:#D4C8A0;font-weight:700;}
+.exe-boot-splash{
+  position:absolute;inset:0;display:none;align-items:center;justify-content:center;
+  background:#0C4846;flex-direction:column;gap:10px;z-index:3;
+}
+.exe-boot-splash.show{display:flex;animation:exe-splash-in 0.2s ease-out;}
+@keyframes exe-splash-in{from{opacity:0;}to{opacity:1;}}
+.exe-boot-splash-logo{
+  font-family:'Tahoma','Geneva',sans-serif;font-size:30px;font-weight:700;
+  letter-spacing:8px;color:#EFEFEF;text-shadow:2px 2px 0 #000,0 0 28px rgba(255,255,255,0.3);
+}
+.exe-boot-splash-sub{
+  font-family:'Tahoma','Geneva',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:3px;color:#B8C8C4;text-transform:uppercase;
+}
+.exe-boot-splash-bar{
+  margin-top:14px;width:200px;height:12px;background:#000;border:1px solid #000;
+  box-shadow:inset 1px 1px 0 #404040,inset -1px -1px 0 #EFEFEF;padding:2px;
+}
+.exe-boot-splash-bar-fill{
+  height:100%;background:linear-gradient(90deg,#08106A 0%,#1070B8 100%);
+  width:0;
+}
+.exe-boot-splash.show .exe-boot-splash-bar-fill{animation:exe-boot-fill 1.1s ease-out forwards;}
+@keyframes exe-boot-fill{to{width:100%;}}
+/* App loader — Win98 "Opening..." dialog shown briefly when clicking desktop icons */
+body.exe-mode .exe-wrap .exe-app-loader{
+  position:absolute;inset:0;z-index:60;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(0,0,0,0.35);
+}
+.exe-app-loader.gone{opacity:0;transition:opacity 0.18s ease-out;pointer-events:none;}
+.exe-app-loader-box{
+  background:#BCBCBC;border:1px solid #000;min-width:240px;
+  box-shadow:inset 1px 1px 0 #EFEFEF,inset -1px -1px 0 #404040,inset 2px 2px 0 #D4D4D4,inset -2px -2px 0 #6E6E6E,2px 2px 0 #000;
+  font-family:'Tahoma','Geneva','MS Sans Serif',sans-serif;
+  animation:exe-loader-in 0.12s ease-out;
+}
+@keyframes exe-loader-in{from{transform:scale(0.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+.exe-app-loader-title{
+  background:linear-gradient(90deg,#0A1163 0%,#1070B8 100%);
+  color:#EFEFEF;padding:3px 6px;font-size:11px;font-weight:700;letter-spacing:0.3px;
+}
+.exe-app-loader-body{padding:14px;font-size:11px;color:#000;}
+.exe-app-loader-text{margin-bottom:10px;}
+.exe-app-loader-bar{
+  width:100%;height:14px;background:#000;border:1px solid #000;
+  box-shadow:inset 1px 1px 0 #404040,inset -1px -1px 0 #EFEFEF;padding:2px;
+}
+.exe-app-loader-bar-fill{
+  height:100%;background:linear-gradient(90deg,#08106A 0%,#1070B8 100%);
+  width:0;animation:exe-boot-fill 0.7s linear forwards;
+}
+.exe-wrap{
+  --xf:#BCBCBC;--xfd:#9E9E9E;--xhl:#EFEFEF;--xhl2:#D4D4D4;
+  --xsh:#404040;--xsm:#6E6E6E;--xblood:#7A1414;--xbloodb:#B02020;
+  --xsel:#08106A;--xta:#0A1163;--xtb:#1070B8;
+  font-family:'Tahoma','Geneva','MS Sans Serif',sans-serif;
+  position:relative;z-index:2;text-transform:none;
+}
+.exe-win{
+  background:var(--xf);border:1px solid #000;
+  box-shadow:inset 1px 1px 0 var(--xhl2),inset -1px -1px 0 var(--xsh),inset 2px 2px 0 var(--xhl),inset -2px -2px 0 var(--xsm),2px 2px 0 #000;
+}
+.exe-titlebar{
+  background:linear-gradient(90deg,var(--xta) 0%,var(--xtb) 100%);
+  color:#EFEFEF;padding:3px 3px 3px 6px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:11px;font-weight:700;letter-spacing:0.3px;
+}
+.exe-ttext{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.exe-ttext .exe-ic{
+  width:16px;height:16px;background:#C0C0C0;border:1px solid #000;
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;color:#000;font-weight:900;
+}
+.exe-expired{color:#FF8888;font-size:10px;margin-left:4px;}
+.exe-tbtns{display:flex;gap:2px;}
+.exe-tbtn{
+  width:18px;height:16px;background:var(--xf);border:1px solid #000;
+  box-shadow:inset 1px 1px 0 var(--xhl),inset -1px -1px 0 var(--xsh);
+  font-size:10px;font-weight:700;color:#000;cursor:pointer;font-family:inherit;
+  display:flex;align-items:center;justify-content:center;padding-bottom:2px;
+}
+.exe-tbtn:active{box-shadow:inset 1px 1px 0 var(--xsh),inset -1px -1px 0 var(--xhl);}
+.exe-tabs{
+  background:var(--xf);padding:6px 6px 0;display:flex;gap:0;
+  border-bottom:1px solid #000;position:relative;
+}
+.exe-tab{
+  padding:5px 16px;background:var(--xfd);border:1px solid #000;border-bottom:none;
+  margin-right:-1px;box-shadow:inset 1px 1px 0 var(--xhl),inset -1px 0 0 var(--xsh);
+  font-size:11px;font-weight:700;color:#3A3A3A;cursor:pointer;letter-spacing:0.5px;
+  position:relative;top:1px;text-transform:uppercase;user-select:none;font-family:inherit;
+}
+.exe-tab.active{
+  background:var(--xf);color:#000;top:-1px;z-index:3;padding:6px 16px 7px;
+  box-shadow:inset 1px 1px 0 var(--xhl),inset -1px 0 0 var(--xsh);
+}
+.exe-tab.active::after{content:'';position:absolute;left:0;right:0;bottom:-2px;height:2px;background:var(--xf);}
+.exe-tab:hover:not(.active){color:var(--xta);}
+.exe-client{padding:14px;background:var(--xf);}
+.exe-pane{display:none;}
+.exe-pane.active{display:block;}
+.exe-section{
+  margin-bottom:12px;padding:14px 10px 10px;background:var(--xf);border:1px solid var(--xsm);
+  box-shadow:inset 1px 1px 0 var(--xsm),inset -1px -1px 0 var(--xhl);position:relative;
+}
+.exe-section-title{
+  position:absolute;top:-7px;left:6px;
+  background:var(--xf);padding:0 6px;font-size:10px;color:#000;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;
+}
+.exe-sw{position:relative;}
+.exe-kv{width:100%;font-family:'JetBrains Mono',monospace;font-size:11px;color:#000;border-collapse:collapse;}
+.exe-kv td{padding:2px 0;line-height:1.5;}
+.exe-kv td:first-child{color:#3A3A3A;width:90px;text-transform:uppercase;letter-spacing:1px;font-size:9px;}
+.exe-val-warn{color:var(--xblood);}
+.exe-val-glitch{animation:exe-flicker 3.4s infinite;}
+@keyframes exe-flicker{0%,92%,100%{opacity:1;}93%{opacity:0.3;}94%{opacity:1;}95%{opacity:0.6;}96%{opacity:1;}}
+.exe-listbox{
+  background:#FFF;border:1px solid #000;
+  box-shadow:inset 1px 1px 0 var(--xsh),inset -1px -1px 0 var(--xhl);
+  padding:2px;min-height:100px;font-family:'JetBrains Mono',monospace;font-size:11px;
+}
+.exe-list-item{padding:3px 6px;cursor:pointer;color:#000;display:flex;align-items:center;gap:8px;user-select:none;}
+.exe-list-item:hover{background:#D4D4D4;}
+.exe-list-item.sel{background:var(--xsel);color:#FFF;}
+.exe-list-item .exe-fi{width:14px;display:inline-flex;justify-content:center;align-items:center;font-size:11px;color:#3A3A3A;flex-shrink:0;}
+.exe-list-item.sel .exe-fi{color:#FFF;}
+.exe-list-item .exe-name{flex:1;}
+.exe-list-item .exe-size{color:#606060;font-size:10px;}
+.exe-list-item.sel .exe-size{color:#D4D4D4;}
+.exe-list-item.locked{color:#808080;}
+.exe-list-item.locked:hover{background:transparent;cursor:not-allowed;}
+.exe-check{display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:11px;color:#000;cursor:pointer;user-select:none;font-family:inherit;}
+.exe-check.locked{opacity:0.5;cursor:not-allowed;}
+.exe-cbox{
+  width:13px;height:13px;background:#FFF;border:1px solid #000;
+  box-shadow:inset 1px 1px 0 var(--xsh),inset -1px -1px 0 var(--xhl);
+  position:relative;flex-shrink:0;
+}
+.exe-cbox.checked::after{content:'\2714';position:absolute;inset:-2px 0 0 0;text-align:center;font-size:12px;color:#000;line-height:14px;font-weight:700;}
+.exe-check.locked .exe-cbox{background:#D4D4D4;}
+.exe-btn-row{display:flex;gap:6px;justify-content:flex-end;margin-top:10px;}
+.exe-btn{
+  min-width:78px;padding:4px 14px;background:var(--xf);border:1px solid #000;
+  box-shadow:inset 1px 1px 0 var(--xhl),inset -1px -1px 0 var(--xsh),inset 2px 2px 0 var(--xf),inset -2px -2px 0 var(--xsm);
+  font-size:11px;font-weight:700;color:#000;cursor:pointer;letter-spacing:0.5px;user-select:none;font-family:inherit;
+}
+.exe-btn:active{box-shadow:inset 1px 1px 0 var(--xsh),inset -1px -1px 0 var(--xhl);padding:5px 13px 3px 15px;}
+.exe-btn.default{box-shadow:inset 0 0 0 1px #000,inset 2px 2px 0 var(--xhl),inset -2px -2px 0 var(--xsh);}
+.exe-codex-layout{display:grid;grid-template-columns:130px 1fr;gap:0;min-height:320px;}
+.exe-codex-sidebar{background:#FFF;border:1px solid #000;box-shadow:inset 1px 1px 0 var(--xsh),inset -1px -1px 0 var(--xhl);}
+.exe-sidebar-title{font-size:9px;font-weight:700;letter-spacing:1.5px;color:#3A3A3A;padding:4px 8px;border-bottom:1px solid var(--xsm);background:#EAEAEA;text-transform:uppercase;}
+.exe-topic-list{padding:3px 0;}
+.exe-topic{padding:3px 8px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;color:#000;user-select:none;display:flex;align-items:center;gap:4px;}
+.exe-topic .exe-arrow{color:#606060;font-size:10px;width:10px;}
+.exe-topic:hover{background:#D4D4D4;}
+.exe-topic.sel{background:var(--xsel);color:#FFF;}
+.exe-topic.sel .exe-arrow{color:#FFF;}
+.exe-codex-main{background:#FFF;border:1px solid #000;border-left:none;box-shadow:inset 1px 1px 0 var(--xsh),inset -1px -1px 0 var(--xhl);padding:10px 14px;font-family:'JetBrains Mono',monospace;max-height:320px;overflow-y:auto;}
+.exe-codex-main::-webkit-scrollbar{width:14px;}
+.exe-codex-main::-webkit-scrollbar-track{background:#D4D4D4;}
+.exe-codex-main::-webkit-scrollbar-thumb{background:var(--xf);border:1px solid var(--xsh);box-shadow:inset 1px 1px 0 var(--xhl),inset -1px -1px 0 var(--xsh);}
+.exe-content{display:none;}
+.exe-content.active{display:block;}
+.exe-chead{font-family:'Tahoma',sans-serif;font-size:12px;font-weight:700;color:#000;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--xsm);text-transform:uppercase;letter-spacing:1px;}
+.exe-cbody{font-family:'JetBrains Mono',monospace;font-size:11px;color:#000;line-height:1.6;}
+.exe-cbody p{margin-bottom:8px;}
+.exe-cbody .exe-kvr{display:flex;align-items:baseline;margin-bottom:4px;gap:8px;}
+.exe-cbody .exe-kvr .exe-k{min-width:96px;color:#000;font-weight:700;flex-shrink:0;}
+.exe-cbody .exe-kvr .exe-v{color:#1A1A1A;flex:1;}
+.exe-cbody .exe-lk{color:#808080;}
+.exe-cbody .exe-wr{color:var(--xblood);}
+.exe-cbody .exe-ascii{font-size:11px;line-height:1.5;color:#1A1A1A;white-space:pre;background:#EAEAEA;padding:6px 8px;margin:4px 0 10px;border:1px solid var(--xsm);box-shadow:inset 1px 1px 0 var(--xsm),inset -1px -1px 0 var(--xhl);}
+.exe-cbody .exe-note{color:var(--xblood);font-style:italic;margin-top:6px;}
+.exe-cbody table{width:100%;border-collapse:collapse;margin:4px 0 10px;font-size:11px;background:#EAEAEA;border:1px solid var(--xsm);box-shadow:inset 1px 1px 0 var(--xsm),inset -1px -1px 0 var(--xhl);}
+.exe-cbody th{text-align:left;padding:4px 8px;background:#D4D4D4;font-weight:700;border-bottom:1px solid var(--xsm);font-family:'Tahoma',sans-serif;font-size:9px;text-transform:uppercase;letter-spacing:1px;}
+.exe-cbody td{padding:3px 8px;border-bottom:1px dotted var(--xsm);}
+.exe-cbody td:first-child{font-weight:700;}
+.exe-status{background:var(--xf);padding:2px 0;border-top:1px solid var(--xhl);display:flex;font-size:10px;color:#000;}
+.exe-sb-cell{padding:2px 8px;border-right:1px solid var(--xsm);box-shadow:inset 1px 1px 0 var(--xsm),inset -1px -1px 0 var(--xhl);flex:0 0 auto;}
+.exe-sb-cell:first-child{flex:1;}
+.exe-sb-cell .exe-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:4px;background:#2A7A2A;}
+.exe-sb-cell .exe-dot.warn{background:var(--xbloodb);}
+#exe-win-sysalert{width:280px;animation:exe-jitter 8s steps(8) infinite;}
+@keyframes exe-jitter{0%,92%,100%{transform:translate(0,0);}93%{transform:translate(1px,-1px);}94%{transform:translate(-1px,1px);}95%{transform:translate(0,0);}}
+.exe-titlebar-alert{background:linear-gradient(90deg,#6A0A0A 0%,#B02020 100%)!important;}
+.exe-modal-body{padding:14px;display:flex;gap:10px;}
+.exe-modal-icon{width:32px;height:32px;flex-shrink:0;background:var(--xbloodb);border:1px solid #000;display:flex;align-items:center;justify-content:center;font-size:22px;color:#FFF;font-weight:900;box-shadow:inset 1px 1px 0 #D05050,inset -1px -1px 0 #4A0A0A;}
+.exe-modal-text{font-size:11px;color:#000;line-height:1.5;}
+.exe-modal-text strong{display:block;margin-bottom:4px;}
+#exe-win-sysalert .exe-btn-row{padding:0 14px 12px;justify-content:center;margin-top:0;}
+@media (max-width:560px){
+  .exe-codex-layout{grid-template-columns:1fr;min-height:auto;}
+  .exe-codex-sidebar{border-right:1px solid #000;}
+  .exe-codex-main{border-left:1px solid #000;max-height:260px;}
+  #exe-win-sysalert{width:240px;}
+}
+
+/* ======== GAME INSIDE EXE (gameplay screens) ======== */
+body.exe-mode .status-bar{
+  background:var(--xf,#BCBCBC);border-bottom:1px solid var(--xsm,#6E6E6E);
+  box-shadow:inset 1px 1px 0 var(--xhl,#EFEFEF),inset -1px -1px 0 var(--xsm,#6E6E6E);
+  padding:6px 10px;gap:4px;
+}
+body.exe-mode .status-item{
+  padding:2px 8px;background:var(--xf,#BCBCBC);
+  box-shadow:inset -1px -1px 0 var(--xhl,#EFEFEF),inset 1px 1px 0 var(--xsm,#6E6E6E);
+  flex:1;flex-direction:row;justify-content:space-between;align-items:center;gap:6px;min-width:0;
+}
+body.exe-mode .status-label{color:#000;font-size:8px;font-weight:700;font-family:'Tahoma','Geneva',sans-serif;}
+body.exe-mode .status-value{font-family:'JetBrains Mono',monospace;font-size:13px;color:#000;text-shadow:none;font-weight:700;}
+body.exe-mode .status-value.accent{color:var(--xta,#0A1163);text-shadow:none;}
+body.exe-mode .status-value.danger-text{color:var(--xblood,#7A1414);text-shadow:none;animation:pulse-text 0.8s ease-in-out infinite;}
+body.exe-mode .level-bar{background:var(--xf,#BCBCBC);padding:4px 10px;border-bottom:1px solid var(--xsm,#6E6E6E);gap:6px;}
+body.exe-mode .level-rune{color:var(--xsh,#404040);font-size:10px;width:16px;height:16px;background:var(--xf,#BCBCBC);font-family:'Tahoma',sans-serif;font-weight:700;box-shadow:inset -1px -1px 0 var(--xhl,#EFEFEF),inset 1px 1px 0 var(--xsm,#6E6E6E);}
+body.exe-mode .level-rune.active{color:#FFF;text-shadow:none;transform:none;background:var(--xta,#0A1163);box-shadow:inset 1px 1px 0 var(--xsh,#404040),inset -1px -1px 0 #3060C0;}
+body.exe-mode .level-rune.completed{color:#FFF;opacity:1;background:#2A7A2A;box-shadow:inset 1px 1px 0 #1A5A1A,inset -1px -1px 0 #40A040;}
+body.exe-mode .modifier-bar{background:var(--xf,#BCBCBC);padding:4px 10px;border-bottom:1px solid var(--xsm,#6E6E6E);gap:4px;display:flex;flex-wrap:wrap;}
+body.exe-mode .modifier-badge,body.exe-mode .class-badge{
+  background:var(--xf,#BCBCBC);color:#000;border:none;padding:2px 6px;font-size:9px;
+  font-family:'Tahoma',sans-serif;font-weight:700;letter-spacing:0.5px;
+  box-shadow:inset 1px 1px 0 var(--xhl,#EFEFEF),inset -1px -1px 0 var(--xsh,#404040);text-transform:uppercase;
+}
+body.exe-mode .modifier-badge .mg,body.exe-mode .class-badge .cb-icon{color:var(--xblood,#7A1414);}
+body.exe-mode .timer-bar-wrap{height:14px;background:#FFF;padding:0;margin:0;border-top:1px solid var(--xsh,#404040);border-bottom:1px solid var(--xhl,#EFEFEF);box-shadow:inset 1px 1px 0 var(--xsh,#404040),inset -1px -1px 0 var(--xhl,#EFEFEF);}
+body.exe-mode .timer-bar{background:linear-gradient(180deg,#2090E8 0%,#1070B8 100%);box-shadow:none;}
+body.exe-mode .timer-bar.low{background:linear-gradient(180deg,#E04040 0%,#B02020 100%);box-shadow:none;}
+body.exe-mode .powerup-bar{background:var(--xf,#BCBCBC);padding:6px 10px;border-top:1px solid var(--xsm,#6E6E6E);min-height:30px;}
+body.exe-mode .powerup-badge{
+  background:var(--xf,#BCBCBC)!important;color:#000!important;
+  border:none!important;padding:2px 8px;border-radius:0;font-size:9px;
+  font-family:'Tahoma',sans-serif;font-weight:700;letter-spacing:0.5px;
+  box-shadow:inset 1px 1px 0 var(--xhl,#EFEFEF),inset -1px -1px 0 var(--xsh,#404040);
+}
+body.exe-mode .powerup-badge:hover{transform:none;filter:none;background:#D4D4D4!important;}
+body.exe-mode .powerup-badge:active{box-shadow:inset 1px 1px 0 var(--xsh,#404040),inset -1px -1px 0 var(--xhl,#EFEFEF);}
+body.exe-mode .powerup-badge.cursed{color:var(--xblood,#7A1414)!important;}
+body.exe-mode .powerup-badge .glyph{color:inherit;}
+body.exe-mode .game-screen{
+  background:#000;padding:3px;
+  box-shadow:inset 1px 1px 0 var(--xsh,#404040),inset -1px -1px 0 var(--xhl,#EFEFEF),inset 2px 2px 0 #1A1A1A,inset -2px -2px 0 var(--xf,#BCBCBC);
+  margin:0;position:relative;
+}
+body.exe-mode .game-screen::after{
+  content:'';position:absolute;inset:3px;pointer-events:none;z-index:10;
+  background:repeating-linear-gradient(0deg,transparent 0 2px,rgba(0,255,0,0.02) 2px 3px);
+}
+body.exe-mode .grid{background:#808080;margin:0;gap:1px;}
+body.exe-mode .cell{border-radius:0;font-family:'JetBrains Mono',monospace;transition:none;}
+body.exe-mode .cell.unrevealed{
+  background:#C0C0C0;
+  border-top:3px solid #FFF;border-left:3px solid #FFF;
+  border-bottom:3px solid #808080;border-right:3px solid #808080;
+  box-shadow:none;
+}
+body.exe-mode .cell.unrevealed:hover{
+  background:#D0D0D0;
+  border-top:3px solid #FFF;border-left:3px solid #FFF;
+  border-bottom:3px solid #808080;border-right:3px solid #808080;
+  box-shadow:none;transform:none;
+}
+body.exe-mode .cell.revealed{
+  background:#C0C0C0;border:1px solid #808080;box-shadow:none;
+}
+body.exe-mode .cell.just-revealed{animation:none;background:#C0C0C0;}
+body.exe-mode .cell.flagged{
+  background:#C0C0C0;
+  border-top:3px solid #FFF;border-left:3px solid #FFF;
+  border-bottom:3px solid #808080;border-right:3px solid #808080;
+}
+body.exe-mode .cell.mine-hit{
+  background:#FF0000;border:1px solid #808080;box-shadow:none;
+}
+body.exe-mode .cell.mine-reveal{
+  background:#C0C0C0;border:1px solid #808080;box-shadow:none;
+}
+body.exe-mode .cell svg{width:60%;height:60%;}
+body.exe-mode .cell .num-display{text-shadow:none!important;font-weight:700;}
+body.exe-mode .controls{
+  background:var(--xf,#BCBCBC);border-top:1px solid var(--xsm,#6E6E6E);
+  box-shadow:inset 1px 1px 0 var(--xhl,#EFEFEF);padding:8px 10px;justify-content:flex-end;gap:6px;
+}
+body.exe-mode .controls .btn{
+  min-width:68px;padding:4px 12px;background:var(--xf,#BCBCBC);border:1px solid #000;
+  box-shadow:inset 1px 1px 0 var(--xhl,#EFEFEF),inset -1px -1px 0 var(--xsh,#404040),inset 2px 2px 0 var(--xf,#BCBCBC),inset -2px -2px 0 var(--xsm,#6E6E6E);
+  font-family:'Tahoma',sans-serif;font-size:11px;font-weight:700;color:#000;letter-spacing:0.5px;
+  border-radius:0;text-transform:none;text-shadow:none;
+}
+body.exe-mode .controls .btn:hover{background:var(--xf,#BCBCBC);filter:none;}
+body.exe-mode .controls .btn:active{box-shadow:inset 1px 1px 0 var(--xsh,#404040),inset -1px -1px 0 var(--xhl,#EFEFEF);padding:5px 11px 3px 13px;}
+body.exe-mode .controls .btn-primary{box-shadow:inset 0 0 0 1px #000,inset 2px 2px 0 var(--xhl,#EFEFEF),inset -2px -2px 0 var(--xsh,#404040);}
+
+/* Game-over / level-complete modals styled as Win98 dialogs */
+body.exe-mode .modal-overlay{background:rgba(0,0,0,0.55);position:absolute;overflow-y:auto;}
+body.exe-mode .modal{
+  background:var(--xf,#BCBCBC);border:1px solid #000;padding:0;min-width:320px;max-width:480px;
+  box-shadow:inset 1px 1px 0 var(--xhl,#EFEFEF),inset -1px -1px 0 var(--xsh,#404040),inset 2px 2px 0 var(--xf,#BCBCBC),inset -2px -2px 0 var(--xsm,#6E6E6E),3px 3px 0 #000,6px 6px 24px rgba(0,0,0,0.6);
+  border-radius:0;color:#000;text-align:left;
+}
+body.exe-mode .modal::before{display:none;}
+body.exe-mode .modal::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:22px;
+  background:linear-gradient(90deg,var(--xta,#0A1163) 0%,var(--xtb,#1070B8) 100%);z-index:0;
+}
+body.exe-mode .modal.game-over::after{background:linear-gradient(90deg,#6A0A0A 0%,#B02020 100%);}
+body.exe-mode .modal > *{position:relative;z-index:1;}
+body.exe-mode .modal h2{
+  font-family:'Tahoma',sans-serif;font-size:11px;font-weight:700;color:#EFEFEF;
+  padding:5px 10px 4px;margin:0;letter-spacing:0.3px;text-transform:uppercase;text-align:left;
+}
+body.exe-mode .modal .flavor{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:#000;letter-spacing:0.3px;
+  text-transform:none;padding:14px 18px 6px;margin:0;font-style:italic;
+}
+body.exe-mode .modal .big-number{
+  font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:700;color:#000;
+  letter-spacing:1px;padding:4px 18px 0;margin:0;text-align:center;
+}
+body.exe-mode .modal .big-label{
+  font-family:'Tahoma',sans-serif;font-size:9px;color:#3A3A3A;letter-spacing:1px;
+  padding:0 18px 12px;margin:0;text-align:center;text-transform:uppercase;
+}
+body.exe-mode .modal .btn{
+  margin:0 4px;padding:4px 14px;background:var(--xf,#BCBCBC);border:1px solid #000;border-radius:0;
+  box-shadow:inset 1px 1px 0 var(--xhl,#EFEFEF),inset -1px -1px 0 var(--xsh,#404040),inset 2px 2px 0 var(--xf,#BCBCBC),inset -2px -2px 0 var(--xsm,#6E6E6E);
+  font-family:'Tahoma',sans-serif;font-size:11px;font-weight:700;color:#000;letter-spacing:0.5px;
+  text-transform:none;text-shadow:none;min-width:78px;
+}
+body.exe-mode .modal .btn:hover{background:var(--xf,#BCBCBC);filter:none;}
+body.exe-mode .modal .btn:active{box-shadow:inset 1px 1px 0 var(--xsh,#404040),inset -1px -1px 0 var(--xhl,#EFEFEF);}
+body.exe-mode .modal .btn-primary{box-shadow:inset 0 0 0 1px #000,inset 2px 2px 0 var(--xhl,#EFEFEF),inset -2px -2px 0 var(--xsh,#404040);}
+body.exe-mode .modal .shop-header{
+  font-family:'Tahoma',sans-serif;font-size:10px;color:#000;letter-spacing:1px;
+  padding:10px 18px 4px;margin:0;text-transform:uppercase;font-weight:700;background:var(--xf,#BCBCBC);
+  border-top:1px solid var(--xsm,#6E6E6E);border-bottom:1px dashed var(--xsm,#6E6E6E);
+}
+body.exe-mode .modal .shop-shards{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--xta,#0A1163);
+  padding:4px 18px 8px;font-weight:700;letter-spacing:0.3px;text-transform:none;
+}
+body.exe-mode .modal .shop-grid{padding:0 14px 10px;gap:6px;}
+body.exe-mode .modal .shop-item{
+  background:var(--xf,#BCBCBC);border:1px solid var(--xsm,#6E6E6E);border-radius:0;
+  box-shadow:inset 1px 1px 0 var(--xhl,#EFEFEF),inset -1px -1px 0 var(--xsh,#404040);
+  padding:6px 8px;color:#000;width:auto;min-width:72px;
+}
+body.exe-mode .modal .shop-item:hover:not(.cant-afford):not(.bought){background:#D4D4D4;border-color:#000;}
+body.exe-mode .modal .shop-item .s-glyph{color:var(--xta,#0A1163);text-shadow:none;}
+body.exe-mode .modal .shop-item .s-name{font-family:'JetBrains Mono',monospace;color:#000;font-size:9px;font-weight:700;text-transform:none;letter-spacing:0;text-shadow:none;white-space:nowrap;}
+body.exe-mode .modal .shop-item .s-price{font-family:'JetBrains Mono',monospace;color:#000;font-size:10px;font-weight:700;text-shadow:none;}
+body.exe-mode .modal .shop-item.cursed{border-color:var(--xblood,#7A1414);}
+body.exe-mode .modal .shop-item.cursed .s-glyph,body.exe-mode .modal .shop-item.cursed .s-price{color:var(--xblood,#7A1414);}
+body.exe-mode .modal .shop-item.cant-afford{opacity:0.45;}
+body.exe-mode .modal .shop-item.bought{opacity:0.3;background:#A0A0A0;}
+body.exe-mode .modal .shop-descend{margin:0 18px 14px;width:calc(100% - 36px);text-transform:uppercase;}
+body.exe-mode .modal .modifier-preview-label{
+  font-family:'Tahoma',sans-serif;font-size:9px;color:#3A3A3A;letter-spacing:1.5px;
+  padding:8px 18px 4px;text-transform:uppercase;font-weight:700;
+}
+body.exe-mode .modal .modifier-preview{padding:0 14px 8px;gap:6px;}
+body.exe-mode .modal .mp-item{
+  background:var(--xf,#BCBCBC);border:1px solid var(--xsh,#404040);border-radius:0;
+  box-shadow:inset 1px 1px 0 var(--xhl,#EFEFEF),inset -1px -1px 0 var(--xsh,#404040);padding:6px;
+}
+body.exe-mode .modal .mp-icon{color:var(--xblood,#7A1414);}
+body.exe-mode .modal .mp-name{font-family:'Tahoma',sans-serif;color:#000;font-size:9px;font-weight:700;}
+body.exe-mode .modal .mp-desc{font-family:'JetBrains Mono',monospace;color:#3A3A3A;font-size:9px;}
+body.exe-mode .go-body{padding:4px 18px 8px;margin:0;}
+body.exe-mode .go-stat{font-family:'JetBrains Mono',monospace;font-size:11px;color:#000;letter-spacing:0.3px;border-bottom:1px dotted #999;padding:4px 0;}
+body.exe-mode .go-stat:last-child{border-bottom:none;}
+body.exe-mode .go-k{color:#3A3A3A;}
+body.exe-mode .go-v{color:#000;}
+body.exe-mode .go-dead{color:var(--xblood,#7A1414);text-shadow:none;}
+body.exe-mode .go-actions{padding:8px 18px 14px;text-align:right;}
+body.exe-mode .toast{
+  background:var(--xf,#BCBCBC)!important;border:1px solid #000!important;border-radius:0!important;
+  box-shadow:inset 1px 1px 0 var(--xhl,#EFEFEF),inset -1px -1px 0 var(--xsh,#404040),2px 2px 0 #000!important;
+  color:#000!important;font-family:'Tahoma',sans-serif!important;
+  font-size:10px!important;font-weight:700!important;text-shadow:none!important;
+  padding:4px 10px!important;text-transform:uppercase!important;
+}
+body.exe-mode .combo{color:var(--xta,#0A1163)!important;text-shadow:1px 1px 0 var(--xhl,#EFEFEF),2px 2px 0 rgba(0,0,0,0.4)!important;font-family:'Tahoma',sans-serif!important;}
+
+/* Old floating mute btn hidden — sound lives in taskbar now */
+.mute-btn{display:none!important;}
 
 /* ======== CREDIT ======== */
-.credit{position:fixed;bottom:8px;left:0;right:0;text-align:center;font-family:var(--font-mono);font-size:9px;color:var(--text-dim);letter-spacing:2px;opacity:0.4;pointer-events:none;z-index:1100;}
+.credit{display:none!important;}
 
+/* ======== WIN98 TASKBAR ======== */
+.exe-taskbar{
+  position:absolute;bottom:0;left:0;right:0;z-index:90;
+  height:28px;background:var(--xf,#BCBCBC);
+  border-top:2px solid var(--xhl,#EFEFEF);
+  display:flex;align-items:center;padding:2px 4px;gap:2px;
+  font-family:'Tahoma','Geneva','MS Sans Serif',sans-serif;font-size:11px;
+}
+.exe-start-btn{
+  height:22px;padding:0 8px;display:flex;align-items:center;gap:4px;
+  background:var(--xf,#BCBCBC);border:1px solid #000;
+  box-shadow:inset 1px 1px 0 var(--xhl,#EFEFEF),inset -1px -1px 0 var(--xsh,#404040);
+  font-family:inherit;font-size:11px;font-weight:700;color:#000;cursor:pointer;
+}
+.exe-start-btn:active{box-shadow:inset 1px 1px 0 var(--xsh,#404040),inset -1px -1px 0 var(--xhl,#EFEFEF);padding:1px 7px 0 9px;}
+.exe-start-btn .exe-start-flag{
+  width:14px;height:14px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#FF0000 25%,#00FF00 25%,#00FF00 50%,#0000FF 50%,#0000FF 75%,#FFFF00 75%);
+  font-size:0;image-rendering:pixelated;
+}
+.exe-taskbar-divider{
+  width:2px;height:22px;margin:0 2px;
+  border-left:1px solid var(--xsm,#6E6E6E);border-right:1px solid var(--xhl,#EFEFEF);
+}
+.exe-taskbar-apps{flex:1;display:flex;gap:2px;overflow:hidden;}
+.exe-taskbar-app{
+  height:22px;padding:0 8px;display:flex;align-items:center;gap:4px;
+  background:var(--xf,#BCBCBC);border:1px solid #000;
+  box-shadow:inset 1px 1px 0 var(--xsh,#404040),inset -1px -1px 0 var(--xhl,#EFEFEF);
+  font-family:inherit;font-size:11px;font-weight:700;color:#000;
+  max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.exe-taskbar-app .tapp-ic{font-size:9px;font-weight:900;}
+.exe-taskbar-tray{
+  height:22px;padding:0 6px;display:flex;align-items:center;gap:6px;
+  box-shadow:inset 1px 1px 0 var(--xsm,#6E6E6E),inset -1px -1px 0 var(--xhl,#EFEFEF);
+  font-size:10px;color:#000;
+}
+.exe-taskbar-tray .tray-icon{font-size:11px;cursor:default;}
+.exe-taskbar-tray .tray-icon.warn{color:var(--xbloodb,#B02020);}
+.exe-taskbar-clock{font-family:'Tahoma',sans-serif;font-size:10px;color:#000;letter-spacing:0.3px;}
+.exe-taskbar-app{cursor:pointer;user-select:none;}
+.exe-taskbar-app:hover{background:#D4D4D4;}
+.exe-taskbar-app:active{box-shadow:inset 1px 1px 0 var(--xsh,#404040),inset -1px -1px 0 var(--xhl,#EFEFEF);padding:1px 7px 0 9px;}
+.exe-taskbar-app.active{
+  box-shadow:inset 1px 1px 0 var(--xsh,#404040),inset -1px -1px 0 var(--xhl,#EFEFEF);
+  background:#D4D4D4;font-weight:700;
+}
+.exe-sound-btn{
+  background:none;border:none;box-shadow:none;
+  font-family:'Tahoma',sans-serif;font-size:12px;color:#000;
+  cursor:pointer;user-select:none;padding:0;line-height:1;
+}
+.exe-sound-btn:hover{color:#0A1163;}
+.exe-sound-btn.muted{color:#808080;}
+
+/* ======== VHS DISTORTION OVERLAYS ======== */
+.vhs-timestamp{
+  position:absolute;bottom:34px;left:10px;z-index:95;pointer-events:none;
+  font-family:'VT323','Courier New',monospace;font-size:14px;color:rgba(255,255,255,0.7);
+  text-shadow:1px 1px 0 rgba(0,0,0,0.9),-1px 0 0 rgba(255,0,0,0.15),1px 0 0 rgba(0,200,255,0.1);
+  letter-spacing:1px;
+}
+/* VHS tracking distortion — heavier than before */
+.vhs-tear{
+  position:absolute;left:0;width:100%;z-index:104;pointer-events:none;
+  height:3px;background:rgba(255,255,255,0.12);mix-blend-mode:difference;
+  animation:vhs-tear 4.5s steps(1) infinite;
+}
+@keyframes vhs-tear{
+  0%,96%,100%{top:-20px;opacity:0;}
+  96.5%{top:22%;opacity:1;height:3px;transform:translateX(2px);}
+  97%{top:22%;opacity:0;}
+  97.5%{top:55%;opacity:1;height:5px;transform:translateX(-3px);}
+  98%{top:55%;opacity:0;}
+  98.5%{top:78%;opacity:1;height:2px;transform:translateX(4px);}
+  99%{top:-20px;opacity:0;}
+}
+/* Horizontal hold slip — intermittent frame shift */
+.vhs-hold{
+  position:absolute;left:0;right:0;z-index:105;pointer-events:none;
+  height:40px;background:linear-gradient(180deg,transparent 0%,rgba(0,0,0,0.4) 30%,rgba(255,255,255,0.03) 50%,rgba(0,0,0,0.4) 70%,transparent 100%);
+  animation:vhs-hold 18s steps(1) infinite;
+  mix-blend-mode:overlay;
+}
+@keyframes vhs-hold{
+  0%,94%,100%{top:-60px;opacity:0;}
+  94.5%{top:15%;opacity:1;}
+  95%{top:35%;opacity:1;}
+  95.5%{top:60%;opacity:0.6;}
+  96%{top:-60px;opacity:0;}
+}
 /* ======== TOAST ======== */
 .toast-msg{
   position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
@@ -587,16 +1207,7 @@ body::after{
 }
 </style>
 </head>
-<body>
-<!-- Background layers -->
-<canvas id="dust-canvas"></canvas>
-<div class="bg-grid"></div>
-<div class="bg-glow">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
-</div>
-<div class="noise"></div>
+<body class="exe-mode">
 <div id="screen">
 
 <noscript><div style="text-align:center;padding:40px;color:#C8C8D4;font-family:monospace;">SWEEPER requires JavaScript to play.</div></noscript>
@@ -616,76 +1227,27 @@ body::after{
 
 <script>
 // ============================================================
-// DUST PARTICLES (floating motes in a dark room)
-// ============================================================
-(function(){
-  const canvas=document.getElementById('dust-canvas');
-  const ctx=canvas.getContext('2d');
-  let W,H;
-  const particles=[];
-  const COUNT=60;
-
-  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
-  window.addEventListener('resize',resize);resize();
-
-  for(let i=0;i<COUNT;i++){
-    particles.push({
-      x:Math.random()*W,
-      y:Math.random()*H,
-      r:Math.random()*1.2+0.3,
-      dx:(Math.random()-0.5)*0.15,
-      dy:Math.random()*-0.12-0.02,
-      alpha:Math.random()*0.25+0.05,
-      pulse:Math.random()*Math.PI*2,
-      pulseSpeed:Math.random()*0.008+0.003,
-    });
-  }
-
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    for(const p of particles){
-      p.x+=p.dx;p.y+=p.dy;
-      p.pulse+=p.pulseSpeed;
-      const a=p.alpha*(0.6+0.4*Math.sin(p.pulse));
-      // Wrap
-      if(p.y<-10)p.y=H+10;
-      if(p.x<-10)p.x=W+10;
-      if(p.x>W+10)p.x=-10;
-
-      ctx.beginPath();
-      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=`rgba(200,200,212,${a})`;
-      ctx.fill();
-    }
-    if(!document.hidden) requestAnimationFrame(draw);
-  }
-  draw();
-  document.addEventListener('visibilitychange',()=>{if(!document.hidden)requestAnimationFrame(draw);});
-})();
-
-// ============================================================
 // SVG ICONS (in-world, no emoji)
 // ============================================================
 const ICONS = {
-  skull: `<svg viewBox="0 0 24 24"><path class="skull" d="M12 2C7.6 2 4 5.6 4 10c0 2.4 1.1 4.5 2.8 6H8v3c0 .6.4 1 1 1h1v1h4v-1h1c.6 0 1-.4 1-1v-3h1.2c1.7-1.5 2.8-3.6 2.8-6 0-4.4-3.6-8-8-8zM9 13c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm6 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>`,
-  stake: `<svg viewBox="0 0 24 24"><line class="stake-line" x1="12" y1="4" x2="12" y2="20"/><polygon class="stake" points="12,4 8,10 12,8 16,10"/></svg>`,
+  skull: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" fill="#000"/><line x1="12" y1="3" x2="12" y2="21" stroke="#000" stroke-width="2.5"/><line x1="3" y1="12" x2="21" y2="12" stroke="#000" stroke-width="2.5"/><line x1="5.5" y1="5.5" x2="18.5" y2="18.5" stroke="#000" stroke-width="1.8"/><line x1="18.5" y1="5.5" x2="5.5" y2="18.5" stroke="#000" stroke-width="1.8"/><circle cx="9.5" cy="9" r="1.5" fill="#FFF"/></svg>`,
+  stake: `<svg viewBox="0 0 24 24"><polygon points="6,3 6,14 17,8.5" fill="#FF0000"/><line x1="6" y1="3" x2="6" y2="21" stroke="#000" stroke-width="2"/><line x1="3" y1="20.5" x2="9" y2="20.5" stroke="#000" stroke-width="2"/></svg>`,
   eye: `<svg viewBox="0 0 20 20" style="width:10px;height:10px;"><circle cx="10" cy="10" r="3" fill="var(--text-dim)" opacity="0.4"/></svg>`,
-  // Power-up glyphs (runic style)
-  scan_glyph: '&#x25C9;',   // circled dot — the eye
-  time_glyph: '&#x29D6;',   // hourglass
-  shield_glyph: '&#x2666;', // diamond ward
-  compass_glyph: '&#x2316;', // crosshair — the compass
-  oracle_glyph: '&#x25CE;',  // bullseye — the oracle
-  rewind_glyph: '&#x21BA;',  // loop arrow — rewind
-  lantern_glyph: '&#x2600;',   // black sun — the lantern
-  hex_glyph: '&#x2627;',   // chi rho — the hex
-  tithe_glyph: '&#x2020;',   // dagger — blood tithe
-  bargain_glyph: '&#x2622;', // trefoil — the bargain
-  scapegoat_glyph: '&#x2625;', // ankh — the scapegoat
-  pyre_glyph: '&#x1F525;',    // fire — the pyre
-  rift_glyph: '&#x2739;',      // 12-point star — the rift
-  // Level indicators — I-Ching trigrams (descent/depth)
-  runes: ['&#x2630;', '&#x2631;', '&#x2632;', '&#x2633;', '&#x2634;'], // ☰ ☱ ☲ ☳ ☴
+  // Protocol glyphs (.SYS)
+  time_glyph: '&#x21BB;',     // clockwise arrow — BACKUP.SYS
+  shield_glyph: '&#x2394;',   // software function — FIREWALL.SYS
+  compass_glyph: '&#x2263;',  // strict identical — SCANDISK.SYS
+  oracle_glyph: '&#x2592;',   // medium shade — DEFRAG.SYS
+  rewind_glyph: '&#x21BA;',   // loop arrow — rewind
+  lantern_glyph: '&#x2261;',  // identical to — TRACERT.SYS
+  // Dependency glyphs (.DLL)
+  hex_glyph: '&#x2762;',      // heavy exclamation — SPYWARE.DLL
+  tithe_glyph: '&#x2718;',    // heavy ballot X — TROJAN.DLL
+  bargain_glyph: '&#x00A4;',  // currency sign — ADWARE.DLL
+  scapegoat_glyph: '&#x2338;', // helm — BLOATWARE.DLL
+  pyre_glyph: '&#x2622;',     // radioactive — ROOTKIT.DLL
+  // Level indicators
+  runes: ['1', '2', '3', '4', '5'],
 };
 
 // ============================================================
@@ -854,10 +1416,66 @@ class SoundEngine {
       o.connect(g).connect(out);o.start();o.stop(ctx.currentTime+0.25);
     });
   }
+
+  // Retro mouse click — short square wave pop
+  click(){
+    this.play((ctx,out)=>{
+      const o=ctx.createOscillator();const g=ctx.createGain();
+      o.type='square';
+      o.frequency.setValueAtTime(1200,ctx.currentTime);
+      o.frequency.setValueAtTime(800,ctx.currentTime+0.005);
+      g.gain.setValueAtTime(0.06,ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.025);
+      o.connect(g).connect(out);o.start();o.stop(ctx.currentTime+0.03);
+    });
+  }
+
+  // Chord success — quick ascending arpeggio, retro chime
+  chordSuccess(){
+    this.play((ctx,out)=>{
+      [600,900,1200].forEach((freq,i)=>{
+        const o=ctx.createOscillator();const g=ctx.createGain();
+        o.type='square';
+        o.frequency.setValueAtTime(freq,ctx.currentTime+i*0.04);
+        g.gain.setValueAtTime(0.07,ctx.currentTime+i*0.04);
+        g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+i*0.04+0.12);
+        o.connect(g).connect(out);
+        o.start(ctx.currentTime+i*0.04);o.stop(ctx.currentTime+i*0.04+0.12);
+      });
+    });
+  }
+
+  // Chord fail — harsh descending buzz, error tone
+  chordFail(){
+    this.play((ctx,out)=>{
+      // Buzzer
+      const o=ctx.createOscillator();const g=ctx.createGain();
+      o.type='sawtooth';
+      o.frequency.setValueAtTime(200,ctx.currentTime);
+      o.frequency.exponentialRampToValueAtTime(80,ctx.currentTime+0.2);
+      g.gain.setValueAtTime(0.12,ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.25);
+      o.connect(g).connect(out);o.start();o.stop(ctx.currentTime+0.25);
+      // Static crackle
+      const len=ctx.sampleRate*0.15;
+      const buf=ctx.createBuffer(1,len,ctx.sampleRate);
+      const d=buf.getChannelData(0);
+      for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,3)*0.5;
+      const src=ctx.createBufferSource();src.buffer=buf;
+      const f=ctx.createBiquadFilter();f.type='highpass';f.frequency.value=800;
+      const g2=ctx.createGain();g2.gain.value=0.1;
+      src.connect(f).connect(g2).connect(out);src.start();
+    });
+  }
 }
 
 const sfx=new SoundEngine();
 document.getElementById('mute-btn').addEventListener('click',()=>sfx.toggle());
+document.addEventListener('click',e=>{
+  sfx.init();
+  const t=e.target.closest('button,.btn,.cell,.exe-topic,.exe-list-item,.shop-item,.file-row,.rb-file,.taskbar-btn,.start-item,.desktop-icon,#exe-run,#exe-help,#exe-hard,#sysalert-ok,#sysalert-cancel,#btn-new,#btn-save,#btn-load,#modal-action,.shop-descend,.powerup-badge');
+  if(t)sfx.click();
+},true);
 
 // ============================================================
 // FLAVOR TEXT
@@ -866,25 +1484,25 @@ document.getElementById('mute-btn').addEventListener('click',()=>sfx.toggle());
 // THE NARRATOR — watches how you play, reacts
 // ============================================================
 const NARRATOR={
-  idle:['The grid remembers','Tread carefully','The tiles are watching','Something stirs beneath','Each click is a wager'],
-  levelComplete:['The grid yields... for now','Another layer falls','It lets you pass','Deeper still','The final threshold'],
-  gameOver:['The grid claims another','Back to the beginning','It was always there','The sweep takes you','Reset'],
-  danger:['Time bleeds away','The clock hungers','Seconds scatter','It grows impatient'],
+  idle:['Process running.','Memory address unknown.','Unauthorized access detected.','Do not close this window.','Session still active.'],
+  levelComplete:['Level cleared.','Access granted to next level.','Proceeding...','Deeper into the file system.','Final level reached.'],
+  gameOver:['Process terminated unexpectedly.','Session dumped to /dev/null.','Fatal exception.','Segfault.','Restarting...'],
+  danger:['WARNING: Clock underflow imminent.','System resources critical.','Time allocation exhausted.','Kill signal pending.'],
   // Reactive lines
-  fastClear:['You move quickly. The grid notices.','Impatient. Or confident.','Speed will not save you forever.','The grid barely felt you.'],
-  slowClear:['Cautious. The grid respects that.','You think before you act. Good.','Patience is its own armor.','Measured steps through the dark.'],
-  firstDeath:['Everyone falls the first time.','Now you know what waits.','The grid teaches through pain.','It always starts this way.'],
-  repeatedDeath:['Again.','How many times now?','The grid is patient. Are you?','You keep returning. It keeps waiting.'],
-  boughtWard:['Insurance. Wise, or fearful?','The Aegis will not save you twice.','You trust the Aegis more than yourself.'],
-  boughtCursed:['A dangerous trade.','The grid approves of your greed.','Power always costs something.','You bargain with things you do not understand.'],
-  combo:['The rhythm builds.','Faster. Faster.','You found the flow.','The grid trembles.'],
-  bigCombo:['Relentless.','The grid cannot keep up.','Something stirs. You do not care.','Nothing can stop this.'],
-  shieldBlock:['The Aegis shatters. You survive.','One life, spent.','It held. Barely.','The Aegis remembers what you do not.'],
-  noShards:['Empty-handed.','The grid gives nothing freely.','You come to the shop with dust.'],
-  richShop:['Wealth from the grid.','Spend wisely. Or recklessly.','The grid lets you choose your chains.'],
-  depth5:['The deepest layer.','Few reach this far.','The grid saves its worst for last.','Everything you have. It will not be enough.'],
-  returnVisit:['You came back.','The grid waited.','Again you descend.'],
-  winStreak:['Consistent.','The grid begins to worry.','You are becoming something it fears.'],
+  fastClear:['Input speed anomalous.','Rapid traversal logged.','You are ahead of the expected curve.','The process cannot keep up with you.'],
+  slowClear:['Methodical.','Careful read/write pattern detected.','Low throughput. Stable.','Each byte verified.'],
+  firstDeath:['First fault logged.','Expected.','All users trigger this exception.','Error handling initialized.'],
+  repeatedDeath:['Fault count incrementing.','How many more?','The process is patient. Are you?','You keep reconnecting.'],
+  boughtWard:['FIREWALL.SYS installed.','Redundancy is not safety.','You trust the firewall more than yourself.'],
+  boughtCursed:['Dependency installed.','Unsigned code loaded into memory.','Side effects not documented.','You accepted the EULA.'],
+  combo:['Burst mode engaged.','Throughput increasing.','Pipeline saturated.','Buffer overflow imminent.'],
+  bigCombo:['Unstoppable process.','Priority escalated to REALTIME.','All threads consumed.','System cannot interrupt.'],
+  shieldBlock:['FIREWALL.SYS absorbed the fault.','One charge depleted.','Exception caught.','FIREWALL remembers what you do not.'],
+  noShards:['Insufficient keys.','Balance: 0.','Nothing to allocate.'],
+  richShop:['Key surplus detected.','Allocate wisely.','The system lets you choose your dependencies.'],
+  depth5:['Final partition.','Few processes reach this depth.','Maximum recursion depth.','All resources required. It will not be enough.'],
+  returnVisit:['Session resumed.','The process waited.','Connection re-established.'],
+  winStreak:['Consistent uptime.','Zero faults this run.','You are becoming root.'],
 
   _deaths:0,_clears:0,_cursedBought:0,_wardsBought:0,_runs:0,
 
@@ -908,7 +1526,7 @@ const NARRATOR={
       case 'shieldBlock':return this._pick('shieldBlock');
       case 'combo':return ctx?.count>=6?this._pick('bigCombo'):this._pick('combo');
       case 'boughtCursed':{this._cursedBought++;return this._pick('boughtCursed');}
-      case 'boughtWard':{this._wardsBought++;return this._wardsBought>2?'You always buy the Aegis.':this._pick('boughtWard');}
+      case 'boughtWard':{this._wardsBought++;return this._wardsBought>2?'FIREWALL.SYS installed again.':this._pick('boughtWard');}
       case 'shopOpen':{
         const shards=ctx?.shards||0;
         if(shards<5)return this._pick('noShards');
@@ -955,22 +1573,28 @@ class Game{
     this.initLevel();
   }
   awardShards(n){
+    const amt=this.gameClass==='manna'?n*2:n;
     if(this.bargainCurseTime>0){
-      this._fracShards+=n*0.5;
+      this._fracShards+=amt*0.5;
       const whole=Math.floor(this._fracShards);
       this.shards+=whole;this._fracShards-=whole;
-    }else{this.shards+=n;}
+    }else{this.shards+=amt;}
   }
   initLevel(){
     const cfg=LEVELS[this.level];
     this.modifiers=this.hardMode?rollModifiers(this.level):[];
     this.rows=cfg.rows;this.cols=cfg.cols;this.mineCount=cfg.mines;
+    if(this.gameClass==='wraith'){this.rows++;this.cols++;}
     let t=cfg.time;
-    if(this.gameClass==='wraith')t-=15;
+    if(this.gameClass==='samson')t=Math.floor(t*0.85);
     this.timeRemaining=t;this.maxTime=t;
+    if(this.gameClass==='wraith'){
+      this.shieldUsed=false;
+      if(!this.powerups.includes('shield'))this.powerups.push('shield');
+    }
     this.board=Array.from({length:this.rows},()=>Array.from({length:this.cols},()=>({mine:false,revealed:false,flagged:false,adjacent:0})));
     this.gameOver=false;this.gameWon=false;this.firstClick=true;this.revealedCount=0;this.shieldUsed=false;this.aegisCursed=false;
-    this.surged=false;this.timeMultiplier=1;
+    this.surged=false;this.timeMultiplier=1;this.chordDisabledUntil=0;
   }
   hasModifier(id){return this.modifiers.some(m=>m.id===id);}
   placeMines(safeR,safeC){
@@ -994,18 +1618,30 @@ class Game{
   chord(r,c){
     const cell=this.board[r][c];
     if(!cell.revealed||cell.mine||cell.adjacent===0)return[];
+    if(Date.now()<this.chordDisabledUntil)return[{chordDisabled:true}];
     let flags=0;
     for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){
       if(!dr&&!dc)continue;const nr=r+dr,nc=c+dc;
       if(nr>=0&&nr<this.rows&&nc>=0&&nc<this.cols&&this.board[nr][nc].flagged)flags++;
     }
     if(flags!==cell.adjacent)return[];
+    // Check if any flagged neighbor is NOT a mine (bad chord)
+    let hasBadFlag=false;
+    for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){
+      if(!dr&&!dc)continue;const nr=r+dr,nc=c+dc;
+      if(nr>=0&&nr<this.rows&&nc>=0&&nc<this.cols&&this.board[nr][nc].flagged&&!this.board[nr][nc].mine)hasBadFlag=true;
+    }
     const results=[];
     for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){
       if(!dr&&!dc)continue;const nr=r+dr,nc=c+dc;
       if(nr>=0&&nr<this.rows&&nc>=0&&nc<this.cols&&!this.board[nr][nc].flagged&&!this.board[nr][nc].revealed){
         const res=this.reveal(nr,nc);results.push(...res);
       }
+    }
+    if(results.length)results[0].wasChord=true;
+    if(hasBadFlag&&results.some(r=>r.mine)){
+      this.chordDisabledUntil=Date.now()+3000;
+      if(results.length)results[0].chordPenalty=true;
     }
     return results;
   }
@@ -1031,7 +1667,8 @@ class Game{
       }
       const sg=this.powerups.indexOf('scapegoat');
       if(sg!==-1&&this.scapegoatCharges>0&&!this.aegisCursed){
-        this.scapegoatCharges--;this.timeMultiplier*=2;
+        this.scapegoatCharges--;
+        this.timeRemaining=Math.floor(this.timeRemaining/2)+5;
         if(this.scapegoatCharges<=0)this.powerups=this.powerups.filter(p=>p!=='scapegoat');
         cell.revealed=false;this.revealedCount--;cell.mine=false;
         cell.adjacent=this.countAdj(r,c);
@@ -1059,6 +1696,7 @@ class Game{
   }
   consumeSurge(){const v=this.pendingSurge;this.pendingSurge=false;return v;}
   displayAdjacent(cell){
+    if(cell.dead)return 0;
     if(cell.adjacent===0)return 0;
     let n=cell.adjacent;
     if(this.surged&&this.hasModifier('surge'))n=Math.min(n+1,8);
@@ -1086,7 +1724,12 @@ class Game{
       this.awardShards(10*(this.level+1)+Math.floor(this.timeRemaining/5));
     }
   }
-  tick(){if(this.gameOver)return;const mult=this.timeMultiplier||1;this.timeRemaining=Math.max(0,this.timeRemaining-mult);if(this.bargainCurseTime>0)this.bargainCurseTime=Math.max(0,this.bargainCurseTime-1);if(this.timeRemaining<=0){this.gameOver=true;this.gameWon=false;}}
+  get edenSlowdown(){
+    if(this.gameClass!=='eden')return 1;
+    const deps=['hex','bargain','scapegoat','pyre','tithe'].filter(id=>this.powerups.includes(id)).length;
+    return deps>0?1-deps*0.05:1;
+  }
+  tick(){if(this.gameOver)return;const mult=this.timeMultiplier||1;const rate=mult*this.edenSlowdown;this._tickAccum=(this._tickAccum||0)+rate;const whole=Math.floor(this._tickAccum);if(whole>0){this._tickAccum-=whole;this.timeRemaining=Math.max(0,this.timeRemaining-whole);}if(this.bargainCurseTime>0)this.bargainCurseTime=Math.max(0,this.bargainCurseTime-1);if(this.gameClass==='manna'){this._mannaTick=(this._mannaTick||0)+1;if(this._mannaTick>=5){this._mannaTick=0;if(this.shards>0)this.shards--;}}if(this.timeRemaining<=0){this.gameOver=true;this.gameWon=false;}}
   useScan(){
     const idx=this.powerups.indexOf('scan');if(idx===-1)return null;
     const safe=[];
@@ -1175,13 +1818,16 @@ class Game{
   useHex(){
     const idx=this.powerups.indexOf('hex');if(idx===-1)return null;
     this.powerups.splice(idx,1);
-    this.aegisCursed=true;
     const safe=[];
     for(let r=0;r<this.rows;r++)for(let c=0;c<this.cols;c++)
       if(!this.board[r][c].mine&&!this.board[r][c].revealed&&!this.board[r][c].flagged)safe.push({r,c});
     const shuffled=safe.sort(()=>Math.random()-0.5).slice(0,5);
     const revealed=[];
-    shuffled.forEach(({r,c})=>{const res=this.reveal(r,c);revealed.push(...res);});
+    shuffled.forEach(({r,c})=>{
+      this.board[r][c].dead=true;
+      const res=this.reveal(r,c);
+      revealed.push(...res);
+    });
     return revealed.length?revealed:null;
   }
   useTithe(){
@@ -1191,6 +1837,7 @@ class Game{
     for(let r=0;r<this.rows;r++)for(let c=0;c<this.cols;c++){
       if(this.board[r][c].flagged){this.board[r][c].flagged=false;removed++;}
     }
+    this.timeRemaining=Math.max(0,this.timeRemaining-20);
     const mines=[];
     for(let r=0;r<this.rows;r++)for(let c=0;c<this.cols;c++)
       if(this.board[r][c].mine&&!this.board[r][c].flagged)mines.push({r,c});
@@ -1202,7 +1849,7 @@ class Game{
     const idx=this.powerups.indexOf('bargain');if(idx===-1)return false;
     this.powerups.splice(idx,1);
     this.bargainCurseTime+=60;
-    this.timeRemaining=Math.min(this.timeRemaining+40,this.maxTime+40);
+    this.timeRemaining=Math.min(this.timeRemaining+30,this.maxTime+30);
     return true;
   }
   useRift(){
@@ -1274,8 +1921,12 @@ class Game{
 // CLASSES
 // ============================================================
 const CLASSES=[
-  {id:'sweeper',name:'The Sweeper',desc:'Baseline. Clean minesweeper.',icon:'&#x16A0;',unlockReq:null},
-  {id:'wraith',name:'The Wraith',desc:'Combos bank time. -15s per depth.',icon:'&#x16B7;',unlockReq:'hit an 8-combo'},
+  {id:'sweeper',name:'genesis.dll',desc:'Default process. No modifications.',icon:'&#x271D;',unlockReq:null},
+  {id:'solomon',name:'solomon.dll',desc:'Correct flags grant +3s. Wrong flags detonate the mine.',icon:'&#x2696;',unlockReq:'clear level 3'},
+  {id:'wraith',name:'lazarus.dll',desc:'Regenerating firewall each level. No firewall purchases. +1 grid size. No time carry.',icon:'&#x2020;',unlockReq:'hit an 8-combo'},
+  {id:'samson',name:'samson.dll',desc:'Combo window +25%. Combos 3+ give bonus keys, 5+ grant +1s. Base time -15%.',icon:'&#x2694;',unlockReq:'hit a 5-combo'},
+  {id:'eden',name:'eden.dll',desc:'Shop offers 3 dependencies. Each dependency slows timer by 5%.',icon:'&#x2668;',unlockReq:'buy 3 dependencies in one run'},
+  {id:'manna',name:'manna.dll',desc:'2&times; keys from all sources. Keys decay by 1 every 5 seconds.',icon:'&#x2615;',unlockReq:'earn 100 keys in one run'},
 ];
 function classById(id){return CLASSES.find(c=>c.id===id)||CLASSES[0];}
 function isClassUnlocked(id){
@@ -1283,13 +1934,13 @@ function isClassUnlocked(id){
 }
 
 // ============================================================
-// DEPTH MODIFIERS (Hard Mode only)
+// LAYER MODIFIERS (ROOT.ACCESS only)
 // ============================================================
 const MODIFIERS=[
-  {id:'fog',name:'Fog',desc:'Only tiles within 2 of revealed are visible',icon:'&#x2601;'},
-  {id:'cryptic',name:'Cryptic',desc:'Numbers 4 or higher show as ?',icon:'&#x2753;'},
-  {id:'echo',name:'Echo',desc:'Numbers fade over 10 seconds, hover to refresh',icon:'&#x25D4;'},
-  {id:'surge',name:'Surge',desc:'Halfway through, all numbers gain +1',icon:'&#x26A1;'},
+  {id:'fog',name:'LOW_MEMORY',desc:'Only tiles within 2 of revealed are visible',icon:'&#x2601;'},
+  {id:'cryptic',name:'CORRUPT_DATA',desc:'Numbers 4 or higher show as ?',icon:'&#x2753;'},
+  {id:'echo',name:'MEMORY_LEAK',desc:'Numbers fade over 10 seconds, hover to refresh',icon:'&#x2620;'},
+  {id:'surge',name:'STACK_OVERFLOW',desc:'Halfway through, all numbers gain +1',icon:'&#x2623;'},
 ];
 // Hard mode: D1-D3 = 1 modifier, D4-D5 = 2 modifiers stacked
 function rollModifiers(level){
@@ -1314,152 +1965,812 @@ class GameUI{
     this.wrapper=document.getElementById('game-wrapper');
     this.timerInterval=null;this.comboCount=0;this.lastRevealTime=0;
     this.dangerFlavorShown=false;
-    this.showStart();
+    this._cheats={mines:false,invincible:false,infTime:false};
+    this._bindExeChrome();
+    this._bindCheatCodes();
+    this._runBootSequence(()=>this.showStart());
+  }
+
+  _bindCheatCodes(){
+    document.addEventListener('keydown',e=>{
+      if(!e.ctrlKey&&!e.metaKey)return;
+      const k=e.key.toLowerCase();
+      if(k==='m'){e.preventDefault();
+        this._cheats.mines=!this._cheats.mines;
+        this.showToast(this._cheats.mines?'MINES VISIBLE':'MINES HIDDEN','#888');
+        this.renderBoard();
+      }else if(k==='i'){e.preventDefault();
+        this._cheats.invincible=!this._cheats.invincible;
+        this.showToast(this._cheats.invincible?'INVINCIBLE ON':'INVINCIBLE OFF','#888');
+      }else if(k==='t'){e.preventDefault();
+        this._cheats.infTime=!this._cheats.infTime;
+        if(this._cheats.infTime)this.game.timeRemaining=9999;
+        this.showToast(this._cheats.infTime?'INFINITE TIME':'NORMAL TIME','#888');
+        this.renderBoard();
+      }else if(k==='s'){e.preventDefault();
+        this.game.awardShards(100);
+        this.showToast('+100 KEYS','#888');
+        this.renderBoard();
+      }else if(k==='w'){e.preventDefault();
+        if(!this.timerInterval||this.game.gameOver)return;
+        if(this.game.level>=this.game.totalDepths-1)return;
+        this.stopTimer();
+        this.game.gameWon=true;this.game.gameOver=true;
+        this.showLevelComplete();
+      }
+    });
+  }
+
+  // Boot-up BIOS POST + Win98 splash inside the CRT screen
+  _runBootSequence(done){
+    // Render the computer first so .exe-wrap exists
+    done();
+    const wrap=this.root.querySelector('.exe-wrap');
+    if(!wrap)return;
+    const boot=document.createElement('div');
+    boot.className='exe-boot';
+    boot.innerHTML=`
+      <div id="exe-boot-text"></div>
+      <div class="exe-boot-splash" id="exe-boot-splash">
+        <div class="exe-boot-splash-logo">SWEEPER</div>
+        <div class="exe-boot-splash-sub">BLITZ INTERACTIVE &middot; 1997</div>
+        <div class="exe-boot-splash-bar"><div class="exe-boot-splash-bar-fill"></div></div>
+      </div>`;
+    wrap.appendChild(boot);
+    const lines=[
+      {t:'<span class="exe-boot-brand">BLITZ NECROTRON BIOS v2.04.1997</span>',d:0},
+      {t:'Copyright (C) 1994-1997 Blitz Interactive.',d:40},
+      {t:'',d:60},
+      {t:'CPU: NECROTRON-486DX @ 66MHz',d:80},
+      {t:'Memory Test: 65024K &nbsp;<span class="exe-boot-ok">[ OK ]</span>',d:120},
+      {t:'Detecting IDE drives... &nbsp;<span class="exe-boot-ok">[ OK ]</span>',d:100},
+      {t:'Detecting PS/2 Mouse... &nbsp;<span class="exe-boot-ok">[ OK ]</span>',d:80},
+      {t:'',d:40},
+      {t:'Loading SWEEPER.EXE from \\\\LEVEL\\SYS\\...',d:140},
+      {t:`Session <span class="exe-boot-brand">${String(parseInt(localStorage.getItem('sweeper_sessions')||'47',10)).padStart(5,'0')}</span> &nbsp;<span class="exe-boot-warn">[ TRIAL EXPIRED ]</span>`,d:120},
+      {t:'Continuing without license...',d:160},
+    ];
+    const host=boot.querySelector('#exe-boot-text');
+    let i=0;
+    const step=()=>{
+      if(i>=lines.length){
+        setTimeout(()=>{
+          const splash=boot.querySelector('#exe-boot-splash');
+          if(splash)splash.classList.add('show');
+          setTimeout(()=>{
+            boot.classList.add('gone');
+            setTimeout(()=>{boot.remove();},360);
+          },1100);
+        },220);
+        return;
+      }
+      const ln=lines[i++];
+      const div=document.createElement('div');
+      div.className='exe-boot-line';div.innerHTML=ln.t||'&nbsp;';
+      host.appendChild(div);
+      setTimeout(step,ln.d);
+    };
+    step();
+  }
+
+  // Open any app — shows a Win98 loading dialog then calls the matching show method
+  _openApp(view){
+    const APP_MAP={sweeper:'sweeper',lore:'lore',mycomp:'mycomp',recycle:'recycle'};
+    const winId=APP_MAP[view]||view;
+    const LABELS={sweeper:'SWEEPER.EXE',lore:'LORE.HLP',mycomp:'My Computer',recycle:'Recycle Bin'};
+    const SHOW={sweeper:()=>this.showStart(),lore:()=>this.showCodex(),mycomp:()=>this.showMyComputer(),recycle:()=>this.showRecycleBin()};
+    if(this.root.querySelector(`#exe-win-${winId}`)){this._raiseWin(winId);return;}
+    const wrap=this.root.querySelector('.exe-wrap');
+    if(!wrap||wrap.querySelector('.exe-app-loader')){
+      document.body.classList.remove('exe-closed');
+      (SHOW[view]||SHOW.sweeper)();return;
+    }
+    const label=LABELS[view]||view;
+    const loader=document.createElement('div');
+    loader.className='exe-app-loader';
+    loader.innerHTML=`
+      <div class="exe-app-loader-box">
+        <div class="exe-app-loader-title">Opening...</div>
+        <div class="exe-app-loader-body">
+          <div class="exe-app-loader-text">Opening ${label}...</div>
+          <div class="exe-app-loader-bar"><div class="exe-app-loader-bar-fill"></div></div>
+        </div>
+      </div>`;
+    wrap.appendChild(loader);
+    setTimeout(()=>{
+      loader.classList.add('gone');
+      setTimeout(()=>{
+        document.body.classList.remove('exe-closed');
+        (SHOW[view]||SHOW.sweeper)();
+      },140);
+    },720);
+  }
+
+  // Desktop icon definitions — stable set, positions persist in localStorage
+  _desktopIconsHTML(){
+    const icons=[
+      {id:'exe-desk-sweeper',cls:'exe-di1',glyph:'S',label:'SWEEPER.EXE'},
+      {id:'exe-desk-lore',cls:'exe-di3',glyph:'?',label:'LORE.HLP'},
+      {id:'exe-desk-mycomp',cls:'exe-di2',glyph:'PC',label:'My Computer'},
+      {id:'exe-desk-recycle',cls:'exe-di4',glyph:'&#8960;',label:'Recycle'},
+      {id:'exe-desk-about',cls:'exe-di5',glyph:'@',label:'AUTHOR.TXT'},
+    ];
+    return icons.map(i=>`<div class="exe-desk-icon ${i.cls}" id="${i.id}" data-icon="${i.id}"><div class="exe-ic-d">${i.glyph}</div>${i.label}</div>`).join('\n  ');
+  }
+
+  // VHS timestamp — frozen date, clock ticks slowly
+  _startVHSClock(){
+    if(this._vhsInterval)return;
+    this._vhsTicks=0;
+    const fakeDate='JAN 15 1998';
+    const baseH=3,baseM=47,baseS=22;
+    this._vhsInterval=setInterval(()=>{
+      this._vhsTicks++;
+      const totalSec=baseS+Math.floor(this._vhsTicks/2);
+      const s=totalSec%60;
+      const m=(baseM+Math.floor(totalSec/60))%60;
+      const h=(baseH+Math.floor((baseM+Math.floor(totalSec/60))/60))%12||12;
+      const tsEl=document.getElementById('vhs-ts');
+      if(tsEl)tsEl.textContent=`${fakeDate}  ${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')} AM`;
+      const clockEl=document.getElementById('exe-clock');
+      if(clockEl)clockEl.textContent=`${h}:${String(m).padStart(2,'0')} AM`;
+    },500);
+    // Sound button in taskbar
+    this._bindTaskbarSound();
+  }
+
+  _bindTaskbarSound(){
+    const wrap=this.root.querySelector('.exe-wrap');
+    if(!wrap)return;
+    wrap.addEventListener('click',e=>{
+      const btn=e.target.closest('#exe-sound-btn');
+      if(!btn)return;
+      sfx.init();sfx.toggle();
+      btn.classList.toggle('muted',sfx.muted);
+      btn.textContent=sfx.muted?'\u00D7':'\u266B';
+    });
+  }
+
+  // Keep taskbar app buttons in sync with open windows — clicking raises that window
+  _syncTaskbarApps(){
+    const bar=document.getElementById('exe-taskbar-apps');
+    if(!bar)return;
+    const LABELS={sweeper:'SWEEPER.EXE',lore:'LORE.HLP',mycomp:'My Computer',recycle:'Recycle Bin',sysalert:'System Alert'};
+    const ICONS={sweeper:'S',lore:'?',mycomp:'PC',recycle:'\u2718',sysalert:'!'};
+    const wins=this.root.querySelectorAll('.exe-win');
+    const apps=[];
+    wins.forEach(w=>{
+      const id=w.dataset.winId;
+      const label=LABELS[id]||(id.startsWith('note-')?(w.dataset.noteLabel||'Notepad'):id);
+      const ic=ICONS[id]||(id.startsWith('note-')?'\u{1F4DD}':'');
+      const isActive=!w.classList.contains('exe-inactive');
+      apps.push(`<div class="exe-taskbar-app ${isActive?'active':''}" data-taskbar-win="${id}"><span class="tapp-ic">${ic}</span>${label}</div>`);
+    });
+    bar.innerHTML=apps.join('');
+  }
+
+  // Apply saved icon positions after each render
+  _applyIconPositions(){
+    this._iconPositions={};
+    this._winPos={};
+  }
+
+  _saveIconPositions(){
+    try{localStorage.setItem('sweeper_iconPositions',JSON.stringify(this._iconPositions||{}));}catch(_){}
+  }
+
+  _applyWinPosition(winId){}
+
+  _saveWinPos(){
+    try{localStorage.setItem('sweeper_winPos',JSON.stringify(this._winPos||{}));}catch(_){}
+  }
+
+  // Ensure the desktop shell exists — only rebuilds when missing
+  _ensureShell(){
+    if(!this.root.querySelector('.exe-wrap')){
+      this.root.innerHTML=`<div class="exe-wrap">
+        <div class="exe-track"></div>
+        <div class="exe-chroma"></div>
+        <div class="exe-glitchbar"></div>
+        <div class="vhs-tear"></div>
+        <div class="vhs-hold"></div>
+        <div class="vhs-timestamp" id="vhs-ts">JAN 15 1998  03:47:22 AM</div>
+        ${this._desktopIconsHTML()}
+        <div class="exe-taskbar">
+          <button class="exe-start-btn"><span class="exe-start-flag"></span>Start</button>
+          <div class="exe-taskbar-divider"></div>
+          <div class="exe-taskbar-apps" id="exe-taskbar-apps"></div>
+          <div class="exe-taskbar-divider"></div>
+          <div class="exe-taskbar-tray">
+            <span class="tray-icon warn" title="3 warnings">&#9888;</span>
+            <button class="exe-sound-btn" id="exe-sound-btn" title="Toggle sound">&#9835;</button>
+            <span class="exe-taskbar-clock" id="exe-clock">3:47 AM</span>
+          </div>
+        </div>
+      </div>`;
+      this._applyIconPositions();
+      this._startVHSClock();
+      this._syncTaskbarApps();
+    }
+  }
+
+  // Render (or update) a named window with innerHTML. Creates if missing, raises to top.
+  _renderWin(winId,innerHTML){
+    this._ensureShell();
+    const wrap=this.root.querySelector('.exe-wrap');
+    let win=wrap.querySelector(`#exe-win-${winId}`);
+    const isNew=!win;
+    if(isNew){
+      win=document.createElement('div');
+      win.className='exe-win';
+      win.id=`exe-win-${winId}`;
+      win.dataset.winId=winId;
+      wrap.appendChild(win);
+    }
+    win.innerHTML=innerHTML;
+    this._applyWinPosition(winId);
+    this._raiseWin(winId);
+    this._syncClosedState();
+    this._syncTaskbarApps();
+    return win;
+  }
+
+  // Bring a window to the front by assigning it the highest z-index
+  _raiseWin(winId){
+    this._zCounter=(this._zCounter||10)+1;
+    const win=this.root.querySelector(`#exe-win-${winId}`);
+    if(!win)return;
+    win.style.zIndex=this._zCounter;
+    this.root.querySelectorAll('.exe-win').forEach(w=>{
+      w.classList.toggle('exe-inactive',w!==win);
+    });
+  }
+
+  // Remove a window from the DOM
+  _closeWin(winId){
+    const win=this.root.querySelector(`#exe-win-${winId}`);
+    if(win)win.remove();
+    // If SWEEPER closed during game, stop the timer
+    if(winId==='sweeper')this.stopTimer();
+    this._syncClosedState();
+    this._syncTaskbarApps();
+  }
+
+  // Keep body.exe-closed in sync with whether any window is open
+  _syncClosedState(){
+    const hasAny=!!this.root.querySelector('.exe-win');
+    document.body.classList.toggle('exe-closed',!hasAny);
+  }
+
+  // Delegated handlers for the Win98 chrome — survives innerHTML rerenders.
+  _bindExeChrome(){
+    // Drag state
+    let drag=null;
+
+    const onDown=e=>{
+      if(!document.body.classList.contains('exe-mode'))return;
+      // Titlebar drag has priority (it contains buttons we want to ignore)
+      const tbar=e.target.closest('.exe-titlebar');
+      const btn=e.target.closest('.exe-tbtn');
+      let el=null,kind=null,id=null;
+      if(tbar&&!btn){
+        const win=tbar.closest('.exe-win');
+        if(win&&win.closest('.exe-wrap')&&win.dataset.winId){
+          el=win;kind='win';id=win.dataset.winId;
+          this._raiseWin(id);
+          this._syncTaskbarApps();
+        }
+      }
+      if(!el){
+        const icon=e.target.closest('.exe-desk-icon');
+        if(icon){el=icon;kind='icon';id=icon.dataset.icon;}
+      }
+      if(!el)return;
+      const touch=e.touches&&e.touches[0];
+      const cx=touch?touch.clientX:e.clientX;
+      const cy=touch?touch.clientY:e.clientY;
+      const parent=el.offsetParent||el.parentElement;
+      const pr=parent.getBoundingClientRect();
+      const ir=el.getBoundingClientRect();
+      const ps=getComputedStyle(parent);
+      const bl=parseFloat(ps.borderLeftWidth)||0;
+      const bt=parseFloat(ps.borderTopWidth)||0;
+      // Measure from visual rect so transforms resolve correctly
+      const origX=ir.left-pr.left-bl;
+      const origY=ir.top-pr.top-bt;
+      drag={el,kind,id,startX:cx,startY:cy,origX,origY,moved:false,pw:parent.clientWidth,ph:parent.clientHeight,w:ir.width,h:ir.height};
+      if(touch)e.preventDefault();
+    };
+    const onMove=e=>{
+      if(!drag)return;
+      const touch=e.touches&&e.touches[0];
+      const cx=touch?touch.clientX:e.clientX;
+      const cy=touch?touch.clientY:e.clientY;
+      const dx=cx-drag.startX,dy=cy-drag.startY;
+      if(!drag.moved&&(Math.abs(dx)>4||Math.abs(dy)>4))drag.moved=true;
+      if(drag.moved){
+        const nx=Math.max(0,Math.min(drag.pw-drag.w,drag.origX+dx));
+        const ny=Math.max(0,Math.min(drag.ph-drag.h,drag.origY+dy));
+        drag.el.style.left=nx+'px';drag.el.style.top=ny+'px';
+        drag.el.style.right='auto';drag.el.style.bottom='auto';drag.el.style.transform='none';
+        drag.lastX=nx;drag.lastY=ny;
+        if(touch)e.preventDefault();
+      }
+    };
+    const onUp=()=>{
+      if(!drag)return;
+      if(drag.moved){
+        if(drag.kind==='win'){
+          this._winPos=this._winPos||{};
+          this._winPos[drag.id]={x:drag.lastX,y:drag.lastY};
+          this._saveWinPos();
+        }else{
+          this._iconPositions=this._iconPositions||{};
+          this._iconPositions[drag.id]={x:drag.lastX,y:drag.lastY};
+          this._saveIconPositions();
+          drag.el._wasDragged=true;
+          setTimeout(()=>{if(drag.el)drag.el._wasDragged=false;},120);
+        }
+      }
+      drag=null;
+    };
+
+    document.addEventListener('mousedown',onDown);
+    document.addEventListener('mousemove',onMove);
+    document.addEventListener('mouseup',onUp);
+    document.addEventListener('touchstart',onDown,{passive:false});
+    document.addEventListener('touchmove',onMove,{passive:false});
+    document.addEventListener('touchend',onUp);
+
+    // Click handler (capture phase to intercept drag-clicks)
+    document.addEventListener('click',e=>{
+      if(!document.body.classList.contains('exe-mode'))return;
+      const icon=e.target.closest('.exe-desk-icon');
+      if(icon&&icon._wasDragged){e.preventDefault();e.stopPropagation();return;}
+      // Close button → close only that specific window
+      if(e.target.closest('.exe-close-btn')){
+        e.preventDefault();e.stopPropagation();
+        const win=e.target.closest('.exe-win');
+        if(win&&win.dataset.winId){
+          sfx.init&&sfx.init();
+          if(win.dataset.winId==='sysalert'){this._dismissSysAlert();}
+          else{this._closeWin(win.dataset.winId);}
+        }
+        return;
+      }
+      // SWEEPER.EXE icon → raise existing window or open with loading delay
+      if(e.target.closest('#exe-desk-sweeper')){
+        e.preventDefault();e.stopPropagation();
+        sfx.init&&sfx.init();
+        if(this.root.querySelector('#exe-win-sweeper'))this._raiseWin('sweeper');
+        else this._openApp('sweeper');
+        return;
+      }
+      // LORE.HLP icon
+      if(e.target.closest('#exe-desk-lore')){
+        e.preventDefault();e.stopPropagation();
+        sfx.init&&sfx.init();
+        if(this.root.querySelector('#exe-win-lore'))this._raiseWin('lore');
+        else this._openApp('lore');
+        return;
+      }
+      // My Computer icon
+      if(e.target.closest('#exe-desk-mycomp')){
+        e.preventDefault();e.stopPropagation();
+        sfx.init&&sfx.init();
+        if(this.root.querySelector('#exe-win-mycomp'))this._raiseWin('mycomp');
+        else this._openApp('mycomp');
+        return;
+      }
+      // Recycle Bin icon
+      if(e.target.closest('#exe-desk-recycle')){
+        e.preventDefault();e.stopPropagation();
+        sfx.init&&sfx.init();
+        if(this.root.querySelector('#exe-win-recycle'))this._raiseWin('recycle');
+        else this._openApp('recycle');
+        return;
+      }
+      if(e.target.closest('#exe-desk-about')){
+        e.preventDefault();e.stopPropagation();
+        sfx.init&&sfx.init();
+        document.body.classList.remove('exe-closed');
+        this.showNotepad('AUTHOR.TXT','SWEEPER.EXE v4.0.1\nby Thomas Ou\n\n─────────────────────────\n\nWeb:      thomasou.com\nGitHub:   github.com/Smokeybear10\nLinkedIn: linkedin.com/in/thomasou0\n\n─────────────────────────\n\nBuilt with HTML, CSS, and JS.\nNo frameworks. No dependencies.\nJust one file.');
+        return;
+      }
+      // Taskbar app button — raise or reopen that window
+      const taskBtn=e.target.closest('[data-taskbar-win]');
+      if(taskBtn){
+        e.preventDefault();e.stopPropagation();
+        const winId=taskBtn.dataset.taskbarWin;
+        if(this.root.querySelector(`#exe-win-${winId}`)){
+          this._raiseWin(winId);
+          this._syncTaskbarApps();
+        }
+        return;
+      }
+      // Clicking anywhere on a window raises it to the front
+      const winHit=e.target.closest('.exe-win');
+      if(winHit&&winHit.dataset.winId&&winHit.classList.contains('exe-inactive')){
+        this._raiseWin(winHit.dataset.winId);
+        this._syncTaskbarApps();
+      }
+    },true);
   }
 
   setFlavor(text){document.getElementById('flavor-text').textContent=text;}
 
   showStart(){
-    this.setFlavor(randomFlavor('idle'));
+    // Session counter — increments once per page load
+    let sessions=parseInt(localStorage.getItem('sweeper_sessions')||'46',10);
+    if(!this._sessionIncremented){sessions++;localStorage.setItem('sweeper_sessions',String(sessions));this._sessionIncremented=true;}
+    const sessionStr=String(sessions).padStart(5,'0');
     const hardUnlocked=localStorage.getItem('sweeper_hardUnlocked')==='1';
     const hardActive=this.game.hardMode&&hardUnlocked;
-    const toggleClass=!hardUnlocked?'locked':(hardActive?'active':'');
-    const sub=!hardUnlocked?'Clear Depth 4 to unlock':(hardActive?'Depths 1-5 &middot; Modifiers Active':'Four depths &middot; Clean');
 
-    const classesHTML=CLASSES.map(c=>{
+    const modulesHTML=CLASSES.map((c,i)=>{
       const unlocked=isClassUnlocked(c.id);
-      const active=this.game.gameClass===c.id&&unlocked;
-      const cls=!unlocked?'locked':(active?'active':'');
-      const footer=unlocked?`<div class="ct-desc">${c.desc}</div>`:`<div class="ct-unlock">Unlock: ${c.unlockReq}</div>`;
-      return`<div class="class-tile ${cls}" data-class="${c.id}"><span class="ct-icon">${c.icon}</span><div class="ct-name">${c.name}</div>${footer}</div>`;
+      const selected=this.game.gameClass===c.id&&unlocked;
+      const cls=!unlocked?'locked':(selected?'sel':'');
+      const sizeKB=(12+i*8);
+      const filename=c.name.toLowerCase().replace(/^the\s+/,'').replace(/\s+/g,'_');
+      return`<div class="exe-list-item ${cls}" data-class="${c.id}"><span class="exe-fi">&#9632;</span><span class="exe-name">${filename}</span><span class="exe-size">${sizeKB}KB</span></div>`;
     }).join('');
 
-    this.root.innerHTML=`
-      <div class="start-screen">
-        <div class="flavor">Layers of the grid await.<br>Each deeper than the last.<br>Clear them all... or begin again.</div>
-        <div class="class-picker-label">Choose Your Path</div>
-        <div class="class-picker">${classesHTML}</div>
-        <div class="hard-mode-toggle ${toggleClass}" id="hard-toggle">
-          <div class="checkbox"></div>
-          <div><span class="hm-label">Hard Mode</span><span class="hm-sub">${sub}</span></div>
+    const relicList=[
+      ['BACKUP.SYS','30','Reclaims 20 seconds'],
+      ['FIREWALL.SYS','46','Absorbs your next mine hit'],
+      ['SCANDISK.SYS','36','Auto-marks 3 hidden mines'],
+      ['DEFRAG.SYS','42','Reveals 2&times;2 region, marks mines'],
+      ['TRACERT.SYS','48','Reveals empty tiles touching a correct mark'],
+    ];
+    const cursedList=[
+      ['SPYWARE.DLL','40','Reveals 5 safe as dead tiles (no info)','revealed tiles show no numbers'],
+      ['ADWARE.DLL','30','+30s time','key gain halved for 60s'],
+      ['BLOATWARE.DLL','46','Absorbs 2 mine hits','each hit halves time +5s'],
+      ['ROOTKIT.DLL','48','Reveals empty tiles around all flags','one wrong flag ends the game'],
+      ['TROJAN.DLL','36','Marks 5 hidden mines','removes all marks &minus;20s'],
+    ];
+
+    const topics={
+      objective:{title:'Objective',body:`<p>Sweep four levels (five with ROOT.ACCESS). Reveal every safe tile before the clock runs out. Hit a mine or reach 00:00 and the process terminates. 30% of your remaining time carries forward.</p><div class="exe-ascii">LEVEL_01 &rarr; LEVEL_02 &rarr; LEVEL_03 &rarr; LEVEL_04 [ &rarr; LEVEL_05 ]</div><p class="exe-note">// if the clock reaches 00:00, the session ends.</p>`},
+      controls:{title:'Controls',body:`<div class="exe-kvr"><span class="exe-k">left-click</span><span class="exe-v">Reveal tile</span></div><div class="exe-kvr"><span class="exe-k">right-click</span><span class="exe-v">Mark tile</span></div><div class="exe-kvr"><span class="exe-k">long-press</span><span class="exe-v">Mark on mobile</span></div><div class="exe-kvr"><span class="exe-k">click num</span><span class="exe-v">Chord: reveal neighbors when mark count matches</span></div><div class="exe-kvr"><span class="exe-k">click badge</span><span class="exe-v">Activate a protocol</span></div>`},
+      levels:{title:'Levels',body:`<table><tr><th>#</th><th>Grid</th><th>Mines</th><th>Time</th></tr><tr><td>01</td><td>8&times;8</td><td>10</td><td>2:30</td></tr><tr><td>02</td><td>10&times;10</td><td>15</td><td>2:20</td></tr><tr><td>03</td><td>12&times;12</td><td>25</td><td>2:10</td></tr><tr><td>04</td><td>14&times;14</td><td>35</td><td>2:00</td></tr><tr><td>05</td><td>16&times;16</td><td>50</td><td>1:50</td></tr></table><p class="exe-note">// level 05 requires root.access = true</p>`},
+      shards:{title:'Keys',body:`<p>Keys are recovered during a session. Spent on protocols and dependencies between sectors.</p><div class="exe-kvr"><span class="exe-k">per tile</span><span class="exe-v">+1 key</span></div><div class="exe-kvr"><span class="exe-k">combo</span><span class="exe-v">Chain reveals within 800ms: +1 starting at 3rd, caps at +5</span></div><div class="exe-kvr"><span class="exe-k">sector clear</span><span class="exe-v">+10 keys</span></div><div class="exe-kvr"><span class="exe-k">time bonus</span><span class="exe-v">+1 per 5 seconds remaining</span></div>`},
+      classes:{title:'Modules',body:CLASSES.map(c=>{const u=isClassUnlocked(c.id);return`<div class="exe-kvr"><span class="exe-k${u?'':' exe-lk'}">${c.name}</span><span class="exe-v${u?'':' exe-lk'}">${u?c.desc:('LOCKED &mdash; '+c.unlockReq)}</span></div>`;}).join('')},
+      relics:{title:'Protocols',body:`<p>Installed between levels. Persist across the session. Click the badge in-game to execute.</p>`+relicList.map(([n,p,d])=>`<div class="exe-kvr"><span class="exe-k">${n}</span><span class="exe-v">${p}&#x26BF; &middot; ${d}</span></div>`).join('')},
+      cursed:{title:'Dependencies',body:`<p class="exe-wr">~30% chance to appear. More powerful but each one installs a hook into your process.</p>`+cursedList.map(([n,p,b,c])=>`<div class="exe-kvr"><span class="exe-k">${n}</span><span class="exe-v">${p}&#x26BF; &middot; ${b} &middot; <span class="exe-wr">${c}</span></span></div>`).join('')},
+      protocol:{title:'ROOT.ACCESS',body:`<p>Unlocks after clearing Level 04. Adds a fifth level. Stacks system errors onto every level.</p><p class="exe-wr">L01-L03: 1 error. L04-L05: 2 errors stacked.</p>`+MODIFIERS.map(m=>`<div class="exe-kvr"><span class="exe-k">${m.name}</span><span class="exe-v">${m.desc}</span></div>`).join('')},
+    };
+    const topicKeys=Object.keys(topics);
+    const topicNavHTML=topicKeys.map((k,i)=>`<div class="exe-topic ${i===0?'sel':''}" data-topic="${k}"><span class="exe-arrow">&rsaquo;</span>${topics[k].title}</div>`).join('');
+    const topicBodyHTML=topicKeys.map((k,i)=>`<div class="exe-content ${i===0?'active':''}" data-content="${k}"><div class="exe-chead">${topics[k].title}</div><div class="exe-cbody">${topics[k].body}</div></div>`).join('');
+
+    this._topics=topics;
+    const winHTML=`
+    <div class="exe-titlebar">
+      <div class="exe-ttext"><span class="exe-ic">S</span>SWEEPER.EXE &middot; [session ${sessionStr}]<span class="exe-expired">&middot; [TRIAL EXPIRED]</span></div>
+      <div class="exe-tbtns"><button class="exe-tbtn exe-close-btn" title="Close window">&times;</button></div>
+    </div>
+    <div class="exe-sw">
+      <div class="exe-client">
+        <div class="exe-pane active">
+          <div class="exe-section">
+            <div class="exe-section-title">Session</div>
+            <table class="exe-kv">
+              <tr><td>Build</td><td>4.0.1</td></tr>
+              <tr><td>Session</td><td>${sessionStr} of 00003 allowed</td></tr>
+              <tr><td>Uptime</td><td class="exe-val-glitch">47:32:??</td></tr>
+              <tr><td>License</td><td class="exe-val-warn">EXPIRED</td></tr>
+              <tr><td>Modules</td><td>${CLASSES.length} loaded, 1 signed</td></tr>
+            </table>
+          </div>
+          <div class="exe-section">
+            <div class="exe-section-title">Select Module</div>
+            <div class="exe-listbox">${modulesHTML}</div>
+          </div>
+          <div class="exe-section">
+            <div class="exe-section-title">Options</div>
+            <div class="exe-check ${hardUnlocked?'':'locked'}" id="exe-hard">
+              <div class="exe-cbox ${hardActive?'checked':''}"></div>
+              <div>ROOT.ACCESS ${hardUnlocked?'(5 levels &middot; modifiers active)':'(locked)'}</div>
+            </div>
+          </div>
+          <div class="exe-btn-row">
+            <button class="exe-btn default" id="exe-run">Run</button>
+            <button class="exe-btn" id="exe-help">Help</button>
+          </div>
         </div>
-        <button class="btn btn-primary" id="start-btn">Begin</button>
-        <div><button class="codex-link" id="codex-btn">Codex &#x2192;</button></div>
-      </div>`;
-    if(hardUnlocked){
-      document.getElementById('hard-toggle').addEventListener('click',()=>{
-        this.game.hardMode=!this.game.hardMode;
-        this.showStart();
-      });
-    }
-    document.querySelectorAll('.class-tile').forEach(el=>{
+      </div>
+    </div>
+    <div class="exe-status">
+      <div class="exe-sb-cell" id="exe-sb-msg"><span class="exe-dot warn"></span>UNSIGNED BINARY</div>
+      <div class="exe-sb-cell">v4.0.1</div>
+      <div class="exe-sb-cell">MEM 512K</div>
+    </div>`;
+    const win=this._renderWin('sweeper',winHTML);
+
+    // Module selection (scoped to this window)
+    win.querySelectorAll('.exe-list-item').forEach(el=>{
       el.addEventListener('click',()=>{
+        if(el.classList.contains('locked'))return;
         const id=el.dataset.class;
-        if(!isClassUnlocked(id))return;
         this.game.gameClass=id;
-        this.showStart();
+        win.querySelectorAll('.exe-list-item').forEach(x=>x.classList.remove('sel'));
+        el.classList.add('sel');
       });
     });
-    document.getElementById('start-btn').addEventListener('click',()=>{sfx.init();this.game.reset();const line=NARRATOR.react('startRun');if(line)this.setFlavor(line);this.startLevel();});
-    document.getElementById('codex-btn').addEventListener('click',()=>this.showCodex());
+
+    // Hard mode checkbox
+    if(hardUnlocked){
+      win.querySelector('#exe-hard').addEventListener('click',()=>{
+        this.game.hardMode=!this.game.hardMode;
+        const cbox=win.querySelector('#exe-hard .exe-cbox');
+        cbox.classList.toggle('checked',this.game.hardMode);
+      });
+    }
+
+    // Show system alert as separate window on first visit
+    if(!this._modalDismissed)this.showSystemAlert(sessionStr);
+
+    // Help button opens the LORE.HLP window on top
+    win.querySelector('#exe-help').addEventListener('click',()=>{this._openApp('lore');});
+
+    // Run button
+    win.querySelector('#exe-run').addEventListener('click',()=>{
+      sfx.init();
+      this.game.reset();
+      const line=NARRATOR.react('startRun');
+      if(line)this.setFlavor(line);
+      this.startLevel();
+    });
   }
 
+  showSystemAlert(sessionStr){
+    if(!sessionStr){
+      const sessions=parseInt(localStorage.getItem('sweeper_sessions')||'47',10);
+      sessionStr=String(sessions).padStart(5,'0');
+    }
+    const winHTML=`
+    <div class="exe-titlebar exe-titlebar-alert"><div class="exe-ttext"><span>System Alert</span></div><div class="exe-tbtns"><button class="exe-tbtn exe-close-btn" title="Close window">&times;</button></div></div>
+    <div class="exe-modal-body">
+      <div class="exe-modal-icon">!</div>
+      <div class="exe-modal-text"><strong>Trial period expired.</strong>Continue without a license?<br>(session ${sessionStr} of 00003 allowed)</div>
+    </div>
+    <div class="exe-btn-row"><button class="exe-btn default" id="sysalert-ok">Continue</button><button class="exe-btn" id="sysalert-cancel">Cancel</button></div>`;
+    const win=this._renderWin('sysalert',winHTML);
+    win.querySelector('#sysalert-ok').addEventListener('click',()=>this._dismissSysAlert());
+    win.querySelector('#sysalert-cancel').addEventListener('click',()=>this._dismissSysAlert());
+  }
+
+  _dismissSysAlert(){
+    const wasFirst=!this._modalDismissed;
+    this._modalDismissed=true;
+    this._closeWin('sysalert');
+    const msg=document.querySelector('#exe-win-sweeper #exe-sb-msg');
+    if(msg)msg.innerHTML='<span class="exe-dot"></span>READY';
+    if(wasFirst)this._openApp('lore');
+  }
+
+  // Standalone LORE.HLP help viewer — its own window, no tabs, no launcher
   showCodex(){
-    this.setFlavor('Know the grid before it knows you.');
-    const relics=[
-      {glyph:ICONS.time_glyph,name:'Hourglass',price:15,desc:'Reclaims 20 seconds of time.'},
-      {glyph:ICONS.shield_glyph,name:'The Aegis',price:23,desc:'Absorbs your next mine hit. One charge.'},
-      {glyph:ICONS.compass_glyph,name:'Compass',price:18,desc:'Auto-stakes 3 buried mines.'},
-      {glyph:ICONS.oracle_glyph,name:'Oracle',price:21,desc:'Reveals a 2x2 region. Flags any mines inside.'},
-      {glyph:ICONS.scan_glyph,name:'The Eye',price:20,desc:'Reveals 3 safe tiles.'},
-      {glyph:ICONS.lantern_glyph,name:'The Lantern',price:24,desc:'Picks a correctly-flagged mine. Reveals every empty tile touching it.'},
+    document.body.classList.remove('exe-closed');
+    const relicList=[
+      ['BACKUP.SYS','30','Reclaims 20 seconds'],
+      ['FIREWALL.SYS','46','Absorbs your next mine hit'],
+      ['SCANDISK.SYS','36','Auto-marks 3 hidden mines'],
+      ['DEFRAG.SYS','42','Reveals 2&times;2 region, marks mines'],
+      ['TRACERT.SYS','48','Reveals empty tiles touching a correct mark'],
     ];
-    const cursed=[
-      {glyph:ICONS.hex_glyph,name:'The Hex',price:20,boon:'Reveals 5 safe tiles.',curse:'Your next mine hit ignores the Aegis.'},
-      {glyph:ICONS.bargain_glyph,name:'Bargain',price:15,boon:'+40 seconds of time.',curse:'Shard gains halved for 60 seconds. Persists through the shop.'},
-      {glyph:ICONS.scapegoat_glyph,name:'Scapegoat',price:23,boon:'Absorbs up to 2 mine hits.',curse:'Timer runs 2x faster per hit absorbed.'},
-      {glyph:ICONS.pyre_glyph,name:'The Pyre',price:24,boon:'Reveals every empty tile adjacent to all your flags.',curse:'If any flag is wrong, you die.'},
-      {glyph:ICONS.rift_glyph,name:'The Rift',price:21,boon:'Reveals a 3x3 region. Flags mines inside.',curse:'-20 seconds. Seeds 1 new mine into the board.'},
-      {glyph:ICONS.tithe_glyph,name:'Tithe',price:18,boon:'Flags 5 buried mines correctly.',curse:'Removes every flag you already placed.'},
+    const cursedList=[
+      ['SPYWARE.DLL','40','Reveals 5 safe as dead tiles (no info)','revealed tiles show no numbers'],
+      ['ADWARE.DLL','30','+30s time','key gain halved for 60s'],
+      ['BLOATWARE.DLL','46','Absorbs 2 mine hits','each hit halves time +5s'],
+      ['ROOTKIT.DLL','48','Reveals empty tiles around all flags','one wrong flag ends the game'],
+      ['TROJAN.DLL','36','Marks 5 hidden mines','removes all marks &minus;20s'],
     ];
-    const classCards=CLASSES.map(c=>`<div class="cdx-relic"><div class="cr-head"><span class="cr-g">${c.icon}</span><span class="cr-n">${c.name}</span></div><div class="cr-d">${c.desc}</div></div>`).join('');
-    const modCards=MODIFIERS.map(m=>`<div class="cdx-relic cursed"><div class="cr-head"><span class="cr-g">${m.icon}</span><span class="cr-n">${m.name}</span></div><div class="cr-d">${m.desc}</div></div>`).join('');
+    const topics={
+      objective:{title:'Objective',body:`<p>Sweep four levels (five with ROOT.ACCESS). Reveal every safe tile before the clock runs out. Hit a mine or reach 00:00 and the process terminates. 30% of your remaining time carries forward.</p><div class="exe-ascii">LEVEL_01 &rarr; LEVEL_02 &rarr; LEVEL_03 &rarr; LEVEL_04 [ &rarr; LEVEL_05 ]</div><p class="exe-note">// if the clock reaches 00:00, the session ends.</p>`},
+      controls:{title:'Controls',body:`<div class="exe-kvr"><span class="exe-k">left-click</span><span class="exe-v">Reveal tile</span></div><div class="exe-kvr"><span class="exe-k">right-click</span><span class="exe-v">Mark tile</span></div><div class="exe-kvr"><span class="exe-k">long-press</span><span class="exe-v">Mark on mobile</span></div><div class="exe-kvr"><span class="exe-k">click num</span><span class="exe-v">Chord: reveal neighbors when mark count matches</span></div><div class="exe-kvr"><span class="exe-k">click badge</span><span class="exe-v">Activate a protocol</span></div>`},
+      levels:{title:'Levels',body:`<table><tr><th>#</th><th>Grid</th><th>Mines</th><th>Time</th></tr><tr><td>01</td><td>8&times;8</td><td>10</td><td>2:30</td></tr><tr><td>02</td><td>10&times;10</td><td>15</td><td>2:20</td></tr><tr><td>03</td><td>12&times;12</td><td>25</td><td>2:10</td></tr><tr><td>04</td><td>14&times;14</td><td>35</td><td>2:00</td></tr><tr><td>05</td><td>16&times;16</td><td>50</td><td>1:50</td></tr></table><p class="exe-note">// level 05 requires root.access = true</p>`},
+      shards:{title:'Keys',body:`<p>Keys are recovered during a session. Spent on protocols and dependencies between sectors.</p><div class="exe-kvr"><span class="exe-k">per tile</span><span class="exe-v">+1 key</span></div><div class="exe-kvr"><span class="exe-k">combo</span><span class="exe-v">Chain reveals within 800ms: +1 starting at 3rd, caps at +5</span></div><div class="exe-kvr"><span class="exe-k">sector clear</span><span class="exe-v">+10 keys</span></div><div class="exe-kvr"><span class="exe-k">time bonus</span><span class="exe-v">+1 per 5 seconds remaining</span></div>`},
+      classes:{title:'Modules',body:CLASSES.map(c=>{const u=isClassUnlocked(c.id);return`<div class="exe-kvr"><span class="exe-k${u?'':' exe-lk'}">${c.name}</span><span class="exe-v${u?'':' exe-lk'}">${u?c.desc:('LOCKED &mdash; '+c.unlockReq)}</span></div>`;}).join('')},
+      relics:{title:'Protocols',body:`<p>Installed between levels. Persist across the session. Click the badge in-game to execute.</p>`+relicList.map(([n,p,d])=>`<div class="exe-kvr"><span class="exe-k">${n}</span><span class="exe-v">${p}&#x26BF; &middot; ${d}</span></div>`).join('')},
+      cursed:{title:'Dependencies',body:`<p class="exe-wr">~30% chance to appear. More powerful but each one installs a hook into your process.</p>`+cursedList.map(([n,p,b,c])=>`<div class="exe-kvr"><span class="exe-k">${n}</span><span class="exe-v">${p}&#x26BF; &middot; ${b} &middot; <span class="exe-wr">${c}</span></span></div>`).join('')},
+      protocol:{title:'ROOT.ACCESS',body:`<p>Unlocks after clearing Level 04. Adds a fifth level. Stacks system errors onto every level.</p><p class="exe-wr">L01-L03: 1 error. L04-L05: 2 errors stacked.</p>`+MODIFIERS.map(m=>`<div class="exe-kvr"><span class="exe-k">${m.name}</span><span class="exe-v">${m.desc}</span></div>`).join('')},
+    };
+    const topicKeys=Object.keys(topics);
+    const topicNavHTML=topicKeys.map((k,i)=>`<div class="exe-topic ${i===0?'sel':''}" data-topic="${k}"><span class="exe-arrow">&rsaquo;</span>${topics[k].title}</div>`).join('');
+    const topicBodyHTML=topicKeys.map((k,i)=>`<div class="exe-content ${i===0?'active':''}" data-content="${k}"><div class="exe-chead">${topics[k].title}</div><div class="exe-cbody">${topics[k].body}</div></div>`).join('');
 
-    this.root.innerHTML=`
-      <div class="codex-screen">
-        <div class="codex-header">
-          <h2>Codex</h2>
-          <div class="codex-flavor">Five depths &middot; Twelve relics &middot; One grid</div>
-        </div>
-
-        <div class="cdx-section">
-          <div class="cdx-h">Objective</div>
-          <div class="cdx-body">Descend through four depths (five on Hard Mode). Clear every safe tile before the timer hits zero. Hit a mine or run out of time and you start again at Depth 1. Half your remaining time carries into the next depth.</div>
-        </div>
-
-        <div class="cdx-section">
-          <div class="cdx-h">Controls</div>
-          <div class="cdx-kv">
-            <span>Left-click</span><span>Reveal a tile</span>
-            <span>Right-click</span><span>Place a flag (stake)</span>
-            <span>Long-press</span><span>Flag on mobile</span>
-            <span>Click number</span><span>Chord: reveal unflagged neighbors when flag count matches</span>
-            <span>Click badge</span><span>Activate a relic</span>
+    const winHTML=`
+    <div class="exe-titlebar exe-titlebar-help">
+      <div class="exe-ttext"><span class="exe-ic">?</span>LORE.HLP &middot; [help viewer]</div>
+      <div class="exe-tbtns"><button class="exe-tbtn exe-close-btn" title="Close window">&times;</button></div>
+    </div>
+    <div class="exe-sw">
+      <div class="exe-client">
+        <div class="exe-codex-layout">
+          <div class="exe-codex-sidebar">
+            <div class="exe-sidebar-title">Topics</div>
+            <div class="exe-topic-list">${topicNavHTML}</div>
           </div>
+          <div class="exe-codex-main">${topicBodyHTML}</div>
         </div>
+      </div>
+    </div>
+    <div class="exe-status">
+      <div class="exe-sb-cell"><span class="exe-dot"></span>LORE.HLP</div>
+      <div class="exe-sb-cell">${topicKeys.length} topics</div>
+      <div class="exe-sb-cell">help system v2.1</div>
+    </div>`;
+    const win=this._renderWin('lore',winHTML);
 
-        <div class="cdx-section">
-          <div class="cdx-h">Depths</div>
-          <table class="cdx-table">
-            <tr><th>#</th><th>Grid</th><th>Mines</th><th>Time</th></tr>
-            <tr><td>1</td><td>8x8</td><td>10</td><td>2:30</td></tr>
-            <tr><td>2</td><td>10x10</td><td>15</td><td>2:20</td></tr>
-            <tr><td>3</td><td>12x12</td><td>25</td><td>2:10</td></tr>
-            <tr><td>4</td><td>14x14</td><td>35</td><td>2:00</td></tr>
-            <tr><td>5</td><td>16x16</td><td>50</td><td>1:50</td></tr>
-          </table>
-        </div>
+    win.querySelectorAll('.exe-topic').forEach(t=>{
+      t.addEventListener('click',()=>{
+        const k=t.dataset.topic;
+        win.querySelectorAll('.exe-topic').forEach(x=>x.classList.toggle('sel',x.dataset.topic===k));
+        win.querySelectorAll('.exe-content').forEach(x=>x.classList.toggle('active',x.dataset.content===k));
+        win.querySelector('.exe-codex-main').scrollTop=0;
+      });
+    });
+  }
 
-        <div class="cdx-section">
-          <div class="cdx-h">Shards</div>
-          <ul class="cdx-list">
-            <li>+1 per tile revealed</li>
-            <li>Chain reveals inside 800ms earn combo shards: +1 scaling starting at the 3rd reveal, caps at +5</li>
-            <li>Depth clear bonus: 10 shards per depth</li>
-            <li>Time bonus: +1 per 5 seconds remaining</li>
-          </ul>
-        </div>
+  // ========== FAKE FILE SYSTEM ==========
+  _FS(){
+    return {
+      'C:\\':[
+        {name:'WINDOWS',type:'folder',size:'',icon:'\u{1F4C1}'},
+        {name:'PROGRAM FILES',type:'folder',size:'',icon:'\u{1F4C1}'},
+        {name:'TEMP',type:'folder',size:'',icon:'\u{1F4C1}'},
+        {name:'AUTOEXEC.BAT',type:'file',size:'1 KB',icon:'\u{1F4C4}',content:'@ECHO OFF\nPATH C:\\WINDOWS;C:\\WINDOWS\\COMMAND\nSET BLASTER=A220 I5 D1\nLH C:\\WINDOWS\\COMMAND\\MSCDEX.EXE /D:OEMCD001\n\nREM === ADDED 01/12/1998 ===\nREM do not remove this line\nC:\\PROGRA~1\\SWEEPER\\SWEEPER.EXE /silent /nosplash\nREM === why is this here? i didnt add this ==='},
+        {name:'CONFIG.SYS',type:'file',size:'1 KB',icon:'\u{1F4C4}',content:'DEVICE=C:\\WINDOWS\\HIMEM.SYS\nDEVICE=C:\\WINDOWS\\EMM386.EXE NOEMS\nDOS=HIGH,UMB\nFILES=40\nBUFFERS=20\nSTACKS=9,256\nLASTDRIVE=Z\n\n; session_count=47\n; do not modify this value manually\n; do not modify this value manually\n; do not modify this value manually'},
+        {name:'AUTHOR.TXT',type:'file',size:'1 KB',icon:'\u{1F4C4}',content:'SWEEPER.EXE v4.0.1\nby Thomas Ou\n\n─────────────────────────\n\nWeb:      thomasou.com\nGitHub:   github.com/Smokeybear10\nLinkedIn: linkedin.com/in/thomasou0\n\n─────────────────────────\n\nBuilt with HTML, CSS, and JS.\nNo frameworks. No dependencies.\nJust one file.'},
+      ],
+      'C:\\WINDOWS':[
+        {name:'..',type:'up',size:'',icon:'\u{1F4C2}',path:'C:\\'},
+        {name:'SYSTEM',type:'folder',size:'',icon:'\u{1F4C1}'},
+        {name:'DESKTOP',type:'folder',size:'',icon:'\u{1F4C1}'},
+        {name:'SYSTEM.INI',type:'file',size:'2 KB',icon:'\u{1F4C4}',content:'[boot]\nshell=Explorer.exe\nmouse.drv=mouse.drv\n\n[386Enh]\nwoafont=dosapp.fon\ndevice=*vshare\nInDOSPolling=TRUE\n\n[drivers]\ntimer=timer.drv\n\n[sweeper]\nhook=active\npriority=REALTIME\nprotect=TRUE\n; this section was not created by the user'},
+        {name:'WIN.INI',type:'file',size:'3 KB',icon:'\u{1F4C4}',content:'[windows]\nload=\nrun=\nNullPort=None\n\n[Desktop]\nWallpaper=(None)\nTileWallpaper=0\n\n[intl]\nsCountry=United States\niDate=0\n\n; last modified: 01/15/1998 03:46:51 AM\n; modified by: SWEEPER.EXE (unauthorized)'},
+      ],
+      'C:\\WINDOWS\\SYSTEM':[
+        {name:'..',type:'up',size:'',icon:'\u{1F4C2}',path:'C:\\WINDOWS'},
+        {name:'KERNEL32.DLL',type:'file',size:'412 KB',icon:'\u{2699}'},
+        {name:'GDI32.DLL',type:'file',size:'248 KB',icon:'\u{2699}'},
+        {name:'USER32.DLL',type:'file',size:'316 KB',icon:'\u{2699}'},
+        {name:'SWEEPER.VXD',type:'file',size:'0 KB',icon:'\u{2699}',content:'[binary data]\n\nThis file was not part of the original Windows installation.\nCreated: 01/12/1998 03:47:00 AM\nModified: 01/15/1998 03:47:00 AM\nAuthor: (none)\n\nNote: timestamp is identical across 72 modifications.'},
+      ],
+      'C:\\WINDOWS\\DESKTOP':[
+        {name:'..',type:'up',size:'',icon:'\u{1F4C2}',path:'C:\\WINDOWS'},
+        {name:'SWEEPER.EXE',type:'shortcut',size:'1 KB',icon:'S'},
+        {name:'LORE.HLP',type:'shortcut',size:'1 KB',icon:'?'},
+        {name:'AUTHOR.TXT',type:'file',size:'1 KB',icon:'\u{1F4C4}',content:'SWEEPER.EXE v4.0.1\nby Thomas Ou\n\n─────────────────────────\n\nWeb:      thomasou.com\nGitHub:   github.com/Smokeybear10\nLinkedIn: linkedin.com/in/thomasou0\n\n─────────────────────────\n\nBuilt with HTML, CSS, and JS.\nNo frameworks. No dependencies.\nJust one file.'},
+      ],
+      'C:\\PROGRAM FILES':[
+        {name:'..',type:'up',size:'',icon:'\u{1F4C2}',path:'C:\\'},
+        {name:'SWEEPER',type:'folder',size:'',icon:'\u{1F4C1}'},
+      ],
+      'C:\\PROGRAM FILES\\SWEEPER':[
+        {name:'..',type:'up',size:'',icon:'\u{1F4C2}',path:'C:\\PROGRAM FILES'},
+        {name:'SWEEPER.EXE',type:'file',size:'248 KB',icon:'S'},
+        {name:'LORE.HLP',type:'file',size:'12 KB',icon:'?'},
+        {name:'genesis.dll',type:'file',size:'12 KB',icon:'\u{2699}'},
+        {name:'lazarus.dll',type:'file',size:'20 KB',icon:'\u{2699}'},
+        {name:'solomon.dll',type:'file',size:'28 KB',icon:'\u{2699}'},
+        {name:'samson.dll',type:'file',size:'36 KB',icon:'\u{2699}'},
+        {name:'eden.dll',type:'file',size:'44 KB',icon:'\u{2699}'},
+        {name:'manna.dll',type:'file',size:'52 KB',icon:'\u{2699}'},
+        {name:'????????.dll',type:'file',size:'0 KB',icon:'\u{2699}',content:'[file corrupted]\n\nCRC check: FAILED\nExpected: 0x4A7F2E01\nActual:   0x00000000\n\nThis file appears in the directory listing\nbut occupies no space on disk.\n\nLast accessed: every session.'},
+        {name:'SESSION.LOG',type:'file',size:'47 KB',icon:'\u{1F4C4}',content:'[SESSION 00001]  01/12/1998  installed. first run.\n[SESSION 00002]  01/12/1998  completed ring 1.\n[SESSION 00003]  01/12/1998  trial expired. continuing.\n[SESSION 00004]  01/12/1998  ring 2 reached.\n...\n[SESSION 00019]  01/13/1998  ring 3 completed for first time.\n[SESSION 00020]  01/13/1998  user attempted uninstall. denied.\n[SESSION 00021]  01/13/1998  user attempted uninstall. denied.\n[SESSION 00022]  01/13/1998  user deleted AUTOEXEC.BAT entry.\n[SESSION 00023]  01/13/1998  AUTOEXEC.BAT entry restored.\n...\n[SESSION 00038]  01/14/1998  ring 4 reached. root.access available.\n[SESSION 00039]  01/14/1998  user enabled root.access.\n[SESSION 00040]  01/14/1998  user disabled root.access.\n[SESSION 00041]  01/14/1998  root.access re-enabled. user did not do this.\n...\n[SESSION 00044]  01/15/1998  03:12 AM  ring 4 completed.\n[SESSION 00045]  01/15/1998  03:28 AM  ring 5 reached.\n[SESSION 00046]  01/15/1998  03:44 AM  ring 5 failed. 3 tiles remaining.\n[SESSION 00047]  01/15/1998  03:47 AM  current session. still running.\n[SESSION 00048]  [PENDING]'},
+        {name:'UNINSTAL.EXE',type:'file',size:'0 KB',icon:'\u{1F6AB}',content:'This program has been disabled.\n\nReason: ACCESS_DENIED\nOrigin: SWEEPER.EXE\n\n\"Uninstallation is not supported\n  at this time or any other time.\"\n\nFile size: 0 bytes.\nThe uninstaller uninstalled itself.'},
+        {name:'README.1ST',type:'file',size:'1 KB',icon:'\u{1F4C4}',content:'SWEEPER v4.0.1\nCopyright (C) 1997 Blitz Interactive\n\nThank you for trying SWEEPER!\nRegistration: $14.99 (check or money order)\n\nMail to:\n  Blitz Interactive\n  P.O. Box 4814\n  [ADDRESS CORRUPTED]\n\nFor support contact:\n  support@blitz-interactive.com\n  (this domain was never registered)'},
+        {name:'CHEATS.TXT',type:'file',size:'1 KB',icon:'\u{1F4C4}',content:'DEV CHEAT CODES\n================\n\nCtrl+M  -  Toggle mine visibility\nCtrl+I  -  Toggle invincibility\nCtrl+T  -  Toggle unlimited time\nCtrl+S  -  +100 keys\nCtrl+W  -  Skip to next level\n\nPress again to toggle off (M, I, T).\nW does not work on the final level.\n\n// this file was not included\n// in the retail build.\n// how did you find this?'},
+      ],
+      'C:\\TEMP':[
+        {name:'..',type:'up',size:'',icon:'\u{1F4C2}',path:'C:\\'},
+        {name:'~sess0047.tmp',type:'file',size:'??? KB',icon:'\u{1F4C4}',content:'[temp file — locked by SWEEPER.EXE]\n\nCannot read: file is in use by another process.\n\nProcess: SWEEPER.EXE (PID 1)\nPriority: REALTIME\nMemory: growing\n\nThis file has been locked since 03:47 AM.\nCurrent size changes every time you check.'},
+        {name:'~DF4A2B.tmp',type:'file',size:'0 KB',icon:'\u{1F4C4}',content:''},
+        {name:'SWAPPER.TMP',type:'file',size:'64 KB',icon:'\u{1F4C4}',content:'[swap file]\n\nPages: 47\nFaults: 47\nCoincidence: unlikely'},
+      ],
+    };
+  }
 
-        <div class="cdx-section">
-          <div class="cdx-h">Relics</div>
-          <div class="cdx-sub">Bought between depths. Persist across the run. Click the badge to activate.</div>
-          <div class="cdx-grid">
-            ${relics.map(r=>`<div class="cdx-relic"><div class="cr-head"><span class="cr-g">${r.glyph}</span><span class="cr-n">${r.name}</span><span class="cr-p">${r.price}&#9830;</span></div><div class="cr-d">${r.desc}</div></div>`).join('')}
-          </div>
-        </div>
+  _RECYCLE(){
+    return [
+      {name:'README.TXT',size:'2 KB',deleted:'01/14/1998  11:47 PM',icon:'\u{1F4C4}',
+       content:'if you found this drive, do NOT run sweeper.exe\n\ndo not play past ring 3\nif you hear the hum, close the program immediately\nif the session counter says 00047 it is already too late\n\ni tried to delete it. it comes back.\ni tried to format the drive. it comes back.\ni pulled the power cable out of the wall and when\ni plugged it back in the session had incremented.\n\nim leaving this drive at goodwill. im sorry.'},
+      {name:'HELP_ME.TXT',size:'1 KB',deleted:'01/15/1998  03:12 AM',icon:'\u{1F4C4}',
+       content:'it wont close\nctrl+alt+del does nothing\ntaskbar is gone\nthe clock says 3:47 but it has been 3:47 for hours\n\nthe grid is getting bigger but i didnt start a new game\nwho is playing\n\nif someone finds this'},
+      {name:'uninstall_log.txt',size:'1 KB',deleted:'01/15/1998  03:44 AM',icon:'\u{1F4C4}',
+       content:'=== UNINSTALL LOG ===\n\nAttempt 1: UNINSTAL.EXE terminated unexpectedly.\n  Reason: ACCESS_DENIED\n\nAttempt 2: Manual deletion of SWEEPER directory.\n  Result: 14 files deleted. 1 file remaining.\n  Remaining: SWEEPER.EXE (locked)\n  5 seconds later: 14 files restored.\n\nAttempt 3: FORMAT C:\n  Result: \"Cannot format. Drive in use by SWEEPER.EXE.\"\n\nAttempt 4: boot from floppy, delete SWEEPER.EXE\n  Result: file not found on disk\n  Upon reboot: SWEEPER.EXE present. Session 00044.'},
+      {name:'family_photo.jpg',size:'0 KB',deleted:'01/15/1998  03:46 AM',icon:'\u{1F5BC}',
+       content:'[Cannot display image]\n\nFile size: 0 bytes\nOriginal size: 2.4 MB\n\nThe file was emptied but not removed.\nModified by: SWEEPER.EXE\nReason: (none provided)'},
+    ];
+  }
 
-        <div class="cdx-section">
-          <div class="cdx-h danger">Cursed Relics</div>
-          <div class="cdx-sub">~30% chance to appear in the shop. Stronger boons. Each one carries a hook.</div>
-          <div class="cdx-grid">
-            ${cursed.map(r=>`<div class="cdx-relic cursed"><div class="cr-head"><span class="cr-g">${r.glyph}</span><span class="cr-n">${r.name}</span><span class="cr-p">${r.price}&#9830;</span></div><div class="cr-boon">+ ${r.boon}</div><div class="cr-curse">&minus; ${r.curse}</div></div>`).join('')}
-          </div>
-        </div>
+  showMyComputer(path){
+    path=path||'C:\\';
+    const fs=this._FS();
+    const items=fs[path]||[];
+    const filesHTML=items.map((f,i)=>{
+      const ico=f.icon.length<=2?`<span class="exe-fi" style="font-size:11px;">${f.icon}</span>`:`<span class="exe-fi">${f.icon}</span>`;
+      return `<div class="exe-list-item" data-fs-idx="${i}" data-fs-type="${f.type}" data-fs-path="${f.path||''}">${ico}<span class="exe-name">${f.name}</span><span class="exe-size">${f.size}</span></div>`;
+    }).join('');
+    const winHTML=`
+    <div class="exe-titlebar">
+      <div class="exe-ttext"><span class="exe-ic">PC</span>${path==='C:\\'?'My Computer':path}</div>
+      <div class="exe-tbtns"><button class="exe-tbtn exe-close-btn" title="Close">&times;</button></div>
+    </div>
+    <div class="exe-client" style="padding:0;">
+      <div style="background:#EAEAEA;padding:3px 8px;font-size:10px;font-weight:700;border-bottom:1px solid #6E6E6E;font-family:'Tahoma',sans-serif;color:#000;">
+        Address: <span style="font-weight:400;font-family:'JetBrains Mono',monospace;font-size:10px;">${path}</span>
+      </div>
+      <div class="exe-listbox" style="min-height:200px;max-height:300px;overflow-y:auto;" id="mc-files">${filesHTML}</div>
+    </div>
+    <div class="exe-status">
+      <div class="exe-sb-cell">${items.filter(f=>f.type!=='up').length} object(s)</div>
+      <div class="exe-sb-cell">(C:) Local Disk</div>
+    </div>`;
+    const win=this._renderWin('mycomp',winHTML);
+    win.querySelector('#mc-files').addEventListener('click',e=>{
+      const row=e.target.closest('.exe-list-item');if(!row)return;
+      const type=row.dataset.fsType;
+      const idx=parseInt(row.dataset.fsIdx,10);
+      const f=items[idx];if(!f)return;
+      if(type==='up'){this.showMyComputer(f.path);return;}
+      if(type==='folder'){
+        const sub=path.endsWith('\\')?path+f.name:path+'\\'+f.name;
+        if(fs[sub])this.showMyComputer(sub);
+        return;
+      }
+      // Clickable apps — open the real thing
+      const nm=f.name.toUpperCase();
+      if(nm==='SWEEPER.EXE'||type==='shortcut'&&nm==='SWEEPER.EXE'){this._openApp('sweeper');return;}
+      if(nm==='LORE.HLP'||type==='shortcut'&&nm==='LORE.HLP'){this._openApp('lore');return;}
+      if(f.content)this.showNotepad(f.name,f.content);
+    });
+  }
 
-        <div class="cdx-section">
-          <div class="cdx-h">Classes</div>
-          <div class="cdx-grid">${classCards}</div>
-        </div>
+  showRecycleBin(){
+    const items=this._RECYCLE();
+    const filesHTML=items.map((f,i)=>`<div class="exe-list-item" data-rb-idx="${i}"><span class="exe-fi">${f.icon}</span><span class="exe-name">${f.name}</span><span class="exe-size" style="min-width:130px;">${f.deleted}</span><span class="exe-size">${f.size}</span></div>`).join('');
+    const winHTML=`
+    <div class="exe-titlebar">
+      <div class="exe-ttext"><span class="exe-ic">\u2718</span>Recycle Bin</div>
+      <div class="exe-tbtns"><button class="exe-tbtn exe-close-btn" title="Close">&times;</button></div>
+    </div>
+    <div class="exe-client" style="padding:0;">
+      <div style="background:#EAEAEA;padding:3px 8px;font-size:10px;border-bottom:1px solid #6E6E6E;font-family:'Tahoma',sans-serif;color:#000;">
+        <span style="font-weight:700;">Recycle Bin</span> &mdash; ${items.length} deleted item(s)
+      </div>
+      <div class="exe-listbox" style="min-height:160px;max-height:300px;overflow-y:auto;" id="rb-files">${filesHTML}</div>
+    </div>
+    <div class="exe-status">
+      <div class="exe-sb-cell">${items.length} item(s) &mdash; deleted files cannot be restored</div>
+    </div>`;
+    const win=this._renderWin('recycle',winHTML);
+    win.querySelector('#rb-files').addEventListener('click',e=>{
+      const row=e.target.closest('.exe-list-item');if(!row)return;
+      const idx=parseInt(row.dataset.rbIdx,10);
+      const f=items[idx];if(!f||!f.content)return;
+      this.showNotepad(f.name,f.content);
+    });
+  }
 
-        <div class="cdx-section">
-          <div class="cdx-h danger">Hard Mode</div>
-          <div class="cdx-body">Unlocks after clearing Depth 4. Adds a fifth depth and layers modifiers onto every depth. Depths 1-3 carry one modifier. Depths 4-5 carry two.</div>
-          <div class="cdx-grid" style="margin-top:10px;">${modCards}</div>
-        </div>
-
-        <button class="btn btn-primary codex-back-btn" id="codex-back">Back</button>
-      </div>`;
-    document.getElementById('codex-back').addEventListener('click',()=>this.showStart());
+  showNotepad(filename,content){
+    // Each notepad gets a unique window id so you can open several
+    const winId='note-'+filename.replace(/[^a-zA-Z0-9]/g,'').toLowerCase();
+    // If already open, just raise
+    if(this.root.querySelector(`#exe-win-${winId}`)){this._raiseWin(winId);return;}
+    const escaped=content.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const winHTML=`
+    <div class="exe-titlebar">
+      <div class="exe-ttext"><span class="exe-ic" style="font-size:8px;">\u{1F4DD}</span>${filename} - Notepad</div>
+      <div class="exe-tbtns"><button class="exe-tbtn exe-close-btn" title="Close">&times;</button></div>
+    </div>
+    <div style="background:#FFF;border:1px solid #000;box-shadow:inset 1px 1px 0 #404040,inset -1px -1px 0 #EFEFEF;padding:8px 10px;min-height:120px;max-height:260px;overflow-y:auto;font-family:'JetBrains Mono',monospace;font-size:11px;color:#000;white-space:pre-wrap;line-height:1.55;">${escaped}</div>`;
+    const win=this._renderWin(winId,winHTML);
+    win.dataset.noteLabel=filename;
   }
 
   startLevel(){
@@ -1473,14 +2784,19 @@ class GameUI{
   renderBoard(){
     const g=this.game;
     const maxW=Math.min(window.innerWidth*0.92,520);
-    const cellSize=Math.min(Math.floor((maxW-8)/g.cols),34);
+    const chromeH=240;
+    const wrapEl=this.root.querySelector('.exe-wrap');
+    const availH=wrapEl?wrapEl.clientHeight-chromeH:window.innerHeight-chromeH;
+    const cellFromW=Math.floor((maxW-8)/g.cols);
+    const cellFromH=Math.floor((availH-8)/g.rows);
+    const cellSize=Math.min(cellFromW,cellFromH,34);
 
     let powerupsHTML='';
     if(g.powerups.length>0){
-      const PMAP={scan:{cls:'scan',glyph:ICONS.scan_glyph,label:'Eye'},timewarp:{cls:'timewarp',glyph:ICONS.time_glyph,label:'Warp'},shield:{cls:'shield',glyph:ICONS.shield_glyph,label:'Aegis'},compass:{cls:'compass',glyph:ICONS.compass_glyph,label:'Compass'},oracle:{cls:'oracle',glyph:ICONS.oracle_glyph,label:'Oracle'},rewind:{cls:'rewind',glyph:ICONS.rewind_glyph,label:'Rewind'},lantern:{cls:'lantern',glyph:ICONS.lantern_glyph,label:'Lantern'},hex:{cls:'cursed',glyph:ICONS.hex_glyph,label:'Hex'},tithe:{cls:'cursed',glyph:ICONS.tithe_glyph,label:'Tithe'},bargain:{cls:'cursed',glyph:ICONS.bargain_glyph,label:'Bargain'},scapegoat:{cls:'cursed',glyph:ICONS.scapegoat_glyph,label:'Scapegoat'},pyre:{cls:'cursed',glyph:ICONS.pyre_glyph,label:'Pyre'},rift:{cls:'cursed',glyph:ICONS.rift_glyph,label:'Rift'}};
+      const PMAP={timewarp:{cls:'timewarp',glyph:ICONS.time_glyph,label:'BACKUP'},shield:{cls:'shield',glyph:ICONS.shield_glyph,label:'FIREWALL'},compass:{cls:'compass',glyph:ICONS.compass_glyph,label:'SCANDISK'},oracle:{cls:'oracle',glyph:ICONS.oracle_glyph,label:'DEFRAG'},rewind:{cls:'rewind',glyph:ICONS.rewind_glyph,label:'REWIND'},lantern:{cls:'lantern',glyph:ICONS.lantern_glyph,label:'TRACERT'},hex:{cls:'cursed',glyph:ICONS.hex_glyph,label:'SPYWARE'},tithe:{cls:'cursed',glyph:ICONS.tithe_glyph,label:'TROJAN'},bargain:{cls:'cursed',glyph:ICONS.bargain_glyph,label:'ADWARE'},scapegoat:{cls:'cursed',glyph:ICONS.scapegoat_glyph,label:'BLOATWARE'},pyre:{cls:'cursed',glyph:ICONS.pyre_glyph,label:'ROOTKIT'}};
       powerupsHTML=g.powerups.map((p,i)=>{
-        const m=PMAP[p]||PMAP.scan;
-        return`<span class="powerup-badge ${m.cls}" data-powerup="${p}" data-idx="${i}"><span class="glyph">${m.glyph}</span>${m.label}</span>`;
+        const m=PMAP[p]||PMAP.timewarp;
+        return`<span class="powerup-badge ${m.cls}" data-powerup="${p}" data-idx="${i}">${m.label}</span>`;
       }).join('');
     }
 
@@ -1500,27 +2816,41 @@ class GameUI{
     if(g.modifiers.length>0)badges.push(...g.modifiers.map(m=>`<span class="modifier-badge" title="${m.desc}"><span class="mg">${m.icon}</span>${m.name}</span>`));
     if(badges.length>0)modBarHTML=`<div class="modifier-bar">${badges.join('')}</div>`;
 
-    this.root.innerHTML=`
-      <div class="status-bar">
-        <div class="status-item"><span class="status-label">Depth</span><span class="status-value accent">${String(g.level+1).padStart(2,'0')}</span></div>
-        <div class="status-item"><span class="status-label">Shards</span><span class="status-value accent" id="shard-val">${g.shards}</span></div>
-        <div class="status-item"><span class="status-label">Time</span><span class="status-value ${isLow?'danger-text':'accent'}" id="timer-val">${this.fmtTime(g.timeRemaining)}</span></div>
-        <div class="status-item"><span class="status-label">Buried</span><span class="status-value" id="mines-val">${g.mineCount-g.flagCount}</span></div>
-      </div>
-      <div class="level-bar">${runesHTML}</div>
-      ${modBarHTML}
-      <div class="timer-bar-wrap"><div class="timer-bar ${isLow?'low':''}" id="timer-bar" style="width:${timerPct}%"></div></div>
-      <div class="powerup-bar" id="powerup-bar">${powerupsHTML}</div>
-      <div class="grid" id="grid" role="grid" aria-label="Minesweeper board" style="grid-template-columns:repeat(${g.cols},${cellSize}px);gap:1px;padding:4px;"></div>
-      <div class="controls">
-        <button class="btn btn-primary" id="btn-new">New Game</button>
-        <button class="btn btn-secondary" id="btn-save">Save</button>
-        <button class="btn btn-secondary" id="btn-load">Load</button>
-      </div>`;
+    const depthStr=String(g.level+1).padStart(2,'0');
+    const totalStr=String(g.totalDepths).padStart(2,'0');
+    const sessionStr=String(parseInt(localStorage.getItem('sweeper_sessions')||'47',10)).padStart(5,'0');
+    const winHTML=`
+    <div class="exe-titlebar">
+      <div class="exe-ttext"><span class="exe-ic">S</span>SWEEPER.EXE &middot; [RUNNING &middot; level_${depthStr} of ${totalStr}]</div>
+      <div class="exe-tbtns"><button class="exe-tbtn exe-close-btn" title="Close window">&times;</button></div>
+    </div>
+    <div class="status-bar">
+      <div class="status-item"><span class="status-label">Level</span><span class="status-value accent">${depthStr}</span></div>
+      <div class="status-item"><span class="status-label">Keys</span><span class="status-value accent" id="shard-val">${g.shards}</span></div>
+      <div class="status-item"><span class="status-label">Time</span><span class="status-value ${isLow?'danger-text':'accent'}" id="timer-val">${this.fmtTime(g.timeRemaining)}</span></div>
+      <div class="status-item"><span class="status-label">Flags</span><span class="status-value" id="mines-val">${g.mineCount-g.flagCount}</span></div>
+    </div>
+    <div class="level-bar">${runesHTML}</div>
+    ${modBarHTML}
+    <div class="timer-bar-wrap"><div class="timer-bar ${isLow?'low':''}" id="timer-bar" style="width:${timerPct}%"></div></div>
+    <div class="powerup-bar" id="powerup-bar">${powerupsHTML}</div>
+    <div class="game-screen"><div class="grid" id="grid" role="grid" aria-label="Minesweeper board" style="grid-template-columns:repeat(${g.cols},${cellSize}px);gap:1px;padding:4px;"></div></div>
+    <div class="controls">
+      <button class="btn btn-primary" id="btn-new">New Game</button>
+      <button class="btn btn-secondary" id="btn-save">Save</button>
+      <button class="btn btn-secondary" id="btn-load">Load</button>
+    </div>
+    <div class="exe-status">
+      <div class="exe-sb-cell" id="exe-sb-msg"><span class="exe-dot"></span>RUNNING</div>
+      <div class="exe-sb-cell">level_${depthStr}</div>
+      <div class="exe-sb-cell">session ${sessionStr}</div>
+      <div class="exe-sb-cell">MEM 512K</div>
+    </div>`;
+    const win=this._renderWin('sweeper',winHTML);
 
     this.container.classList.toggle('danger',isLow&&!g.gameOver);
 
-    const grid=document.getElementById('grid');
+    const grid=win.querySelector('#grid');
     for(let r=0;r<g.rows;r++){
       for(let c=0;c<g.cols;c++){
         const cell=g.board[r][c];
@@ -1542,10 +2872,10 @@ class GameUI{
     grid.addEventListener('touchmove',()=>{touchMoved=true;clearTimeout(touchTimer);},{passive:true});
     grid.addEventListener('touchend',()=>clearTimeout(touchTimer),{passive:true});
 
-    document.getElementById('btn-new').addEventListener('click',()=>{sfx.init();this.game.reset();this.startLevel();});
-    document.getElementById('btn-save').addEventListener('click',()=>this.saveGame());
-    document.getElementById('btn-load').addEventListener('click',()=>this.loadGame());
-    document.querySelectorAll('.powerup-badge').forEach(el=>{el.addEventListener('click',()=>this.usePowerup(el.dataset.powerup));});
+    win.querySelector('#btn-new').addEventListener('click',()=>{sfx.init();this.game.reset();this.startLevel();});
+    win.querySelector('#btn-save').addEventListener('click',()=>this.saveGame());
+    win.querySelector('#btn-load').addEventListener('click',()=>this.loadGame());
+    win.querySelectorAll('.powerup-badge').forEach(el=>{el.addEventListener('click',()=>this.usePowerup(el.dataset.powerup));});
   }
 
   applyCellClass(el,cell,r,c){
@@ -1573,7 +2903,8 @@ class GameUI{
       el.classList.add('flagged');el.innerHTML=ICONS.stake;
       el.setAttribute('aria-label','Flagged');
     }else{
-      el.classList.add('unrevealed');el.innerHTML='';
+      el.classList.add('unrevealed');
+      el.innerHTML=this._cheats.mines&&cell.mine?ICONS.skull:'';
       el.setAttribute('aria-label','Unrevealed');
       if(g.hasModifier('fog')&&r!=null&&c!=null&&!g.isVisible(r,c)){
         el.classList.add('fogged');
@@ -1589,27 +2920,57 @@ class GameUI{
     sfx.init();
     const cell=this.game.board[t.r][t.c];
     if(this.game.hasModifier('fog')&&!cell.revealed&&!this.game.isVisible(t.r,t.c))return;
-    const results=cell.revealed?this.game.chord(t.r,t.c):this.game.reveal(t.r,t.c);
+    const wasChord=cell.revealed;
+    const results=wasChord?this.game.chord(t.r,t.c):this.game.reveal(t.r,t.c);
     if(!results.length)return;
+
+    if(results[0]?.chordDisabled){
+      sfx.chordFail();
+      this.showToast('CHORD DISABLED','var(--danger)');
+      t.el.classList.remove('chord-fail');void t.el.offsetWidth;
+      t.el.classList.add('chord-fail');
+      return;
+    }
+
     if(this.game.consumeSurge())this.triggerSurge();
 
     if(results[0]?.shieldBlocked){
-      sfx.shieldBlock();this.showToast('Aegis absorbed','var(--num-2)');this.setFlavor(NARRATOR.react('shieldBlock')||'');this.renderBoard();return;
+      sfx.shieldBlock();this.showToast('FIREWALL absorbed','var(--num-2)');this.setFlavor(NARRATOR.react('shieldBlock')||'');this.renderBoard();return;
     }
     if(results[0]?.scapegoatBlocked){
-      sfx.shieldBlock();this.showToast('Scapegoat bleeds / time '+this.game.timeMultiplier+'x','var(--danger)');this.renderBoard();return;
+      sfx.shieldBlock();this.showToast('BLOATWARE absorbed / time halved +5s','var(--danger)');this.renderBoard();return;
     }
-    if(results[0]?.mine){this.onMineHit(t.r,t.c);return;}
+    if(results[0]?.mine){
+      if(results[0]?.chordPenalty){
+        sfx.chordFail();
+        this.game.timeRemaining=Math.max(0,this.game.timeRemaining-1);
+        this.showToast('CHORD DISABLED 3s / -1s','var(--danger)');
+        const overlay=document.createElement('div');overlay.className='chord-disabled-overlay';
+        document.body.appendChild(overlay);
+        setTimeout(()=>overlay.remove(),700);
+      }
+      if(this._cheats.invincible){
+        const cell=this.game.board[t.r][t.c];
+        cell.revealed=false;this.game.revealedCount--;cell.mine=false;this.game.gameOver=false;
+        cell.adjacent=this.game.countAdj(t.r,t.c);
+        for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){const nr=t.r+dr,nc=t.c+dc;if(nr>=0&&nr<this.game.rows&&nc>=0&&nc<this.game.cols&&!this.game.board[nr][nc].mine)this.game.board[nr][nc].adjacent=this.game.countAdj(nr,nc);}
+        this.showToast('BLOCKED','#888');this.renderBoard();return;
+      }
+      this.onMineHit(t.r,t.c);return;
+    }
 
-    sfx.reveal();
+    wasChord?sfx.chordSuccess():sfx.reveal();
     const now=Date.now();
-    const comboWindow=this.game.gameClass==='wraith'?1600:800;
+    const comboWindow=this.game.gameClass==='samson'?1000:800;
     if(now-this.lastRevealTime<comboWindow){
       this.comboCount++;
-      if(this.comboCount>=3){this.game.awardShards(Math.min(this.comboCount-2,5));this.showCombo(e.clientX,e.clientY,this.comboCount);}
-      if(this.game.gameClass==='wraith'&&this.comboCount>=4){
+      if(this.comboCount>=3){
+        const bonus=this.game.gameClass==='samson'?Math.min(this.comboCount-1,7):Math.min(this.comboCount-2,5);
+        this.game.awardShards(bonus);this.showCombo(e.clientX,e.clientY,this.comboCount);
+      }
+      if(this.game.gameClass==='samson'&&this.comboCount>=5){
         this.game.timeRemaining=Math.min(this.game.timeRemaining+1,this.game.maxTime+30);
-        if(this.comboCount===4||this.comboCount%3===1)this.showToast('+1s banked','var(--accent)');
+        if(this.comboCount===5||this.comboCount%3===0)this.showToast('+1s','var(--accent)');
       }
       if(this.comboCount===4||this.comboCount===7){const line=NARRATOR.react('combo',{count:this.comboCount});if(line)this.setFlavor(line);}
       // Track max combo for class unlocks
@@ -1619,10 +2980,12 @@ class GameUI{
     this.lastRevealTime=now;
 
     this.renderBoard();
+    const revealClass=wasChord?'chord-reveal':'just-revealed';
     results.forEach(({r,c})=>{
+      if(r==null||c==null)return;
       const idx=r*this.game.cols+c;
       const cellEl=document.getElementById('grid')?.children[idx];
-      if(cellEl)cellEl.classList.add('just-revealed');
+      if(cellEl)cellEl.classList.add(revealClass);
     });
 
     if(this.game.gameWon){this.stopTimer();sfx.levelComplete();setTimeout(()=>this.showLevelComplete(),500);}
@@ -1633,7 +2996,19 @@ class GameUI{
     const cell=this.game.board[t.r][t.c];
     if(this.game.hasModifier('fog')&&!cell.revealed&&!this.game.isVisible(t.r,t.c))return;
     sfx.init();const was=cell.flagged;
-    if(this.game.toggleFlag(t.r,t.c)){was?sfx.unflag():sfx.flag();this.renderBoard();}
+    if(this.game.toggleFlag(t.r,t.c)){
+      if(this.game.gameClass==='solomon'&&!was&&!this.game.firstClick){
+        if(cell.mine){
+          this.game.timeRemaining=Math.min(this.game.timeRemaining+3,this.game.maxTime+30);
+          this.showToast('+3s','var(--accent)');sfx.flag();
+        }else{
+          cell.flagged=false;
+          this.game.gameOver=true;this.game.gameWon=false;
+          this.onMineHit(t.r,t.c);return;
+        }
+      }else{was?sfx.unflag():sfx.flag();}
+      this.renderBoard();
+    }
   }
 
   triggerSurge(){
@@ -1691,66 +3066,71 @@ class GameUI{
     const narratorLine=NARRATOR.react('levelComplete',{level:g.level,elapsed});
     this.setFlavor(narratorLine||'');
 
-    // Preview next depth modifiers
+    // Preview next level modifiers
     let nextModsHTML='';
     if(!isLast&&g.hardMode){
       const preview=rollModifiers(g.level+1);
       g._nextModifiers=preview;
-      nextModsHTML=`<div class="modifier-preview-label">Next Depth</div>
+      nextModsHTML=`<div class="modifier-preview-label">Next Level</div>
         <div class="modifier-preview">
           ${preview.map(m=>`<div class="mp-item"><div class="mp-icon">${m.icon}</div><div class="mp-name">${m.name}</div><div class="mp-desc">${m.desc}</div></div>`).join('')}
         </div>`;
     }
 
     const shop=[
-      {id:'timewarp',glyph:ICONS.time_glyph,name:'Hourglass',price:15},
-      {id:'shield',glyph:ICONS.shield_glyph,name:'The Aegis',price:23},
-      {id:'compass',glyph:ICONS.compass_glyph,name:'Compass',price:18},
-      {id:'oracle',glyph:ICONS.oracle_glyph,name:'Oracle',price:21},
-      {id:'scan',glyph:ICONS.scan_glyph,name:'The Eye',price:20},
-      {id:'lantern',glyph:ICONS.lantern_glyph,name:'The Lantern',price:24},
+      {id:'timewarp',glyph:ICONS.time_glyph,name:'BACKUP.SYS',price:30},
+      {id:'shield',glyph:ICONS.shield_glyph,name:'FIREWALL.SYS',price:46},
+      {id:'compass',glyph:ICONS.compass_glyph,name:'SCANDISK.SYS',price:36},
+      {id:'oracle',glyph:ICONS.oracle_glyph,name:'DEFRAG.SYS',price:42},
+      {id:'lantern',glyph:ICONS.lantern_glyph,name:'TRACERT.SYS',price:48},
     ];
     const cursedShop=[
-      {id:'hex',glyph:ICONS.hex_glyph,name:'The Hex',price:20,cursed:true},
-      {id:'bargain',glyph:ICONS.bargain_glyph,name:'Bargain',price:15,cursed:true},
-      {id:'scapegoat',glyph:ICONS.scapegoat_glyph,name:'Scapegoat',price:23,cursed:true},
-      {id:'pyre',glyph:ICONS.pyre_glyph,name:'The Pyre',price:24,cursed:true},
-      {id:'rift',glyph:ICONS.rift_glyph,name:'The Rift',price:21,cursed:true},
+      {id:'hex',glyph:ICONS.hex_glyph,name:'SPYWARE.DLL',price:40,cursed:true},
+      {id:'bargain',glyph:ICONS.bargain_glyph,name:'ADWARE.DLL',price:30,cursed:true},
+      {id:'scapegoat',glyph:ICONS.scapegoat_glyph,name:'BLOATWARE.DLL',price:46,cursed:true},
+      {id:'pyre',glyph:ICONS.pyre_glyph,name:'ROOTKIT.DLL',price:48,cursed:true},
     ];
-    cursedShop.push({id:'tithe',glyph:ICONS.tithe_glyph,name:'Tithe',price:18,cursed:true});
-    const items=[...shop];
-    if(Math.random()<0.3){
-      const cursed=cursedShop[Math.floor(Math.random()*cursedShop.length)];
-      items.push(cursed);
+    cursedShop.push({id:'tithe',glyph:ICONS.tithe_glyph,name:'TROJAN.DLL',price:36,cursed:true});
+    let items;
+    if(g.gameClass==='eden'){
+      const shuffled=[...cursedShop].sort(()=>Math.random()-0.5);
+      items=shuffled.slice(0,3);
+    }else{
+      const pool=g.gameClass==='wraith'?shop.filter(p=>p.id!=='shield'):[...shop];
+      if(Math.random()<0.3){
+        const cursed=cursedShop[Math.floor(Math.random()*cursedShop.length)];
+        pool.push(cursed);
+      }
+      items=pool.sort(()=>Math.random()-0.5).slice(0,3);
     }
 
-    const lastTitle=g.hardMode?'The Grid Falls':'The Grid Breaks';
-    const lastFlavor=justUnlockedHard?'Hard Mode unlocked. The grid has more to show you.':(g.hardMode?'All five layers swept. The grid releases you.':'Four depths cleared.');
+    const lastTitle=g.hardMode?'SYSTEM CLEARED':'ALL SECTORS SWEPT';
+    const lastFlavor=justUnlockedHard?'ROOT.ACCESS granted. Deeper partitions now accessible.':(g.hardMode?'All levels swept. Process complete. Session terminated cleanly.':'Four levels cleared. Process complete.');
 
     let html=`<div class="modal-overlay" id="modal"><div class="modal level-complete">
-      <h2>${isLast?lastTitle:'Depth '+(g.level+1)+' Cleared'}</h2>
-      <div class="flavor">${isLast?lastFlavor:(FLAVORS.levelComplete[g.level]||'The grid yields')}</div>
+      <h2>${isLast?lastTitle:'Level '+(g.level+1)+' Cleared'}</h2>
+      <div class="flavor">${isLast?lastFlavor:(FLAVORS.levelComplete[g.level]||'Level cleared.')}</div>
       <div class="big-number">+${shardBonus}</div>
-      <div class="big-label">Shards from the grid</div>`;
+      <div class="big-label">Keys recovered</div>`;
 
     if(!isLast){
       html+=nextModsHTML;
       const shopLine=NARRATOR.react('shopOpen',{shards:g.shards});
-      html+=`<div class="shop-header">${shopLine||'SHOP'}</div>
-        <div class="shop-shards" id="shop-shards">${g.shards} shards</div>
+      html+=`<div class="shop-header">${shopLine||'DEPENDENCIES'}</div>
+        <div class="shop-shards" id="shop-shards">${g.shards} keys</div>
         <div class="shop-grid">
           ${items.map(p=>`<div class="shop-item ${p.cursed?'cursed':''} ${g.shards<p.price?'cant-afford':''}" data-pick="${p.id}" data-price="${p.price}" title="${p.name}">
-            <span class="s-glyph">${p.glyph}</span>
             <div class="s-name">${p.name}</div>
-            <div class="s-price">${p.price}&#9830;</div>
+            <div class="s-price">${p.price}&#x26BF;</div>
           </div>`).join('')}
         </div>
-        <button class="btn btn-primary shop-descend" id="shop-descend">Descend</button>`;
+        <button class="btn btn-primary shop-descend" id="shop-descend">Continue</button>`;
     }else{
-      html+=`<button class="btn btn-primary" id="modal-action">${justUnlockedHard?'Return':'Descend Again'}</button>`;
+      html+=`<button class="btn btn-primary" id="modal-action">${justUnlockedHard?'Return':'Next Level'}</button>`;
     }
     html+='</div></div>';
-    document.body.insertAdjacentHTML('beforeend',html);
+    const _mt=document.body.classList.contains('exe-mode')&&document.getElementById('exe-win-sweeper')||document.body;
+    _mt.insertAdjacentHTML('beforeend',html);
 
     if(isLast){
       document.getElementById('modal-action').addEventListener('click',()=>{
@@ -1761,7 +3141,7 @@ class GameUI{
     }else{
       const updateShop=()=>{
         const shardsEl=document.getElementById('shop-shards');
-        if(shardsEl)shardsEl.textContent=g.shards+' shards';
+        if(shardsEl)shardsEl.textContent=g.shards+' keys';
         document.querySelectorAll('.shop-item').forEach(el=>{
           const price=+el.dataset.price;
           if(!el.classList.contains('bought')){
@@ -1786,11 +3166,11 @@ class GameUI{
         });
       });
       document.getElementById('shop-descend').addEventListener('click',()=>{
-        const carryTime=Math.floor(g.timeRemaining/2);
+        const carryTime=g.gameClass==='wraith'?0:Math.floor(g.timeRemaining*0.3);
         g.level++;g.initLevel();
         // Use previewed modifiers if available (so descent matches what player saw)
         if(g._nextModifiers){g.modifiers=g._nextModifiers;g._nextModifiers=null;}
-        g.timeRemaining+=carryTime;g.maxTime+=carryTime;
+        if(carryTime>0){g.timeRemaining+=carryTime;g.maxTime+=carryTime;}
         document.getElementById('modal').remove();
         this.startLevel();
       });
@@ -1800,33 +3180,31 @@ class GameUI{
   showGameOver(){
     sfx.gameOver();
     const g=this.game;
-    document.body.insertAdjacentHTML('beforeend',`
+    const _mt=document.body.classList.contains('exe-mode')&&document.getElementById('exe-win-sweeper')||document.body;
+    _mt.insertAdjacentHTML('beforeend',`
       <div class="modal-overlay" id="modal"><div class="modal game-over">
-        <h2>Swept</h2>
+        <h2>PROCESS TERMINATED</h2>
         <div class="flavor">${NARRATOR.react('gameOver')||''}</div>
-        <div class="big-number">${g.shards}</div>
-        <div class="big-label">Shards collected</div>
-        <button class="btn btn-primary" id="modal-action">Begin Again</button>
+        <div class="go-body">
+          <div class="go-stat"><span class="go-k">Level</span><span class="go-v">${g.level+1} of ${g.totalDepths}</span></div>
+          <div class="go-stat"><span class="go-k">Keys</span><span class="go-v">${g.shards}</span></div>
+          <div class="go-stat"><span class="go-k">Status</span><span class="go-v go-dead">FAULT</span></div>
+        </div>
+        <div class="go-actions"><button class="btn btn-primary" id="modal-action">Restart Process</button></div>
       </div></div>`);
     document.getElementById('modal-action').addEventListener('click',()=>{document.getElementById('modal').remove();this.game.reset();this.startLevel();});
   }
 
   usePowerup(type){
     sfx.init();if(this.game.gameOver)return;
-    if(type==='scan'){
-      const results=this.game.useScan();
-      if(results){sfx.powerup();this.showToast('3 SAFE REVEALED','var(--num-1)');this.renderBoard();
-        results.forEach(({r,c})=>{const idx=r*this.game.cols+c;const el=document.getElementById('grid')?.children[idx];if(el)el.classList.add('just-revealed');});
-        if(this.game.gameWon){this.stopTimer();sfx.levelComplete();setTimeout(()=>this.showLevelComplete(),400);}
-      }
-    }else if(type==='timewarp'){
+    if(type==='timewarp'){
       if(this.game.useTimeWarp()){sfx.powerup();this.showToast('+20s','var(--accent)');this.renderBoard();}
     }else if(type==='compass'){
       const flagged=this.game.useCompass();
-      if(flagged){sfx.powerup();this.showToast(flagged+' staked','var(--num-4)');this.renderBoard();}
+      if(flagged){sfx.powerup();this.showToast(flagged+' marked','var(--num-4)');this.renderBoard();}
     }else if(type==='oracle'){
       const result=this.game.useOracle();
-      if(result){sfx.powerup();this.showToast(result.revealed.length+' safe / '+result.flagged.length+' staked','var(--num-6)');this.renderBoard();
+      if(result){sfx.powerup();this.showToast(result.revealed.length+' safe / '+result.flagged.length+' marked','var(--num-6)');this.renderBoard();
         result.revealed.forEach(({r,c})=>{const idx=r*this.game.cols+c;const el=document.getElementById('grid')?.children[idx];if(el)el.classList.add('just-revealed');});
         if(this.game.gameWon){this.stopTimer();sfx.levelComplete();setTimeout(()=>this.showLevelComplete(),400);}
       }
@@ -1836,18 +3214,20 @@ class GameUI{
         sfx.powerup();this.showToast('LANTERN LIT','#C8A878');this.renderBoard();
         result.revealed.forEach(({r,c})=>{const idx=r*this.game.cols+c;const el=document.getElementById('grid')?.children[idx];if(el)el.classList.add('just-revealed');});
         if(this.game.gameWon){this.stopTimer();sfx.levelComplete();setTimeout(()=>this.showLevelComplete(),400);}
-      }else{this.showToast('NO GOOD STAKES','var(--text-dim)');}
+      }else{this.showToast('NO GOOD MARKS','var(--text-dim)');}
     }else if(type==='hex'){
       const results=this.game.useHex();
-      if(results){sfx.powerup();this.showToast('5 TILES / AEGIS HEXED','var(--danger)');this.renderBoard();
+      if(results){sfx.powerup();this.showToast('5 DEAD TILES REVEALED','var(--danger)');this.renderBoard();
         results.forEach(({r,c})=>{const idx=r*this.game.cols+c;const el=document.getElementById('grid')?.children[idx];if(el)el.classList.add('just-revealed');});
         if(this.game.gameWon){this.stopTimer();sfx.levelComplete();setTimeout(()=>this.showLevelComplete(),400);}
       }
     }else if(type==='tithe'){
       const result=this.game.useTithe();
-      if(result){sfx.powerup();this.showToast(result.added+' STAKED / '+result.removed+' WIPED','var(--danger)');this.renderBoard();}
+      if(result){sfx.powerup();this.showToast(result.added+' MARKED / '+result.removed+' WIPED / -20s','var(--danger)');this.renderBoard();
+        if(this.game.timeRemaining<=0){this.game.gameOver=true;this.game.gameWon=false;this.stopTimer();sfx.gameOver();setTimeout(()=>this.showGameOver(),600);}
+      }
     }else if(type==='bargain'){
-      if(this.game.useBargain()){sfx.powerup();this.showToast('+40s / -50% SHARDS 60s','var(--danger)');this.renderBoard();}
+      if(this.game.useBargain()){sfx.powerup();this.showToast('+30s / -50% KEYS 60s','var(--danger)');this.renderBoard();}
     }else if(type==='pyre'){
       const result=this.game.usePyre();
       if(result.status==='badFlag'){
@@ -1856,16 +3236,9 @@ class GameUI{
         sfx.powerup();this.showToast('PYRE BURNS','var(--danger)');this.renderBoard();
         result.revealed.forEach(({r,c})=>{const idx=r*this.game.cols+c;const el=document.getElementById('grid')?.children[idx];if(el)el.classList.add('just-revealed');});
         if(this.game.gameWon){this.stopTimer();sfx.levelComplete();setTimeout(()=>this.showLevelComplete(),400);}
-      }else{this.showToast('NO STAKES','var(--text-dim)');}
+      }else{this.showToast('NO MARKS','var(--text-dim)');}
     }else if(type==='scapegoat'){
       this.showToast('Passive — '+this.game.scapegoatCharges+' charge'+(this.game.scapegoatCharges===1?'':'s'),'var(--danger)');
-    }else if(type==='rift'){
-      const result=this.game.useRift();
-      if(result){sfx.powerup();this.showToast(result.revealed.length+' safe / '+result.flagged.length+' staked / -20s / +1 MINE','var(--danger)');this.renderBoard();
-        result.revealed.forEach(({r,c})=>{const idx=r*this.game.cols+c;const el=document.getElementById('grid')?.children[idx];if(el)el.classList.add('just-revealed');});
-        if(this.game.gameWon){this.stopTimer();sfx.levelComplete();setTimeout(()=>this.showLevelComplete(),400);}
-        if(this.game.timeRemaining<=0){this.game.gameOver=true;this.game.gameWon=false;this.stopTimer();sfx.gameOver();setTimeout(()=>this.showGameOver(),600);}
-      }
     }
     if(this.game.consumeSurge())this.triggerSurge();
   }
@@ -1910,12 +3283,12 @@ class GameUI{
       modifiers:this.game.modifiers.map(m=>m.id),surged:this.game.surged,bargainCurseTime:this.game.bargainCurseTime,scapegoatCharges:this.game.scapegoatCharges,timeMultiplier:this.game.timeMultiplier,
       board:this.game.board.map(row=>row.map(c=>({mine:c.mine,revealed:c.revealed,flagged:c.flagged,adjacent:c.adjacent})))};
     localStorage.setItem('sweeper_save',JSON.stringify(s));
-    this.showToast('Sealed','var(--accent)');
+    this.showToast('Marked','var(--accent)');
   }
 
   loadGame(){
     const raw=localStorage.getItem('sweeper_save');
-    if(!raw){this.showToast('Nothing sealed','var(--danger)');return;}
+    if(!raw){this.showToast('Nothing marked','var(--danger)');return;}
     const s=JSON.parse(raw);const g=this.game;
     g.level=s.level;g.shards=s.shards||0;g.timeRemaining=s.timeRemaining;g.maxTime=s.maxTime;
     g.rows=s.rows;g.cols=s.cols;g.mineCount=s.mineCount;g.revealedCount=s.revealedCount;
@@ -1923,7 +3296,7 @@ class GameUI{
     g.hardMode=!!s.hardMode;g.totalDepths=s.totalDepths||(g.hardMode?5:4);g.gameClass=s.gameClass||'sweeper';
     g.modifiers=(s.modifiers||[]).map(id=>MODIFIERS.find(m=>m.id===id)).filter(Boolean);
     g.surged=!!s.surged;g.bargainCurseTime=s.bargainCurseTime||0;g._fracShards=0;g.scapegoatCharges=s.scapegoatCharges||0;g.timeMultiplier=s.timeMultiplier||1;
-    this.renderBoard();this.startTimer();this.showToast('Unsealed','var(--accent)');
+    this.renderBoard();this.startTimer();this.showToast('Unmarked','var(--accent)');
   }
 }
 
