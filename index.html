@@ -9,13 +9,18 @@
 <meta property="og:title" content="SWEEPER.EXE">
 <meta property="og:description" content="Recovered from an unregistered copy of SWEEPER.EXE. Trial expired. Session 00047. Tape is still running.">
 <meta property="og:type" content="website">
-<meta name="twitter:card" content="summary">
+<meta property="og:url" content="https://blitzsweep.vercel.app">
+<meta property="og:image" content="https://blitzsweep.vercel.app/assets/screenshots/desktop.gif">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="SWEEPER.EXE">
 <meta name="twitter:description" content="Recovered from an unregistered copy of SWEEPER.EXE. Trial expired. Session 00047. Tape is still running.">
+<meta name="twitter:image" content="https://blitzsweep.vercel.app/assets/screenshots/desktop.gif">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&family=VT323&display=swap">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&family=VT323&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"SWEEPER.EXE","description":"Minesweeper disguised as cursed shareware from 1997. Arcade pressure, escalating depths, CRT monitor, VHS artifacts, Windows 98 desktop.","url":"https://blitzsweep.vercel.app","applicationCategory":"Game","operatingSystem":"Web","author":{"@type":"Person","name":"Thomas Ou","url":"https://thomasou.com"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 <style>
 :root {
   --bg: #0A0808;
@@ -156,7 +161,7 @@ body{
   display:flex;align-items:center;justify-content:center;
   font-size:13px;
   color:var(--text-dim);
-  transition:all 0.3s;
+  transition:color 0.3s,text-shadow 0.3s,transform 0.3s,border-color 0.3s,background 0.3s;
   position:relative;
   border:1px solid rgba(200,168,72,0.04);
   background:rgba(0,0,0,0.3);
@@ -191,7 +196,7 @@ body{
 .powerup-badge{
   font-size:8px;letter-spacing:1px;text-transform:uppercase;
   padding:2px 6px;border-radius:0;cursor:pointer;
-  transition:all 0.15s;display:flex;align-items:center;gap:3px;
+  transition:background 0.15s,border-color 0.15s,opacity 0.15s;display:flex;align-items:center;gap:3px;
   border-top:1px solid rgba(200,168,72,0.06);
   border-left:1px solid rgba(200,168,72,0.04);
   border-bottom:1px solid rgba(0,0,0,0.4);
@@ -296,6 +301,15 @@ body{
 .powerup-badge:focus-visible{outline-offset:1px;}
 .powerup-option:focus-visible{border-color:var(--accent);box-shadow:0 0 20px var(--glow-accent);}
 
+/* ======== SKIP LINK ======== */
+.skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;z-index:10000;background:#000;color:var(--accent);padding:8px 16px;font-family:'Tahoma',sans-serif;font-size:12px;font-weight:700;border:2px solid var(--accent);text-decoration:none;}
+.skip-link:focus{position:fixed;left:50%;top:12px;transform:translateX(-50%);width:auto;height:auto;overflow:visible;}
+
+/* ======== REDUCED MOTION ======== */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;}
+}
+
 /* ======== CONTROLS ======== */
 .controls{
   display:flex;justify-content:center;gap:4px;
@@ -305,7 +319,7 @@ body{
 .btn{
   font-family:var(--font-mono);font-size:9px;font-weight:700;
   padding:5px 12px;border-radius:0;
-  cursor:pointer;transition:all 0.12s;letter-spacing:1.5px;text-transform:uppercase;
+  cursor:pointer;transition:background 0.12s,box-shadow 0.12s,border-color 0.12s;letter-spacing:1.5px;text-transform:uppercase;
 }
 .btn-primary{
   background:linear-gradient(180deg,#D4B850,var(--accent));color:var(--bg);
@@ -403,7 +417,7 @@ body{
   border-bottom:2px solid rgba(0,0,0,0.5);
   border-right:2px solid rgba(0,0,0,0.4);
   border-radius:0;padding:14px 12px;cursor:pointer;
-  transition:all 0.2s;width:110px;text-align:center;
+  transition:border-color 0.2s,box-shadow 0.2s,transform 0.2s;width:110px;text-align:center;
   position:relative;
 }
 .powerup-option:hover{
@@ -427,7 +441,7 @@ body{
   display:flex;flex-direction:column;align-items:center;padding:6px 6px;
   border-top:1px solid rgba(200,168,72,0.06);border-left:1px solid rgba(200,168,72,0.04);
   border-bottom:1px solid rgba(0,0,0,0.4);border-right:1px solid rgba(0,0,0,0.3);
-  border-radius:0;cursor:pointer;transition:all 0.15s;width:auto;min-width:72px;background:#141210;
+  border-radius:0;cursor:pointer;transition:border-color 0.15s,background 0.15s,opacity 0.15s;width:auto;min-width:72px;background:#141210;
 }
 .shop-item:hover{border-color:rgba(200,168,72,0.2);background:rgba(200,168,72,0.04);}
 .shop-item.cant-afford{opacity:0.3;cursor:default;}
@@ -451,7 +465,7 @@ body{
 .start-screen{text-align:center;padding:32px 20px;}
 .start-screen .flavor{font-size:10px;color:var(--text-dim);margin-bottom:20px;max-width:280px;line-height:1.6;letter-spacing:1px;font-family:var(--font-mono);}
 .start-screen .btn{font-size:10px;padding:8px 24px;letter-spacing:3px;}
-.hard-mode-toggle{display:flex;align-items:center;justify-content:center;gap:10px;margin:0 auto 18px;padding:8px 14px;max-width:260px;border-top:1px solid rgba(200,168,72,0.04);border-left:1px solid rgba(200,168,72,0.03);border-bottom:1px solid rgba(0,0,0,0.4);border-right:1px solid rgba(0,0,0,0.3);border-radius:0;background:#0E0C0A;cursor:pointer;transition:all 0.15s;}
+.hard-mode-toggle{display:flex;align-items:center;justify-content:center;gap:10px;margin:0 auto 18px;padding:8px 14px;max-width:260px;border-top:1px solid rgba(200,168,72,0.04);border-left:1px solid rgba(200,168,72,0.03);border-bottom:1px solid rgba(0,0,0,0.4);border-right:1px solid rgba(0,0,0,0.3);border-radius:0;background:#0E0C0A;cursor:pointer;transition:border-color 0.15s,background 0.15s;}
 .hard-mode-toggle:hover:not(.locked){border-color:rgba(184,32,32,0.3);background:rgba(184,32,32,0.04);}
 .hard-mode-toggle.locked{opacity:0.4;cursor:not-allowed;}
 .hard-mode-toggle.active{border-color:rgba(184,32,32,0.5);background:rgba(184,32,32,0.08);box-shadow:0 0 20px rgba(184,32,32,0.1);}
@@ -465,7 +479,7 @@ body{
 
 /* ======== CLASS PICKER ======== */
 .class-picker{display:flex;gap:8px;margin:0 auto 18px;max-width:320px;justify-content:center;flex-wrap:wrap;}
-.class-tile{flex:1;min-width:140px;max-width:160px;padding:10px 8px;border-top:1px solid rgba(200,168,72,0.04);border-left:1px solid rgba(200,168,72,0.03);border-bottom:1px solid rgba(0,0,0,0.4);border-right:1px solid rgba(0,0,0,0.3);border-radius:0;background:#0E0C0A;cursor:pointer;transition:all 0.15s;text-align:center;}
+.class-tile{flex:1;min-width:140px;max-width:160px;padding:10px 8px;border-top:1px solid rgba(200,168,72,0.04);border-left:1px solid rgba(200,168,72,0.03);border-bottom:1px solid rgba(0,0,0,0.4);border-right:1px solid rgba(0,0,0,0.3);border-radius:0;background:#0E0C0A;cursor:pointer;transition:border-color 0.15s,background 0.15s,transform 0.15s;text-align:center;}
 .class-tile:hover:not(.locked){border-color:rgba(200,168,72,0.3);background:rgba(200,168,72,0.04);transform:translateY(-2px);}
 .class-tile.active{border-color:var(--accent);background:rgba(200,168,72,0.08);box-shadow:0 0 20px rgba(200,168,72,0.15);}
 .class-tile.locked{opacity:0.4;cursor:not-allowed;}
@@ -535,7 +549,7 @@ body{
 .cdx-list li{margin-bottom:2px;}
 .cdx-list li::marker{color:var(--accent);}
 .cdx-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.cdx-relic{padding:10px 12px;border:1px solid rgba(255,255,255,0.06);border-radius:2px;background:rgba(0,0,0,0.25);transition:all 0.15s;}
+.cdx-relic{padding:10px 12px;border:1px solid rgba(255,255,255,0.06);border-radius:2px;background:rgba(0,0,0,0.25);transition:border-color 0.15s,background 0.15s;}
 .cdx-relic:hover{border-color:rgba(200,168,72,0.3);background:rgba(200,168,72,0.03);}
 .cdx-relic.cursed{border-color:rgba(184,32,32,0.15);}
 .cdx-relic.cursed:hover{border-color:rgba(184,32,32,0.35);background:rgba(184,32,32,0.04);}
@@ -550,7 +564,7 @@ body{
 .cr-boon{font-size:9px;color:var(--text);line-height:1.5;letter-spacing:0.3px;}
 .cr-curse{font-size:9px;color:var(--danger);line-height:1.5;letter-spacing:0.3px;margin-top:3px;opacity:0.85;}
 .codex-back-btn{margin-top:16px;width:100%;font-size:11px;letter-spacing:3px;padding:10px;}
-.codex-link{background:none;border:none;color:var(--text-dim);font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;padding:6px 14px;margin-top:4px;transition:all 0.15s;}
+.codex-link{background:none;border:none;color:var(--text-dim);font-family:var(--font-mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;padding:6px 14px;margin-top:4px;transition:color 0.15s,text-shadow 0.15s;}
 .codex-link:hover{color:var(--accent);text-shadow:0 0 8px var(--glow-accent);}
 @media (max-width:480px){.cdx-grid{grid-template-columns:1fr;}}
 
@@ -1249,6 +1263,16 @@ body.exe-mode .combo{color:var(--xta,#0A1163)!important;text-shadow:1px 1px 0 va
   95.5%{top:60%;opacity:0.6;}
   96%{top:-60px;opacity:0;}
 }
+/* ======== MOBILE VIEWPORT GATE ======== */
+#viewport-gate{display:none;position:fixed;inset:0;z-index:9999;background:#000;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;font-family:'Tahoma','Geneva',sans-serif;}
+#viewport-gate .vg-icon{font-size:48px;margin-bottom:24px;color:#808080;}
+#viewport-gate .vg-title{font-size:14px;font-weight:700;color:#C8C8C8;margin-bottom:12px;letter-spacing:1px;}
+#viewport-gate .vg-msg{font-size:11px;color:#808080;line-height:1.6;max-width:280px;}
+@media (max-width:640px){
+  #viewport-gate{display:flex;}
+  #game-root{display:none!important;}
+}
+
 /* ======== TOAST ======== */
 .toast-msg{
   position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
@@ -1266,6 +1290,12 @@ body.exe-mode .combo{color:var(--xta,#0A1163)!important;text-shadow:1px 1px 0 va
 </style>
 </head>
 <body class="exe-mode">
+<a href="#game-root" class="skip-link">Skip to game</a>
+<div id="viewport-gate">
+  <div class="vg-icon">&#9632;</div>
+  <div class="vg-title">SWEEPER.EXE</div>
+  <div class="vg-msg">This program requires a wider viewport to run.<br><br>Please use a desktop or laptop computer.<br><br><span style="color:#404040;font-size:10px;">MINIMUM RESOLUTION: 640 x 480</span></div>
+</div>
 <div id="screen">
 
 <noscript><div style="text-align:center;padding:40px;color:#C8C8D4;font-family:monospace;">SWEEPER requires JavaScript to play.</div></noscript>
@@ -1277,7 +1307,7 @@ body.exe-mode .combo{color:var(--xta,#0A1163)!important;text-shadow:1px 1px 0 va
 
 <div id="game-wrapper">
   <div class="game-container" id="game-container">
-    <div id="game-root"></div>
+    <main id="game-root"></main>
   </div>
 </div>
 
@@ -3163,7 +3193,7 @@ class GameUI{
           }
         }else{
           const out=document.createElement('div');
-          out.className='term-line';out.innerHTML='<span class="term-err">Bad command or file name: '+cmd+'</span>';
+          out.className='term-line';out.innerHTML='<span class="term-err">Bad command or file name: '+cmd.replace(/</g,'&lt;')+'</span>';
           output.appendChild(out);
         }
       }
@@ -3270,6 +3300,20 @@ class GameUI{
     grid.addEventListener('touchstart',e=>{touchMoved=false;touchTimer=setTimeout(()=>{if(!touchMoved)this.handleRightClick(e);},400);},{passive:true});
     grid.addEventListener('touchmove',()=>{touchMoved=true;clearTimeout(touchTimer);},{passive:true});
     grid.addEventListener('touchend',()=>clearTimeout(touchTimer),{passive:true});
+    // Keyboard navigation: arrows to move, Enter/Space to reveal, F to flag
+    grid.addEventListener('keydown',e=>{
+      const el=e.target.closest('.cell');if(!el)return;
+      const r=+el.dataset.r,c=+el.dataset.c,cols=this.game.cols,rows=this.game.rows;
+      let nr=r,nc=c;
+      if(e.key==='ArrowUp')nr=Math.max(0,r-1);
+      else if(e.key==='ArrowDown')nr=Math.min(rows-1,r+1);
+      else if(e.key==='ArrowLeft')nc=Math.max(0,c-1);
+      else if(e.key==='ArrowRight')nc=Math.min(cols-1,c+1);
+      else if(e.key==='Enter'||e.key===' '){e.preventDefault();this.handleClick(e);return;}
+      else if(e.key==='f'||e.key==='F'){e.preventDefault();this.handleRightClick(e);return;}
+      else return;
+      if(nr!==r||nc!==c){e.preventDefault();const next=grid.children[nr*cols+nc];if(next)next.focus();}
+    });
 
     win.querySelector('#btn-new').addEventListener('click',()=>{sfx.init();this.game.reset();this.startLevel();});
     win.querySelector('#btn-save').addEventListener('click',()=>this.saveGame());

@@ -6,9 +6,21 @@ Minesweeper disguised as cursed shareware from 1997. Arcade pressure, escalating
 
 ## Quick Start
 
-Open `index.html` in any browser. No install, no server, no dependencies.
+Open `index.html` in any browser. No install, no build step, no dependencies.
 
-Or host anywhere that serves static files (GitHub Pages, Netlify, etc).
+### Run locally
+
+```bash
+git clone https://github.com/Smokeybear10/BLITZSWEEP.git
+cd BLITZSWEEP
+python3 -m http.server 2300
+```
+
+Open [http://localhost:2300](http://localhost:2300).
+
+### Deploy
+
+Host anywhere that serves static files — Vercel, GitHub Pages, Netlify, etc. No framework or build command needed.
 
 ## What It Does
 
