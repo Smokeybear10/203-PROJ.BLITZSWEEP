@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://sweeperexe.vercel.app/sitemap.xml

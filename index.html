@@ -15,7 +15,9 @@
 <meta name="twitter:title" content="SWEEPER.EXE">
 <meta name="twitter:description" content="Recovered from an unregistered copy of SWEEPER.EXE. Trial expired. Session 00047. Tape is still running.">
 <meta name="twitter:image" content="https://sweeperexe.vercel.app/assets/screenshots/desktop.gif">
+<link rel="canonical" href="https://sweeperexe.vercel.app/">
 <link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&family=VT323&display=swap">
@@ -1686,9 +1688,18 @@ const sfx=new SoundEngine();
 document.getElementById('mute-btn').addEventListener('click',()=>sfx.toggle());
 document.addEventListener('click',e=>{
   sfx.init();
-  const t=e.target.closest('button,.btn,.cell,.exe-topic,.exe-list-item,.shop-item,.file-row,.rb-file,.taskbar-btn,.start-item,.desktop-icon,#exe-run,#exe-help,#exe-hard,#sysalert-ok,#sysalert-cancel,#btn-new,#btn-save,#btn-load,#modal-action,.shop-descend,.powerup-badge');
+  const t=e.target.closest('button,.btn,.cell,.exe-topic,.exe-list-item,.shop-item,.file-row,.rb-file,.taskbar-btn,.start-item,.desktop-icon,.exe-desk-icon,.exe-taskbar-app,#exe-run,#exe-help,#exe-hard,#sysalert-ok,#sysalert-cancel,#btn-new,#btn-save,#btn-load,#modal-action,.shop-descend,.powerup-badge');
   if(t)sfx.click();
 },true);
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Enter'&&e.key!==' ')return;
+  const el=e.target;
+  if(el.tagName==='BUTTON'||el.tagName==='A'||el.tagName==='INPUT')return;
+  if(el.getAttribute('role')==='button'||el.getAttribute('role')==='checkbox'){
+    e.preventDefault();
+    el.click();
+  }
+});
 
 // ============================================================
 // FLAVOR TEXT
@@ -2347,7 +2358,7 @@ class GameUI{
       {id:'exe-desk-terminal',cls:'exe-di5',glyph:'&gt;_',label:'COMMAND'},
       {id:'exe-desk-about',cls:'exe-di6',glyph:'@',label:'AUTHOR.TXT'},
     ];
-    return icons.map(i=>`<div class="exe-desk-icon ${i.cls}" id="${i.id}" data-icon="${i.id}"><div class="exe-ic-d">${i.glyph}</div>${i.label}</div>`).join('\n  ');
+    return icons.map(i=>`<div class="exe-desk-icon ${i.cls}" id="${i.id}" data-icon="${i.id}" role="button" tabindex="0" aria-label="${i.label}"><div class="exe-ic-d" aria-hidden="true">${i.glyph}</div>${i.label}</div>`).join('\n  ');
   }
 
   // VHS timestamp — frozen date, clock ticks slowly
@@ -2396,7 +2407,7 @@ class GameUI{
       const label=LABELS[id]||(id.startsWith('note-')?(w.dataset.noteLabel||'Notepad'):id);
       const ic=ICONS[id]||(id.startsWith('note-')?'\u{1F4DD}':'');
       const isActive=!w.classList.contains('exe-inactive');
-      apps.push(`<div class="exe-taskbar-app ${isActive?'active':''}" data-taskbar-win="${id}"><span class="tapp-ic">${ic}</span>${label}</div>`);
+      apps.push(`<div class="exe-taskbar-app ${isActive?'active':''}" data-taskbar-win="${id}" role="button" tabindex="0"><span class="tapp-ic" aria-hidden="true">${ic}</span>${label}</div>`);
     });
     bar.innerHTML=apps.join('');
   }
@@ -2426,12 +2437,12 @@ class GameUI{
         <div class="exe-glitchbar"></div>
         <div class="vhs-tear"></div>
         <div class="vhs-hold"></div>
-        <div class="vhs-timestamp" id="vhs-ts">JAN 15 1998  03:47:22 AM</div>
+        <div class="vhs-timestamp" id="vhs-ts" aria-hidden="true">JAN 15 1998  03:47:22 AM</div>
         ${this._desktopIconsHTML()}
         <div class="exe-taskbar">
           <div class="exe-start-menu" id="exe-start-menu">
             <div class="exe-start-menu-items" style="margin-left:0;">
-              <div class="start-item" data-start-action="restart"><span class="si-icon">&#x21BB;</span>Restart</div>
+              <div class="start-item" data-start-action="restart" role="button" tabindex="0"><span class="si-icon" aria-hidden="true">&#x21BB;</span>Restart</div>
             </div>
           </div>
           <button class="exe-start-btn" id="exe-start-btn"><span class="exe-start-flag"></span>Start</button>
@@ -2733,7 +2744,7 @@ class GameUI{
       const cls=!unlocked?'locked':(selected?'sel':'');
       const sizeKB=(12+i*8);
       const filename=c.name.toLowerCase().replace(/^the\s+/,'').replace(/\s+/g,'_');
-      return`<div class="exe-list-item ${cls}" data-class="${c.id}"><span class="exe-fi">&#9632;</span><span class="exe-name">${filename}</span><span class="exe-size">${sizeKB}KB</span></div>`;
+      return`<div class="exe-list-item ${cls}" data-class="${c.id}" role="button" tabindex="${unlocked?'0':'-1'}" aria-disabled="${!unlocked}"><span class="exe-fi" aria-hidden="true">&#9632;</span><span class="exe-name">${filename}</span><span class="exe-size">${sizeKB}KB</span></div>`;
     }).join('');
 
     const relicList=[
@@ -2762,14 +2773,14 @@ class GameUI{
       protocol:{title:'ROOT.ACCESS',body:localStorage.getItem('sweeper_hardUnlocked')==='1'?`<p>Unlocks after clearing Level 04. Adds a fifth level. Stacks system errors onto every level.</p><p class="exe-wr">L01-L03: 1 error. L04-L05: 2 errors stacked.</p>`+MODIFIERS.map(m=>`<div class="exe-kvr"><span class="exe-k">${m.name}</span><span class="exe-v">${m.desc}</span></div>`).join(''):`<p><span class="exe-censor">Unlocks after</span> clearing Level 04. <span class="exe-censor">Adds a fifth level.</span> <span class="exe-censor">Stacks system errors onto every level.</span></p><p class="exe-wr"><span class="exe-censor">L01-L03: 1 error.</span> <span class="exe-censor">L04-L05: 2 errors stacked.</span></p><div class="exe-kvr"><span class="exe-k"><span class="exe-censor">REDACTED</span></span><span class="exe-v"><span class="exe-censor">classified information</span></span></div><div class="exe-kvr"><span class="exe-k"><span class="exe-censor">REDACTED</span></span><span class="exe-v"><span class="exe-censor">classified information</span></span></div><div class="exe-kvr"><span class="exe-k"><span class="exe-censor">REDACTED</span></span><span class="exe-v"><span class="exe-censor">classified information</span></span></div>`},
     };
     const topicKeys=Object.keys(topics);
-    const topicNavHTML=topicKeys.map((k,i)=>`<div class="exe-topic ${i===0?'sel':''}" data-topic="${k}"><span class="exe-arrow">&rsaquo;</span>${topics[k].title}</div>`).join('');
+    const topicNavHTML=topicKeys.map((k,i)=>`<div class="exe-topic ${i===0?'sel':''}" data-topic="${k}" role="button" tabindex="0"><span class="exe-arrow" aria-hidden="true">&rsaquo;</span>${topics[k].title}</div>`).join('');
     const topicBodyHTML=topicKeys.map((k,i)=>`<div class="exe-content ${i===0?'active':''}" data-content="${k}"><div class="exe-chead">${topics[k].title}</div><div class="exe-cbody">${topics[k].body}</div></div>`).join('');
 
     this._topics=topics;
     const winHTML=`
     <div class="exe-titlebar">
-      <div class="exe-ttext"><span class="exe-ic">S</span>SWEEPER.EXE &middot; [session ${sessionStr}]<span class="exe-expired">&middot; [TRIAL EXPIRED]</span></div>
-      <div class="exe-tbtns"><button class="exe-tbtn exe-reload-btn" title="Reload">&#x21BB;</button><button class="exe-tbtn exe-close-btn" title="Close window">&times;</button></div>
+      <div class="exe-ttext"><span class="exe-ic" aria-hidden="true">S</span>SWEEPER.EXE<span class="exe-expired" aria-hidden="true"> &middot; [session ${sessionStr}] &middot; [TRIAL EXPIRED]</span></div>
+      <div class="exe-tbtns"><button class="exe-tbtn exe-reload-btn" title="Reload" aria-label="Reload">&#x21BB;</button><button class="exe-tbtn exe-close-btn" title="Close window" aria-label="Close">&times;</button></div>
     </div>
     <div class="exe-sw">
       <div class="exe-client">
@@ -2790,8 +2801,8 @@ class GameUI{
           </div>
           ${hardUnlocked?`<div class="exe-section">
             <div class="exe-section-title">Options</div>
-            <div class="exe-check" id="exe-hard">
-              <div class="exe-cbox ${hardActive?'checked':''}"></div>
+            <div class="exe-check" id="exe-hard" role="checkbox" tabindex="0" aria-checked="${hardActive}">
+              <div class="exe-cbox ${hardActive?'checked':''}" aria-hidden="true"></div>
               <div>ROOT.ACCESS (5 levels &middot; modifiers active)</div>
             </div>
           </div>`:''}
@@ -2824,8 +2835,9 @@ class GameUI{
     if(hardUnlocked){
       win.querySelector('#exe-hard').addEventListener('click',()=>{
         this.game.hardMode=!this.game.hardMode;
-        const cbox=win.querySelector('#exe-hard .exe-cbox');
-        cbox.classList.toggle('checked',this.game.hardMode);
+        const el=win.querySelector('#exe-hard');
+        el.setAttribute('aria-checked',String(this.game.hardMode));
+        el.querySelector('.exe-cbox').classList.toggle('checked',this.game.hardMode);
       });
     }
 
@@ -2855,7 +2867,7 @@ class GameUI{
       sessionStr=String(sessions).padStart(5,'0');
     }
     const winHTML=`
-    <div class="exe-titlebar exe-titlebar-alert"><div class="exe-ttext"><span>System Alert</span></div><div class="exe-tbtns"><button class="exe-tbtn exe-close-btn" title="Close window">&times;</button></div></div>
+    <div class="exe-titlebar exe-titlebar-alert"><div class="exe-ttext"><span>System Alert</span></div><div class="exe-tbtns"><button class="exe-tbtn exe-close-btn" title="Close window" aria-label="Close">&times;</button></div></div>
     <div class="exe-modal-body">
       <div class="exe-modal-icon">!</div>
       <div class="exe-modal-text"><strong>Trial period expired.</strong>Continue without a license?<br>(session ${sessionStr} of 00003 allowed)</div>
@@ -2904,13 +2916,13 @@ class GameUI{
       protocol:{title:'ROOT.ACCESS',body:localStorage.getItem('sweeper_hardUnlocked')==='1'?`<p>Unlocks after clearing Level 04. Adds a fifth level. Stacks system errors onto every level.</p><p class="exe-wr">L01-L03: 1 error. L04-L05: 2 errors stacked.</p>`+MODIFIERS.map(m=>`<div class="exe-kvr"><span class="exe-k">${m.name}</span><span class="exe-v">${m.desc}</span></div>`).join(''):`<p><span class="exe-censor">Unlocks after</span> clearing Level 04. <span class="exe-censor">Adds a fifth level.</span> <span class="exe-censor">Stacks system errors onto every level.</span></p><p class="exe-wr"><span class="exe-censor">L01-L03: 1 error.</span> <span class="exe-censor">L04-L05: 2 errors stacked.</span></p><div class="exe-kvr"><span class="exe-k"><span class="exe-censor">REDACTED</span></span><span class="exe-v"><span class="exe-censor">classified information</span></span></div><div class="exe-kvr"><span class="exe-k"><span class="exe-censor">REDACTED</span></span><span class="exe-v"><span class="exe-censor">classified information</span></span></div><div class="exe-kvr"><span class="exe-k"><span class="exe-censor">REDACTED</span></span><span class="exe-v"><span class="exe-censor">classified information</span></span></div>`},
     };
     const topicKeys=Object.keys(topics);
-    const topicNavHTML=topicKeys.map((k,i)=>`<div class="exe-topic ${i===0?'sel':''}" data-topic="${k}"><span class="exe-arrow">&rsaquo;</span>${topics[k].title}</div>`).join('');
+    const topicNavHTML=topicKeys.map((k,i)=>`<div class="exe-topic ${i===0?'sel':''}" data-topic="${k}" role="button" tabindex="0"><span class="exe-arrow" aria-hidden="true">&rsaquo;</span>${topics[k].title}</div>`).join('');
     const topicBodyHTML=topicKeys.map((k,i)=>`<div class="exe-content ${i===0?'active':''}" data-content="${k}"><div class="exe-chead">${topics[k].title}</div><div class="exe-cbody">${topics[k].body}</div></div>`).join('');
 
     const winHTML=`
     <div class="exe-titlebar exe-titlebar-help">
       <div class="exe-ttext"><span class="exe-ic">?</span>LORE.HLP &middot; [help viewer]</div>
-      <div class="exe-tbtns"><button class="exe-tbtn exe-reload-btn" title="Reload">&#x21BB;</button><button class="exe-tbtn exe-close-btn" title="Close window">&times;</button></div>
+      <div class="exe-tbtns"><button class="exe-tbtn exe-reload-btn" title="Reload" aria-label="Reload">&#x21BB;</button><button class="exe-tbtn exe-close-btn" title="Close window" aria-label="Close">&times;</button></div>
     </div>
     <div class="exe-sw">
       <div class="exe-client">
@@ -3040,12 +3052,12 @@ class GameUI{
     const items=fs[path]||[];
     const filesHTML=items.map((f,i)=>{
       const ico=f.icon.length<=2?`<span class="exe-fi" style="font-size:11px;">${f.icon}</span>`:`<span class="exe-fi">${f.icon}</span>`;
-      return `<div class="exe-list-item" data-fs-idx="${i}" data-fs-type="${f.type}" data-fs-path="${f.path||''}">${ico}<span class="exe-name">${f.name}</span><span class="exe-size">${f.size}</span></div>`;
+      return `<div class="exe-list-item" data-fs-idx="${i}" data-fs-type="${f.type}" data-fs-path="${f.path||''}" role="button" tabindex="0" aria-label="${f.name}">${ico}<span class="exe-name">${f.name}</span><span class="exe-size">${f.size}</span></div>`;
     }).join('');
     const winHTML=`
     <div class="exe-titlebar">
       <div class="exe-ttext"><span class="exe-ic">PC</span>${path==='C:\\'?'My Computer':path}</div>
-      <div class="exe-tbtns"><button class="exe-tbtn exe-reload-btn" title="Reload">&#x21BB;</button><button class="exe-tbtn exe-close-btn" title="Close">&times;</button></div>
+      <div class="exe-tbtns"><button class="exe-tbtn exe-reload-btn" title="Reload" aria-label="Reload">&#x21BB;</button><button class="exe-tbtn exe-close-btn" title="Close" aria-label="Close">&times;</button></div>
     </div>
     <div class="exe-client" style="padding:0;">
       <div style="background:#EAEAEA;padding:3px 8px;font-size:10px;font-weight:700;border-bottom:1px solid #6E6E6E;font-family:'Tahoma',sans-serif;color:#000;">
@@ -3080,11 +3092,11 @@ class GameUI{
 
   showRecycleBin(){
     const items=this._RECYCLE();
-    const filesHTML=items.map((f,i)=>`<div class="exe-list-item" data-rb-idx="${i}"><span class="exe-fi">${f.icon}</span><span class="exe-name">${f.name}</span><span class="exe-size" style="min-width:130px;">${f.deleted}</span><span class="exe-size">${f.size}</span></div>`).join('');
+    const filesHTML=items.map((f,i)=>`<div class="exe-list-item" data-rb-idx="${i}" role="button" tabindex="0" aria-label="${f.name}"><span class="exe-fi" aria-hidden="true">${f.icon}</span><span class="exe-name">${f.name}</span><span class="exe-size" style="min-width:130px;">${f.deleted}</span><span class="exe-size">${f.size}</span></div>`).join('');
     const winHTML=`
     <div class="exe-titlebar">
       <div class="exe-ttext"><span class="exe-ic">\u2718</span>Recycle Bin</div>
-      <div class="exe-tbtns"><button class="exe-tbtn exe-reload-btn" title="Reload">&#x21BB;</button><button class="exe-tbtn exe-close-btn" title="Close">&times;</button></div>
+      <div class="exe-tbtns"><button class="exe-tbtn exe-reload-btn" title="Reload" aria-label="Reload">&#x21BB;</button><button class="exe-tbtn exe-close-btn" title="Close" aria-label="Close">&times;</button></div>
     </div>
     <div class="exe-client" style="padding:0;">
       <div style="background:#EAEAEA;padding:3px 8px;font-size:10px;border-bottom:1px solid #6E6E6E;font-family:'Tahoma',sans-serif;color:#000;">
@@ -3124,7 +3136,7 @@ class GameUI{
     const winHTML=`
     <div class="exe-titlebar">
       <div class="exe-ttext"><span class="exe-ic" style="font-size:9px;">&gt;_</span>TERMINAL</div>
-      <div class="exe-tbtns"><button class="exe-tbtn exe-reload-btn" title="Reload">&#x21BB;</button><button class="exe-tbtn exe-close-btn" title="Close">&times;</button></div>
+      <div class="exe-tbtns"><button class="exe-tbtn exe-reload-btn" title="Reload" aria-label="Reload">&#x21BB;</button><button class="exe-tbtn exe-close-btn" title="Close" aria-label="Close">&times;</button></div>
     </div>
     <div class="term-body" id="term-output">
       <div class="term-line">SWEEPER Terminal v4.0.1</div>
@@ -3251,7 +3263,7 @@ class GameUI{
     const winHTML=`
     <div class="exe-titlebar">
       <div class="exe-ttext"><span class="exe-ic">S</span>SWEEPER.EXE &middot; [RUNNING &middot; level_${depthStr} of ${totalStr}]</div>
-      <div class="exe-tbtns"><button class="exe-tbtn exe-close-btn" title="Close window">&times;</button></div>
+      <div class="exe-tbtns"><button class="exe-tbtn exe-close-btn" title="Close window" aria-label="Close">&times;</button></div>
     </div>
     <div class="status-bar">
       <div class="status-item"><span class="status-label">Level</span><span class="status-value accent">${depthStr}</span></div>
@@ -3562,9 +3574,9 @@ class GameUI{
       html+=`<div class="shop-header">${shopLine||'DEPENDENCIES'}</div>
         <div class="shop-shards" id="shop-shards">${g.shards} keys</div>
         <div class="shop-grid">
-          ${items.map(p=>`<div class="shop-item ${p.cursed?'cursed':''} ${g.shards<p.price?'cant-afford':''}" data-pick="${p.id}" data-price="${p.price}" title="${p.name}">
+          ${items.map(p=>`<div class="shop-item ${p.cursed?'cursed':''} ${g.shards<p.price?'cant-afford':''}" data-pick="${p.id}" data-price="${p.price}" title="${p.name}" role="button" tabindex="${g.shards<p.price?'-1':'0'}" aria-disabled="${g.shards<p.price}" aria-label="${p.name}, ${p.price} keys${p.cursed?' (cursed)':''}">
             <div class="s-name">${p.name}</div>
-            <div class="s-price">${p.price}&#x26BF;</div>
+            <div class="s-price" aria-hidden="true">${p.price}&#x26BF;</div>
           </div>`).join('')}
         </div>
         <button class="btn btn-primary shop-descend" id="shop-descend">Continue</button>`;
@@ -3728,7 +3740,7 @@ class GameUI{
     const num=Object.keys(saves).length+1;
     const name=`THOMAS_${String(num).padStart(3,'0')}.SAV`;
     const winHTML=`
-    <div class="exe-titlebar exe-titlebar-alert"><div class="exe-ttext"><span>SWEEPER.EXE</span></div><div class="exe-tbtns"><button class="exe-tbtn exe-close-btn" title="Close window">&times;</button></div></div>
+    <div class="exe-titlebar exe-titlebar-alert"><div class="exe-ttext"><span>SWEEPER.EXE</span></div><div class="exe-tbtns"><button class="exe-tbtn exe-close-btn" title="Close window" aria-label="Close">&times;</button></div></div>
     <div class="exe-modal-body">
       <div class="exe-modal-icon">&#x1F4BE;</div>
       <div class="exe-modal-text">Write session data to disk?<br><br><span style="font-family:monospace;font-size:10px;color:#404040;">${name}<br>Level ${g.level+1} &middot; ${g.shards} keys &middot; ${Math.floor(g.timeRemaining/60)}:${String(g.timeRemaining%60).padStart(2,'0')}</span></div>
@@ -3762,7 +3774,7 @@ class GameUI{
     const cls=classById(s.gameClass||'sweeper');
     const timeStr=Math.floor(s.timeRemaining/60)+':'+String(s.timeRemaining%60).padStart(2,'0');
     const winHTML=`
-    <div class="exe-titlebar exe-titlebar-alert"><div class="exe-ttext"><span>SWEEPER.EXE</span></div><div class="exe-tbtns"><button class="exe-tbtn exe-close-btn" title="Close window">&times;</button></div></div>
+    <div class="exe-titlebar exe-titlebar-alert"><div class="exe-ttext"><span>SWEEPER.EXE</span></div><div class="exe-tbtns"><button class="exe-tbtn exe-close-btn" title="Close window" aria-label="Close">&times;</button></div></div>
     <div class="exe-modal-body">
       <div class="exe-modal-icon">&#x1F4BE;</div>
       <div class="exe-modal-text">Load session from disk?<br>Current progress will be lost.<br><br><span style="font-family:monospace;font-size:10px;color:#404040;">${name}<br>Level ${s.level+1} &middot; ${cls.name} &middot; ${s.shards} keys &middot; ${timeStr}</span></div>

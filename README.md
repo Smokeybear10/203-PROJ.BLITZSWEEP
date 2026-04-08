@@ -1,5 +1,7 @@
 # SWEEPER.EXE
 
+**Live demo: [sweeperexe.vercel.app](https://sweeperexe.vercel.app/)**
+
 Minesweeper disguised as cursed shareware from 1997. Arcade pressure, escalating depths, CRT monitor, VHS artifacts, Windows 98 desktop. The trial expired 25 years ago. It still runs.
 
 ![BIOS POST](assets/screenshots/boot.gif)
